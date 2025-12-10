@@ -1,26 +1,210 @@
+/* app/uxmason.global.css */
+
+/* 나눔스퀘어네오 웹폰트 */
+@import url('https://cdn.jsdelivr.net/gh/fonts-archive/NanumSquareNeo/NanumSquareNeo.css');
+
 /* Tailwind CSS */
 @import "tailwindcss";
 
 /* CSS Variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background-yellow: #FCFBF7;
+  --background-green: #EEF2E3;
+
+  --color-white: #fff;
+  --color-white-3: #ffffff08;
+  --color-white-7: #ffffff12;
+  --color-white-15: #ffffff26;
+  --color-white-25: #ffffff40;
+  --color-white-50: #ffffff80;
+  --color-white-75: #ffffffbf;
+
+  --color-black: #2B2945;
+  --color-black-3: #2B294508;
+  --color-black-7: #2B294512;
+  --color-black-15: #2B294526;
+  --color-black-25: #2B294540;
+  --color-black-50: #2B294580;
+  --color-black-75: #2B2945bf;
+
+  --color-yellow: #FDC669;
+  --color-yellow-3: #FDC66908;
+  --color-yellow-7: #FDC66912;
+  --color-yellow-15: #FDC66926;
+  --color-yellow-25: #FDC66940;
+  --color-yellow-50: #FDC66980;
+  --color-yellow-75: #FDC669bf;
+
+  --color-green: #AAC559;
+  --color-green-3: #AAC55908;
+  --color-green-7: #AAC55912;
+  --color-green-15: #AAC55926;
+  --color-green-25: #AAC55940;
+  --color-green-50: #AAC55980;
+  --color-green-75: #AAC559bf;
+
+  --color-blue: #59ABE4;
+  --color-blue-3: #59ABE408;
+  --color-blue-7: #59ABE412;
+  --color-blue-15: #59ABE426;
+  --color-blue-25: #59ABE440;
+  --color-blue-50: #59ABE480;
+  --color-blue-75: #59ABE4bf;
+
+  --color-red: #E97453;
+  --color-red-3: #E9745308;
+  --color-red-7: #E9745312;
+  --color-red-15: #E9745326;
+  --color-red-25: #E9745340;
+  --color-red-50: #E9745380;
+  --color-red-75: #E97453bf;
+
+  --color-magenta: #FF8F8D;
+  --color-magenta-3: #FF8F8D08;
+  --color-magenta-7: #FF8F8D12;
+  --color-magenta-15: #FF8F8D26;
+  --color-magenta-25: #FF8F8D40;
+  --color-magenta-50: #FF8F8D80;
+  --color-magenta-75: #FF8F8Dbf;
+
+  --color-purple: #C277F2;
+  --color-purple-3: #C277F208;
+  --color-purple-7: #C277F212;
+  --color-purple-15: #C277F226;
+  --color-purple-25: #C277F240;
+  --color-purple-50: #C277F280;
+  --color-purple-75: #C277F2bf;
+
+  --color-mint: #8CEAC3;
+  --color-mint-3: #8CEAC308;
+  --color-mint-7: #8CEAC312;
+  --color-mint-15: #8CEAC326;
+  --color-mint-25: #8CEAC340;
+  --color-mint-50: #8CEAC380;
+  --color-mint-75: #8CEAC3bf;
+  
+  --breakpoint: 1980;
+  
+  --font-12: calc(100vw * 12 / var(--breakpoint));
+  --font-14: calc(100vw * 14 / var(--breakpoint));
+  --font-15: calc(100vw * 15 / var(--breakpoint));
+  --font-17: calc(100vw * 17 / var(--breakpoint));
+  --font-19: calc(100vw * 19 / var(--breakpoint));
+  --font-21: calc(100vw * 21 / var(--breakpoint));
+  --font-24: calc(100vw * 24 / var(--breakpoint));
+  --font-27: calc(100vw * 27 / var(--breakpoint));
+  --font-32: calc(100vw * 32 / var(--breakpoint));
+  --font-40: calc(100vw * 40 / var(--breakpoint));
+
+  --size-2: calc(100vw * 2 / var(--breakpoint));
+  --size-3: calc(100vw * 3 / var(--breakpoint));
+  --size-5: calc(100vw * 5 / var(--breakpoint));
+  --size-10: calc(100vw * 10 / var(--breakpoint));
+  --size-15: calc(100vw * 15 / var(--breakpoint));
+  --size-16: calc(100vw * 16 / var(--breakpoint));
+  --size-20: calc(100vw * 20 / var(--breakpoint));
+  --size-25: calc(100vw * 25 / var(--breakpoint));
+  --size-30: calc(100vw * 30 / var(--breakpoint));
+  --size-35: calc(100vw * 35 / var(--breakpoint));
+  --size-40: calc(100vw * 40 / var(--breakpoint));
+  --size-45: calc(100vw * 45 / var(--breakpoint));
+  --size-50: calc(100vw * 50 / var(--breakpoint));
+  --size-60: calc(100vw * 60 / var(--breakpoint));
+  --size-70: calc(100vw * 70 / var(--breakpoint));
+  --size-100: calc(100vw * 100 / var(--breakpoint));
+  --size-120: calc(100vw * 120 / var(--breakpoint));
+  --size-150: calc(100vw * 150 / var(--breakpoint));
+  --size-160: calc(100vw * 160 / var(--breakpoint));
+  --size-200: calc(100vw * 200 / var(--breakpoint));
+  --size-240: calc(100vw * 240 / var(--breakpoint));
+  --size-250: calc(100vw * 250 / var(--breakpoint));
+  --size-280: calc(100vw * 280 / var(--breakpoint));
+  --size-300: calc(100vw * 300 / var(--breakpoint));
+  --size-320: calc(100vw * 320 / var(--breakpoint));
+  --size-350: calc(100vw * 350 / var(--breakpoint));
+  --size-360: calc(100vw * 360 / var(--breakpoint));
+  --size-380: calc(100vw * 380 / var(--breakpoint));
+  --size-400: calc(100vw * 400 / var(--breakpoint));
+  --size-440: calc(100vw * 440 / var(--breakpoint));
+  --size-450: calc(100vw * 450 / var(--breakpoint));
+  --size-500: calc(100vw * 500 / var(--breakpoint));
+  --size-600: calc(100vw * 600 / var(--breakpoint));
+  --size-640: calc(100vw * 640 / var(--breakpoint));
+  --size-680: calc(100vw * 680 / var(--breakpoint));
+  --size-700: calc(100vw * 700 / var(--breakpoint));
+  --size-760: calc(100vw * 760 / var(--breakpoint));
+  --size-800: calc(100vw * 800 / var(--breakpoint));
+  --size-1500: calc(100vw * 1500 / var(--breakpoint));
+
+}
+
+@media (min-width: 1980px) {
+  :root {
+    --font-12: 12px;
+    --font-14: 14px;
+    --font-15: 15px;
+    --font-17: 17px;
+    --font-19: 19px;
+    --font-21: 21px;
+    --font-24: 24px;
+    --font-27: 27px;
+    --font-32: 32px;
+    --font-40: 40px;
+
+    --size-2: 2px;
+    --size-3: 3px;
+    --size-5: 5px;
+    --size-10: 10px;
+    --size-15: 15px;
+    --size-16: 16px;
+    --size-20: 20px;
+    --size-25: 25px;
+    --size-30: 30px;
+    --size-35: 35px;
+    --size-40: 40px;
+    --size-45: 45px;
+    --size-50: 50px;
+    --size-60: 60px;
+    --size-70: 70px;
+    --size-100: 100px;
+    --size-120: 120px;
+    --size-150: 150px;
+    --size-160: 160px;
+    --size-200: 200px;
+    --size-240: 240px;
+    --size-250: 250px;
+    --size-280: 280px;
+    --size-300: 300px;
+    --size-320: 320px;
+    --size-350: 350px;
+    --size-360: 360px;
+    --size-380: 380px;
+    --size-400: 400px;
+    --size-440: 440px;
+    --size-450: 450px;
+    --size-500: 500px;
+    --size-600: 600px;
+    --size-640: 640px;
+    --size-680: 680px;
+    --size-700: 700px;
+    --size-760: 760px;
+    --size-800: 800px;
+    --size-1500: 1500px;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-foreground: var(--color-black);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-/* UXMASON Global Styles */
-
-/* Reset & Base Styles */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
 html {
@@ -28,255 +212,98 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  background: var(--background-yellow);
+  color: var(--color-black);
+  font-family: 'NanumSquareNeo', '나눔스퀘어네오', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  font-size: var(--font-15);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
-  line-height: 1.2;
-  margin-bottom: 0.5em;
 }
 
-h1 {
-  font-size: 2.5rem;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.75rem;
-}
-
-h4 {
-  font-size: 1.5rem;
-}
-
-h5 {
-  font-size: 1.25rem;
-}
-
-h6 {
-  font-size: 1rem;
+div, main, section {
+  margin: 0;
+  display: flow-root
 }
 
 p {
-  margin-bottom: 1em;
+  display: block;
 }
 
-a {
-  color: #0070f3;
-  text-decoration: none;
-  transition: color 0.2s;
+h1 {
+  font-size: var(--font-32);
 }
 
-a:hover {
-  color: #0051cc;
+.styleSheet {
+  background: url(/images/styleSheet.png) no-repeat;
+  background-size: var(--size-1500) var(--size-800);
 }
 
-/* Form Elements */
-input,
-textarea,
-select,
-button {
-  font-family: inherit;
-  font-size: inherit;
+.isIcon.isReception.isBig {
+  background-position-y: calc(-1 * var(--size-50));
 }
-
-button {
-  cursor: pointer;
-  border: none;
-  outline: none;
+.isIcon.isCounseling.isBig {
+  background-position-y: calc(-1 * var(--size-100));
 }
-
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
+.isIcon.isPreCare.isBig {
+  background-position-y: calc(-1 * var(--size-150));
 }
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: 2px solid #0070f3;
-  outline-offset: 2px;
+.isIcon.isProcedure.isBig {
+  background-position-y: calc(-1 * var(--size-200));
 }
-
-/* Layout Utilities */
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.isIcon.isSurgery.isBig {
+  background-position-y: calc(-1 * var(--size-250));
 }
-
-.section {
-  padding: 2rem 0;
+.isIcon.isClinic.isBig {
+  background-position-y: calc(-1 * var(--size-300));
 }
-
-/* Common Components */
-.card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
+.isIcon.isPostCare.isBig {
+  background-position-y: calc(-1 * var(--size-350));
 }
-
-.button {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 600;
-  transition: all 0.2s;
+.isIcon.isStatistics.isBig {
+  background-position-y: calc(-1 * var(--size-400));
 }
-
-.button-primary {
-  background-color: #0070f3;
-  color: white;
+.isIcon.isSettings.isBig {
+  background-position-y: calc(-1 * var(--size-450));
 }
-
-.button-primary:hover {
-  background-color: #0051cc;
+.isIcon.isBentoMenu {
+  background-position-x: calc(-1 * var(--size-360));
+  background-position-y: calc(-1 * var(--size-280));
 }
-
-.button-secondary {
-  background-color: #f0f0f0;
-  color: #333;
+.isIcon.isReservation {
+  background-position-x: calc(-1 * var(--size-240));
+  background-position-y: calc(-1 * var(--size-120));
 }
-
-.button-secondary:hover {
-  background-color: #e0e0e0;
+.isIcon.isMagnifier {
+  background-position-x: calc(-1 * var(--size-440));
+  background-position-y: calc(-1 * var(--size-760));
 }
-
-/* Utility Classes */
-.text-center {
-  text-align: center;
+.isIcon.isNote {
+  background-position-x: calc(-1 * var(--size-280));
+  background-position-y: calc(-1 * var(--size-680));
 }
-
-.text-left {
-  text-align: left;
+.isIcon.isAlarm {
+  background-position-x: calc(-1 * var(--size-320));
+  background-position-y: calc(-1 * var(--size-640));
 }
-
-.text-right {
-  text-align: right;
+.isIcon.isCheck {
+  background-position-x: calc(-1 * var(--size-200));
+  background-position-y: calc(-1 * var(--size-120));
 }
-
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-3 { margin-top: 1.5rem; }
-.mt-4 { margin-top: 2rem; }
-
-.mb-1 { margin-bottom: 0.5rem; }
-.mb-2 { margin-bottom: 1rem; }
-.mb-3 { margin-bottom: 1.5rem; }
-.mb-4 { margin-bottom: 2rem; }
-
-.p-1 { padding: 0.5rem; }
-.p-2 { padding: 1rem; }
-.p-3 { padding: 1.5rem; }
-.p-4 { padding: 2rem; }
-
-.flex {
-  display: flex;
+.isIcon.isSignUp {
+  background-position-x: calc(-1 * var(--size-360));
+  background-position-y: calc(-1 * var(--size-120));
 }
-
-.flex-column {
-  flex-direction: column;
-}
-
-.flex-center {
-  justify-content: center;
-  align-items: center;
-}
-
-.flex-between {
-  justify-content: space-between;
-}
-
-.gap-1 { gap: 0.5rem; }
-.gap-2 { gap: 1rem; }
-.gap-3 { gap: 1.5rem; }
-.gap-4 { gap: 2rem; }
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-
-  body {
-    background-color: var(--background);
-    color: var(--foreground);
-  }
-
-  .card {
-    background: #1a1a1a;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-
-  a {
-    color: #4dabf7;
-  }
-
-  a:hover {
-    color: #339af0;
-  }
-
-  .button-secondary {
-    background-color: #2a2a2a;
-    color: #ededed;
-  }
-
-  .button-secondary:hover {
-    background-color: #3a3a3a;
-  }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2rem;
-  }
-
-  h2 {
-    font-size: 1.75rem;
-  }
-
-  h3 {
-    font-size: 1.5rem;
-  }
-
-  .container {
-    padding: 0 0.75rem;
-  }
-
-  .section {
-    padding: 1.5rem 0;
-  }
-}
-
-/* Print Styles */
-@media print {
-  * {
-    background: white !important;
-    color: black !important;
-    box-shadow: none !important;
-  }
-
-  a {
-    text-decoration: underline;
-  }
-
-  .button {
-    border: 1px solid black;
-  }
+.tooltip-follow {
+    position: fixed;
+    padding: var(--size-5) var(--size-10);
+    border-radius: var(--size-10);
+    background: var(--color-black-50);
+    color: var(--color-white);
+    pointer-events: none;
+    z-index: 9;
+    white-space: nowrap;
 }
