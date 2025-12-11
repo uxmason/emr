@@ -1,6 +1,7 @@
 import Tooltip from '@/components/Tooltip'
+import { PageHeaderProps } from '@/types/ui'
 
-export default function PageHeader({ title }: { title: string }) {
+export default function PageHeader({ title }: PageHeaderProps) {
   return (
     <header className='C008'>
       <h1>{title}</h1>

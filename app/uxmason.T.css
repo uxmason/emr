@@ -10,6 +10,7 @@
     color: var(--color-green);
     text-align: center;
     font-size: var(--font-15);
+    margin-top: var(--size-5);
 }
 .T002 {
     position: absolute;
@@ -21,9 +22,6 @@
     top: var(--size-15);
     width: max-content;
     display: none;
-}
-.C004.isSelected .T002 {
-    display: flow-root;
 }
 .T003 {
     font-size: var(--font-14);
@@ -83,4 +81,59 @@
 .T010:first-of-type {
     text-align: right;
     color: var(--color-green);
+}
+.T011 {
+    font-size: var(--font-21);
+    margin-left: var(--size-10);
+}
+.T011 .isGrey {
+    color: var(--color-black-25);
+}
+.T012 {
+    font-size: var(--font-14);
+    color: var(--color-black-25);
+    justify-self: flex-end;
+    margin-left: auto;
+}
+.T012 .isValue {
+    font-size: var(--font-21);
+}
+.T013 {
+    font-size: var(--font-19);
+    margin-right: 3px;
+}
+.T014 {
+    font-size: var(--font-14);
+    padding: var(--size-3) var(--size-5);
+    color: var(--color-white);
+    border-radius: var(--size-10);
+    background-color: var(--color-black-25);
+}
+.T014.isRed {
+    background-color: var(--color-magenta);
+}
+.T014 .isUnit {
+    opacity: 0.5;
+}
+.T015 {
+    font-size: var(--font-15);
+    color: var(--color-black-25);
+}
+.T016 {
+    font-size: var(--font-14);
+    margin-right: var(--size-5);
+}
+.T017 {
+    font-size: var(--font-14);
+    margin-right: 0 var(--size-5);
+    background-color: var(--color-black-7);
+}
+.T018 {
+    font-size: var(--font-14);
+    text-decoration: underline;
+    font-weight: 800;
+}
+.T019 {
+    font-size: var(--font-12);
+    color: var(--color-black-25);
 }

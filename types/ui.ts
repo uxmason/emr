@@ -9,6 +9,8 @@ export interface TipState {
 export interface TooltipBaseProps {
   text: string
   children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
 }
 
 // Tooltip offset props (모두 제공)
@@ -56,4 +58,26 @@ export type ToggleSwitchProps =
   | ToggleSwitchControlledWithStyleProps
   | ToggleSwitchUncontrolledProps
   | ToggleSwitchUncontrolledWithStyleProps
+
+// PageHeader 컴포넌트 props
+export interface PageHeaderProps {
+  title: string
+}
+
+// ScrollableContainer 컴포넌트 props
+export interface ScrollableContainerProps {
+  children: React.ReactNode
+  className?: string
+  height?: string
+  onOverflowChange?: (hasOverflow: boolean) => void
+}
+
+// ListItem 컴포넌트 props
+export interface ListItemProps {
+  children?: React.ReactNode
+  leftContent?: React.ReactNode
+  rightContent?: React.ReactNode
+  className?: string
+  onClick?: () => void
+}
 

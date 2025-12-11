@@ -42,6 +42,7 @@
   --background-green: #EEF2E3;
 
   --color-white: #fff;
+  --color-white-0: #ffffff00;
   --color-white-3: #ffffff08;
   --color-white-7: #ffffff12;
   --color-white-15: #ffffff26;
@@ -50,6 +51,7 @@
   --color-white-75: #ffffffbf;
 
   --color-black: #2B2945;
+  --color-black-0: #2B294500;
   --color-black-3: #2B294508;
   --color-black-7: #2B294512;
   --color-black-15: #2B294526;
@@ -58,6 +60,7 @@
   --color-black-75: #2B2945bf;
 
   --color-yellow: #FDC669;
+  --color-yellow-0: #FDC66900;
   --color-yellow-3: #FDC66908;
   --color-yellow-7: #FDC66912;
   --color-yellow-15: #FDC66926;
@@ -66,6 +69,7 @@
   --color-yellow-75: #FDC669bf;
 
   --color-green: #AAC559;
+  --color-green-0: #AAC55900;
   --color-green-3: #AAC55908;
   --color-green-7: #AAC55912;
   --color-green-15: #AAC55926;
@@ -74,6 +78,7 @@
   --color-green-75: #AAC559bf;
 
   --color-blue: #59ABE4;
+  --color-blue-0: #59ABE400;
   --color-blue-3: #59ABE408;
   --color-blue-7: #59ABE412;
   --color-blue-15: #59ABE426;
@@ -82,6 +87,7 @@
   --color-blue-75: #59ABE4bf;
 
   --color-red: #E97453;
+  --color-red-0: #E9745300;
   --color-red-3: #E9745308;
   --color-red-7: #E9745312;
   --color-red-15: #E9745326;
@@ -90,6 +96,7 @@
   --color-red-75: #E97453bf;
 
   --color-magenta: #FF8F8D;
+  --color-magenta-0: #FF8F8D00;
   --color-magenta-3: #FF8F8D08;
   --color-magenta-7: #FF8F8D12;
   --color-magenta-15: #FF8F8D26;
@@ -98,6 +105,7 @@
   --color-magenta-75: #FF8F8Dbf;
 
   --color-purple: #C277F2;
+  --color-purple-0: #C277F200;
   --color-purple-3: #C277F208;
   --color-purple-7: #C277F212;
   --color-purple-15: #C277F226;
@@ -106,6 +114,7 @@
   --color-purple-75: #C277F2bf;
 
   --color-mint: #8CEAC3;
+  --color-mint-0: #8CEAC300;
   --color-mint-3: #8CEAC308;
   --color-mint-7: #8CEAC312;
   --color-mint-15: #8CEAC326;
@@ -142,6 +151,8 @@
   --size-50: calc(100vw * 50 / var(--breakpoint));
   --size-60: calc(100vw * 60 / var(--breakpoint));
   --size-70: calc(100vw * 70 / var(--breakpoint));
+  --size-80: calc(100vw * 80 / var(--breakpoint));
+  --size-90: calc(100vw * 90 / var(--breakpoint));
   --size-100: calc(100vw * 100 / var(--breakpoint));
   --size-120: calc(100vw * 120 / var(--breakpoint));
   --size-150: calc(100vw * 150 / var(--breakpoint));
@@ -158,6 +169,7 @@
   --size-400: calc(100vw * 400 / var(--breakpoint));
   --size-440: calc(100vw * 440 / var(--breakpoint));
   --size-450: calc(100vw * 450 / var(--breakpoint));
+  --size-480: calc(100vw * 480 / var(--breakpoint));
   --size-500: calc(100vw * 500 / var(--breakpoint));
   --size-600: calc(100vw * 600 / var(--breakpoint));
   --size-640: calc(100vw * 640 / var(--breakpoint));
@@ -199,6 +211,8 @@
     --size-50: 50px;
     --size-60: 60px;
     --size-70: 70px;
+    --size-80: 80px;
+    --size-90: 90px;
     --size-100: 100px;
     --size-120: 120px;
     --size-150: 150px;
@@ -215,6 +229,7 @@
     --size-400: 400px;
     --size-440: 440px;
     --size-450: 450px;
+    --size-480: 480px;
     --size-500: 500px;
     --size-600: 600px;
     --size-640: 640px;
@@ -254,7 +269,7 @@ body {
   font-size: var(--font-15);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
+  line-height: 1.5;
   font-weight: 700;
 }
 
@@ -276,32 +291,29 @@ h1 {
   background-size: var(--size-1500) var(--size-800);
 }
 
-.isIcon.isReception.isBig {
-  background-position-y: calc(-1 * var(--size-50));
+.isBlack {
+  color: var(--color-black);
 }
-.isIcon.isCounseling.isBig {
-  background-position-y: calc(-1 * var(--size-100));
+.isGreen {
+  color: var(--color-green);
 }
-.isIcon.isPreCare.isBig {
-  background-position-y: calc(-1 * var(--size-150));
+.isBlue {
+  color: var(--color-blue);
 }
-.isIcon.isProcedure.isBig {
-  background-position-y: calc(-1 * var(--size-200));
+.isYellow {
+  color: var(--color-yellow);
 }
-.isIcon.isSurgery.isBig {
-  background-position-y: calc(-1 * var(--size-250));
+.isRed {
+  color: var(--color-red);
 }
-.isIcon.isClinic.isBig {
-  background-position-y: calc(-1 * var(--size-300));
+.isMagenta {
+  color: var(--color-magenta);
 }
-.isIcon.isPostCare.isBig {
-  background-position-y: calc(-1 * var(--size-350));
+.isBold {
+  font-weight: 800;
 }
-.isIcon.isStatistics.isBig {
-  background-position-y: calc(-1 * var(--size-400));
-}
-.isIcon.isSettings.isBig {
-  background-position-y: calc(-1 * var(--size-450));
+.isUnit {
+  opacity: 0.25;
 }
 .isIcon.isBentoMenu {
   background-position-x: calc(-1 * var(--size-360));
@@ -330,6 +342,53 @@ h1 {
 .isIcon.isSignUp {
   background-position-x: calc(-1 * var(--size-360));
   background-position-y: calc(-1 * var(--size-120));
+}
+.isIcon.isAlarmClock {
+  background-position-x: calc(-1 * var(--size-240));
+  background-position-y: calc(-1 * var(--size-480));
+}
+.isIcon.isHourglass {
+  background-position-x: calc(-1 * var(--size-320));
+  background-position-y: calc(-1 * var(--size-80));
+}
+.isIcon.isClinic {
+  background-position-x: calc(-1 * var(--size-200));
+  background-position-y: calc(-1 * var(--size-160));
+}
+.isIcon.isCoin {
+  background-position-x: calc(-1 * var(--size-240));
+  background-position-y: calc(-1 * var(--size-160));
+}
+
+.isIcon.isBig {
+  background-position-x: 0;
+}
+.isIcon.isReception.isBig {
+  background-position-y: calc(-1 * var(--size-50));
+}
+.isIcon.isCounseling.isBig {
+  background-position-y: calc(-1 * var(--size-100));
+}
+.isIcon.isPreCare.isBig {
+  background-position-y: calc(-1 * var(--size-150));
+}
+.isIcon.isProcedure.isBig {
+  background-position-y: calc(-1 * var(--size-200));
+}
+.isIcon.isSurgery.isBig {
+  background-position-y: calc(-1 * var(--size-250));
+}
+.isIcon.isClinic.isBig {
+  background-position-y: calc(-1 * var(--size-300));
+}
+.isIcon.isPostCare.isBig {
+  background-position-y: calc(-1 * var(--size-350));
+}
+.isIcon.isStatistics.isBig {
+  background-position-y: calc(-1 * var(--size-400));
+}
+.isIcon.isSettings.isBig {
+  background-position-y: calc(-1 * var(--size-450));
 }
 .tooltip-follow {
     position: fixed;
