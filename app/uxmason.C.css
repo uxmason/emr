@@ -390,6 +390,9 @@
 .C031.isFolded .C037 {
     display: none;
 }
+.C031.isReservation.isActived .C037 {
+    flex: 1 1 77.5%;
+}
 .C038 {
     height: calc(100% - var(--size-80));
     overflow: scroll;
@@ -406,7 +409,7 @@
     display: flex;
     align-items: center;
     gap: var(--size-5);
-    margin-top: var(--size-2);
+    margin: var(--size-2) var(--size-2) var(--size-2) 0;
     padding-right: var(--size-10);
     border-radius: var(--size-15);
     transition: .3s;
@@ -473,7 +476,27 @@
 .C045 {
     display: flex;
     flex-direction: row;
-    gap: var(--size-30);
+    gap: var(--size-25);
     flex-shrink: 0;
-    padding: var(--size-10) var(--size-10) var(--size-10) var(--size-30);
+    padding: var(--size-10) var(--size-10) var(--size-10) var(--size-25);
+}
+.C046 {
+    position: absolute;
+    left: 0;
+    margin-left:calc(-1 * var(--size-15));
+    border-radius: 50%;
+    border: var(--size-4) solid var(--color-white);
+    box-shadow: 0 var(--size-4) var(--size-10) var(--color-black-15);
+    background-color: var(--color-black);
+}
+.C046:has(.C047.isChecked) {
+    background-color: var(--color-green);
+}
+.C046:has(.C047.isMyLocation) {
+    background-color: var(--color-red);
+}
+.C047 {
+    width: var(--size-20);
+    height: var(--size-20);
+    filter: brightness(0) invert(1);
 }

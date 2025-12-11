@@ -7,7 +7,7 @@ export default function DraggableScrollContainer({
   children,
   className = '',
   scrollSpeed = 2,
-  scrollToEnd = false,
+  scrollToEnd = true,
   onDragStart,
   onDragEnd,
 }: DraggableScrollContainerProps) {
@@ -18,12 +18,26 @@ export default function DraggableScrollContainer({
     const element = containerRef.current
     if (!element || !scrollToEnd) return
 
-    // 짧은 지연을 주어 DOM이 완전히 렌더링된 후 스크롤
-    const timeoutId = setTimeout(() => {
-      element.scrollLeft = element.scrollWidth - element.clientWidth
-    }, 10)
+    const scrollToRight = () => {
+      if (element) {
+        const maxScroll = element.scrollWidth - element.clientWidth
+        if (maxScroll > 0) {
+          element.scrollLeft = maxScroll
+        }
+      }
+    }
 
-    return () => clearTimeout(timeoutId)
+    // 여러 번 시도하여 DOM이 완전히 렌더링된 후 스크롤
+    // requestAnimationFrame을 사용하여 브라우저가 레이아웃을 완료한 후 실행
+    const rafId = requestAnimationFrame(() => {
+      setTimeout(scrollToRight, 0)
+      setTimeout(scrollToRight, 50)
+      setTimeout(scrollToRight, 100)
+    })
+
+    return () => {
+      cancelAnimationFrame(rafId)
+    }
   }, [scrollToEnd])
 
   useEffect(() => {

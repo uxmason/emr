@@ -156,6 +156,7 @@
   --size-90: calc(100vw * 90 / var(--breakpoint));
   --size-100: calc(100vw * 100 / var(--breakpoint));
   --size-120: calc(100vw * 120 / var(--breakpoint));
+  --size-140: calc(100vw * 140 / var(--breakpoint));
   --size-150: calc(100vw * 150 / var(--breakpoint));
   --size-160: calc(100vw * 160 / var(--breakpoint));
   --size-180: calc(100vw * 180 / var(--breakpoint));
@@ -177,6 +178,7 @@
   --size-640: calc(100vw * 640 / var(--breakpoint));
   --size-680: calc(100vw * 680 / var(--breakpoint));
   --size-700: calc(100vw * 700 / var(--breakpoint));
+  --size-750: calc(100vw * 750 / var(--breakpoint));
   --size-760: calc(100vw * 760 / var(--breakpoint));
   --size-800: calc(100vw * 800 / var(--breakpoint));
   --size-900: calc(100vw * 900 / var(--breakpoint));
@@ -218,6 +220,7 @@
     --size-90: 90px;
     --size-100: 100px;
     --size-120: 120px;
+    --size-140: 140px;
     --size-150: 150px;
     --size-160: 160px;
     --size-180: 180px;
@@ -239,6 +242,7 @@
     --size-640: 640px;
     --size-680: 680px;
     --size-700: 700px;
+    --size-750: 750px;
     --size-760: 760px;
     --size-800: 800px;
     --size-900: 900px;
@@ -428,6 +432,17 @@ h1 {
 .isIcon.isSettings.isBig {
   background-position-y: calc(-1 * var(--size-450));
 }
+
+.isIcon.isMini {
+  background-position-x: calc(-1 * var(--size-750));
+}
+.isIcon.isMyLocation.isMini {
+  background-position-y: calc(-1 * var(--size-140));
+}
+.isIcon.isChecked.isMini {
+  background-position-y: calc(-1 * var(--size-60));
+}
+
 .tooltip-follow {
     position: fixed;
     padding: var(--size-5) var(--size-10);
