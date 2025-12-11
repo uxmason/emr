@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, ReactElement, cloneElement, isValidElement } from 'react'
+import { useState, ReactElement, cloneElement, isValidElement, HTMLAttributes } from 'react'
 import { TipState, TooltipProps } from '@/types/ui'
 
 export default function Tooltip(props: TooltipProps) {
@@ -22,15 +22,19 @@ export default function Tooltip(props: TooltipProps) {
 
   // children이 React 요소인 경우 직접 이벤트 핸들러를 추가
   if (isValidElement(children)) {
+    const child = children as ReactElement<HTMLAttributes<HTMLElement>>
+    const existingClassName = (child.props as any)?.className || ''
+    const existingStyle = (child.props as any)?.style || {}
+    
     return (
       <>
-        {cloneElement(children as ReactElement, {
+        {cloneElement(child, {
           onMouseEnter: showTip,
           onMouseMove: moveTip,
           onMouseLeave: hideTip,
-          className: className ? `${(children as ReactElement).props.className || ''} ${className}`.trim() : (children as ReactElement).props.className,
-          style: { ...((children as ReactElement).props.style || {}), ...(style || {}) },
-        })}
+          className: className ? `${existingClassName} ${className}`.trim() : existingClassName,
+          style: { ...existingStyle, ...(style || {}) },
+        } as any)}
         {tip.visible && (
           <div className='tooltip-follow' style={{ left: tip.x, top: tip.y }}>
             {tip.text}
