@@ -9,8 +9,308 @@ import ScrollableContainer from '@/components/ScrollableContainer'
 import ListItem from '@/components/ListItem'
 import DraggableScrollContainer from '@/components/DraggableScrollContainer'
 import TabSelector from '@/components/TabSelector'
-import WeeklyCalendar from '@/components/WeeklyCalendar'
 import ExpandableText from '@/components/ExpandableText'
+import Aside from '@/components/Aside'
+import { useAside } from '@/components/AsideContext'
+
+function MainContent() {
+  const { navigateToPage } = useAside()
+
+  const handleEmployeeClick = (employeeName: string, employeeId: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log('직원 클릭:', employeeName, employeeId)
+    try {
+      navigateToPage(`employee-${employeeId}`, (
+        <div className='C073' style={{ width: '100%', height: '100%', backgroundColor: 'var(--background-green)' }}>
+        </div>
+      ))
+    } catch (error) {
+      console.error('navigateToPage 오류:', error)
+    }
+  }
+
+  const handleCustomerClick = (customerName: string, customerId: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log('고객 클릭:', customerName, customerId)
+    navigateToPage(`customer-${customerId}`, (
+      <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--background-green)' }}>
+      </div>
+    ))
+  }
+
+  return (
+    <div className='C075'>
+      <div className='C076'>
+        <div className='C077'>
+          <p className='T036'><span className='isUnit'>AM</span> 10:15</p>
+          <Tooltip text='업무 일지 보기'>
+            <div className='C088' onClick={(e) => handleEmployeeClick('김민수', 'kms002', e)} style={{ cursor: 'pointer' }}>
+              <p className='T037'>김민수<span className='isUnit'>과장</span></p>
+              <p className='T038'>(kms002)</p>
+            </div>
+          </Tooltip>
+        </div>
+        <div className='C078'>
+          <div className='C080'>
+            <div className='C081 styleSheet isIcon isMini isChecked'></div>
+          </div>
+          <div className='C082 isMale'></div>
+        </div>
+        <Tooltip text='고객 상세 정보'>
+          <div className='C079' onClick={(e) => handleCustomerClick('박지영', '210048921', e)} style={{ cursor: 'pointer' }}>
+            <div className="C087">
+              <div className="C084">
+                <div className="C033 isIcon styleSheet isPaperPlane"></div>
+              </div>
+              <div className="C083">
+                <p className="T039"><span className="isBold">파트이동</span> </p>
+                <div className="C086"><p className="T041">박지영</p><p className="T042 isRed">여성</p><p className="T042">32<span className="isUnit">세</span></p><p className="T042">1<span className="isUnit">기</span></p><p className="T016 isGrey">210048921</p>
+                </div>
+              </div>
+            </div>
+            <div className="C085">
+              <div className="C036"><div className="C033 isIcon styleSheet isReception"></div></div>
+              <div className="C080 isFitted"><div className="C081 styleSheet isIcon isMini isArrow"></div></div>
+              <div className="C036"><div className="C033 isIcon styleSheet isSurgery "></div></div>
+              <p className="T043"><span className="isBold">수술파트</span><span className="isGrey">로 고객 이관</span></p>
+            </div>
+          </div>
+        </Tooltip>
+      </div>
+      <div className='C076'>
+        <div className='C077'>
+          <p className='T036'><span className='isUnit'>AM</span> 11:32</p>
+          <Tooltip text='업무 일지 보기'>
+            <div className='C088' onClick={(e) => handleEmployeeClick('이수진', 'lsj003', e)} style={{ cursor: 'pointer' }}>
+              <p className='T037'>이수진<span className='isUnit'>대리</span></p>
+              <p className='T038'>(lsj003)</p>
+            </div>
+          </Tooltip>
+        </div>
+        <div className='C078'>
+          <div className='C080'>
+            <div className='C081 styleSheet isIcon isMini isMegaphone'></div>
+          </div>
+          <div className='C082 isFemale'></div>
+        </div>
+        <div className='C079 isMine isComment'>
+          <div className="C087">
+            <div className="C084">
+              <div className="C033 isIcon styleSheet isReception"></div>
+            </div>
+            <div className="C083">
+              <p className="T039"><span className="isBold">원무파트</span> <span className="isGrey">- 전체 전달사항</span></p>
+              <ExpandableText text="오늘 오후 2시부터 시스템 점검이 예정되어 있습니다. 업무에 참고 부탁드립니다. 점검 시간 동안 일시적으로 접속이 불가능할 수 있으며, 긴급한 업무는 사전에 처리해 주시기 바랍니다. 점검이 완료되면 자동으로 알림이 발송될 예정입니다. 추가 문의사항이 있으시면 원무팀으로 연락 부탁드립니다." maxLines={4} />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='C076'>
+        <div className='C077'>
+          <p className='T036'><span className='isUnit'>PM</span> 02:18</p>
+          <Tooltip text='업무 일지 보기'>
+            <div className='C088' onClick={(e) => handleEmployeeClick('정태영', 'jty004', e)} style={{ cursor: 'pointer' }}>
+              <p className='T037'>정태영<span className='isUnit'>주임</span></p>
+              <p className='T038'>(jty004)</p>
+            </div>
+          </Tooltip>
+        </div>
+        <div className='C078'>
+          <div className='C080'>
+            <div className='C081 styleSheet isIcon isMini isChecked'></div>
+          </div>
+          <div className='C082 isMale'></div>
+        </div>
+        <Tooltip text='고객 상세 정보'>
+          <div className='C079' onClick={(e) => handleCustomerClick('최민호', '210046587', e)} style={{ cursor: 'pointer' }}>
+            <div className="C087">
+              <div className="C084">
+                <div className="C033 isIcon styleSheet isExit"></div>
+              </div>
+              <div className="C083">
+                <p className="T039"><span className="isBold">귀가 처리 완료</span></p>
+                <div className="C086"><p className="T041">최민호</p><p className="T042 isBlue">남성</p><p className="T042">45<span className="isUnit">세</span></p><p className="T042 isOldbie">3<span className="isUnit">기</span></p><p className="T016 isGrey">210046587</p>
+                </div>
+              </div>
+            </div>
+            <div className="C085">
+            <p className="T016"><span className="isUnit">수납액:</span></p><p className="T016 isBold isBlue">3,200,000<span className="isUnit">원</span></p><p className="T016"><span className="isUnit">/ 미수금:</span></p><p className="T016 isBold isMint">800,000<span className="isUnit">원</span></p><p className="T016"><span className="isUnit">/ 계약금 총액:</span></p><p className="T016 isBold">4,000,000<span className="isUnit">원</span></p>
+            </div>
+          </div>
+        </Tooltip>
+      </div>
+      <div className='C076'>
+        <div className='C077'>
+          <p className='T036'><span className='isUnit'>PM</span> 01:45</p>
+          <Tooltip text='업무 일지 보기'>
+            <div className='C088' onClick={(e) => handleEmployeeClick('안경희', 'akh001', e)} style={{ cursor: 'pointer' }}>
+              <p className='T037'>안경희<span className='isUnit'>팀장</span></p>
+              <p className='T038'>(akh001)</p>
+            </div>
+          </Tooltip>
+        </div>
+        <div className='C078'>
+          <div className='C080'>
+            <div className='C081 styleSheet isIcon isMini isChecked'></div>
+          </div>
+          <div className='C082 isFemale'></div>
+        </div>
+        <Tooltip text='고객 상세 정보'>
+          <div className='C079' onClick={(e) => handleCustomerClick('한소영', '210048901', e)} style={{ cursor: 'pointer' }}>
+            <div className="C087">
+              <div className="C084">
+                <div className="C033 isIcon styleSheet isCheckIn"></div>
+              </div>
+              <div className="C083">
+                <p className="T039"><span className="isBold">접수완료</span> <span className="isGrey">- Vital 입력완료</span></p>
+                <div className="C086"><p className="T041">한소영</p><p className="T042 isRed">여성</p><p className="T042">33<span className="isUnit">세</span></p><p className="T042">1<span className="isUnit">기</span></p><p className="T016 isGrey">210048901</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tooltip>
+      </div>
+      <div className='C076'>
+        <div className='C077'>
+          <p className='T036'><span className='isUnit'>PM</span> 12:28</p>
+          <Tooltip text='업무 일지 보기'>
+            <div className='C088' onClick={(e) => handleEmployeeClick('홍성훈', 'hsh000', e)} style={{ cursor: 'pointer' }}>
+              <p className='T037'>홍성훈<span className='isUnit'>원장</span></p>
+              <p className='T038'>(hsh000)</p>
+            </div>
+          </Tooltip>
+        </div>
+        <div className='C078'>
+          <div className='C080'>
+            <div className='C081 styleSheet isIcon isMini isChecked'></div>
+          </div>
+          <div className='C082 isMale'></div>
+        </div>
+        <Tooltip text='고객 상세 정보'>
+          <div className='C079' onClick={(e) => handleCustomerClick('조예린', '210051567', e)} style={{ cursor: 'pointer' }}>
+            <div className="C087">
+              <div className="C084">
+                <div className="C033 isIcon styleSheet isPaperPlane"></div>
+              </div>
+              <div className="C083">
+                <p className="T039"><span className="isBold">파트이동</span> </p>
+                <div className="C086"><p className="T041">조예린</p><p className="T042 isRed">여성</p><p className="T042">25<span className="isUnit">세</span></p><p className="T042 isOldbie">2<span className="isUnit">기</span></p><p className="T016 isGrey">210051567</p>
+                </div>
+              </div>
+            </div>
+            <div className="C085">
+              <div className="C036"><div className="C033 isIcon styleSheet isClinic"></div></div>
+              <div className="C080 isFitted"><div className="C081 styleSheet isIcon isMini isArrow"></div></div>
+              <div className="C036"><div className="C033 isIcon styleSheet isReception"></div></div>
+              <p className="T043"><span className="isBold">진료파트</span><span className="isGrey">에서 이관받음</span></p>
+            </div>
+          </div>
+        </Tooltip>
+      </div>
+      <div className='C076'>
+        <div className='C077'>
+          <p className='T036'><span className='isUnit'>PM</span> 03:55</p>
+          <Tooltip text='업무 일지 보기'>
+            <div className='C088' onClick={(e) => handleEmployeeClick('박미영', 'pmy005', e)} style={{ cursor: 'pointer' }}>
+              <p className='T037'>박미영<span className='isUnit'>과장</span></p>
+              <p className='T038'>(pmy005)</p>
+            </div>
+          </Tooltip>
+        </div>
+        <div className='C078'>
+          <div className='C080'>
+            <div className='C081 styleSheet isIcon isMini isMegaphone'></div>
+          </div>
+          <div className='C082 isFemale'></div>
+        </div>
+        <div className='C079 isComment'>
+          <div className="C087">
+            <div className="C084">
+              <div className="C033 isIcon styleSheet isReception"></div>
+            </div>
+            <div className="C083">
+              <p className="T039"><span className="isBold">원무파트</span> <span className="isGrey">- 전체 전달사항</span></p>
+              <ExpandableText text="내일 오전 9시 전체 파트 미팅이 예정되어 있습니다. 필참 부탁드립니다. 미팅에서는 이번 달 업무 현황과 다음 달 계획에 대해 논의할 예정입니다. 각 파트별 발표 자료는 오늘 오후 5시까지 제출해 주시기 바랍니다. 미팅 장소는 본관 3층 대회의실이며, 회의록은 미팅 후 공유될 예정입니다." maxLines={4} />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='C076'>
+        <div className='C077'>
+          <p className='T036'><span className='isUnit'>PM</span> 04:12</p>
+          <Tooltip text='업무 일지 보기'>
+            <div className='C088' onClick={(e) => handleEmployeeClick('김유정', 'kyj006', e)} style={{ cursor: 'pointer' }}>
+              <p className='T037'>김유정<span className='isUnit'>대리</span></p>
+              <p className='T038'>(kyj006)</p>
+            </div>
+          </Tooltip>
+        </div>
+        <div className='C078'>
+          <div className='C080'>
+            <div className='C081 styleSheet isIcon isMini isChecked'></div>
+          </div>
+          <div className='C082 isFemale'></div>
+        </div>
+        <Tooltip text='고객 상세 정보'>
+          <div className='C079' onClick={(e) => handleCustomerClick('윤서아', '210053210', e)} style={{ cursor: 'pointer' }}>
+            <div className="C087">
+              <div className="C084">
+                <div className="C033 isIcon styleSheet isCoin"></div>
+              </div>
+              <div className="C083">
+                <p className="T039"><span className="isBold">수납완료</span></p>
+                <div className="C086"><p className="T041">윤서아</p><p className="T042 isRed">여성</p><p className="T042">26<span className="isUnit">세</span></p><p className="T042">1<span className="isUnit">기</span></p><p className="T016 isGrey">210053210</p>
+                </div>
+              </div>
+            </div>
+            <div className="C085">
+            <p className="T016"><span className="isUnit">수납액:</span></p><p className="T016 isBold isBlue">2,500,000<span className="isUnit">원</span></p><p className="T016"><span className="isUnit">/ 미수금:</span></p><p className="T016 isBold isMint">500,000<span className="isUnit">원</span></p><p className="T016"><span className="isUnit">/ 계약금 총액:</span></p><p className="T016 isBold">3,000,000<span className="isUnit">원</span></p>
+            </div>
+          </div>
+        </Tooltip>
+      </div>
+      <div className='C076'>
+        <div className='C077'>
+          <p className='T036'><span className='isUnit'>AM</span> 09:52</p>
+          <Tooltip text='업무 일지 보기'>
+            <div className='C088' onClick={(e) => handleEmployeeClick('이서연', 'lsy007', e)} style={{ cursor: 'pointer' }}>
+              <p className='T037'>이서연<span className='isUnit'>주임</span></p>
+              <p className='T038'>(lsy007)</p>
+            </div>
+          </Tooltip>
+        </div>
+        <div className='C078'>
+          <div className='C080'>
+            <div className='C081 styleSheet isIcon isMini isChecked'></div>
+          </div>
+          <div className='C082 isFemale'></div>
+        </div>
+        <Tooltip text='고객 상세 정보'>
+          <div className='C079' onClick={(e) => handleCustomerClick('송예준', '210046789', e)} style={{ cursor: 'pointer' }}>
+            <div className="C087">
+              <div className="C084">
+                <div className="C033 isIcon styleSheet isHourglass"></div>
+              </div>
+              <div className="C083">
+                <p className="T039"><span className="isBold">보류상태</span><span className="isGrey">로 전환</span></p>
+                <div className="C086"><p className="T041">송예준</p><p className="T042 isBlue">남성</p><p className="T042">38<span className="isUnit">세</span></p><p className="T042">1<span className="isUnit">기</span></p><p className="T016 isGrey">210046789</p>
+                </div>
+              </div>
+            </div>
+            <div className="C085">
+              <div className="C036"><div className="C033 isIcon styleSheet isCounseling"></div></div>
+              <div className="C080 isFitted"><div className="C081 styleSheet isIcon isMini isArrow"></div></div>
+              <div className="C036"><div className="C033 isIcon styleSheet isReception"></div></div>
+              <p className="T043"><span className="isBold">상담파트</span><span className="isGrey">에서 이관받음</span></p>
+            </div>
+          </div>
+        </Tooltip>
+      </div>
+    </div>
+  )
+}
 
 export default function ReceptionPage() {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
@@ -28,285 +328,52 @@ export default function ReceptionPage() {
     <>
       <main className='C007'>
         <PageHeader title='원무' />
-        <aside className='C013'>
-          <WeeklyCalendar />
-          <div className='C070'>
-            <p className='T035'>원무파트 <span className='isUnit'>전체 전달사항 입력</span></p>
-            <div className='C071'><div className='C072 styleSheet isIcon isWrite'></div></div>
-          </div>
-          <div className='C073'>
-            <div className='C074'></div>
-            <div className='C075'>
-              <div className='C076'>
-                <div className='C077'>
-                  <p className='T036'><span className='isUnit'>AM</span> 10:15</p>
-                  <Tooltip text='업무 일지 보기'>
-                    <div className='C088'>
-                      <p className='T037'>김민수<span className='isUnit'>과장</span></p>
-                      <p className='T038'>(kms002)</p>
-                    </div>
-                  </Tooltip>
-                </div>
-                <div className='C078'>
-                  <div className='C080'>
-                    <div className='C081 styleSheet isIcon isMini isChecked'></div>
-                  </div>
-                  <div className='C082 isMale'></div>
-                </div>
-                <Tooltip text='고객 상세 정보'>
-                  <div className='C079'>
-                    <div className="C087">
-                      <div className="C084">
-                        <div className="C033 isIcon styleSheet isPaperPlane"></div>
-                      </div>
-                      <div className="C083">
-                        <p className="T039"><span className="isBold">파트이동</span> </p>
-                        <div className="C086"><p className="T041">박지영</p><p className="T042 isRed">여성</p><p className="T042">32<span className="isUnit">세</span></p><p className="T042">1<span className="isUnit">기</span></p><p className="T016 isGrey">210048921</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="C085">
-                      <div className="C036"><div className="C033 isIcon styleSheet isReception"></div></div>
-                      <div className="C080 isFitted"><div className="C081 styleSheet isIcon isMini isArrow"></div></div>
-                      <div className="C036"><div className="C033 isIcon styleSheet isSurgery "></div></div>
-                      <p className="T043"><span className="isBold">수술파트</span><span className="isGrey">로 고객 이관</span></p>
-                    </div>
-                  </div>
-                </Tooltip>
-              </div>
-              <div className='C076'>
-                <div className='C077'>
-                  <p className='T036'><span className='isUnit'>AM</span> 11:32</p>
-                  <Tooltip text='업무 일지 보기'>
-                    <div className='C088'>
-                      <p className='T037'>이수진<span className='isUnit'>대리</span></p>
-                      <p className='T038'>(lsj003)</p>
-                    </div>
-                  </Tooltip>
-                </div>
-                <div className='C078'>
-                  <div className='C080'>
-                    <div className='C081 styleSheet isIcon isMini isMegaphone'></div>
-                  </div>
-                  <div className='C082 isFemale'></div>
-                </div>
-                <div className='C079 isMine isComment'>
-                  <div className="C087">
-                    <div className="C084">
-                      <div className="C033 isIcon styleSheet isReception"></div>
-                    </div>
-                    <div className="C083">
-                      <p className="T039"><span className="isBold">원무파트</span> <span className="isGrey">- 전체 전달사항</span></p>
-                      <ExpandableText text="오늘 오후 2시부터 시스템 점검이 예정되어 있습니다. 업무에 참고 부탁드립니다. 점검 시간 동안 일시적으로 접속이 불가능할 수 있으며, 긴급한 업무는 사전에 처리해 주시기 바랍니다. 점검이 완료되면 자동으로 알림이 발송될 예정입니다. 추가 문의사항이 있으시면 원무팀으로 연락 부탁드립니다." maxLines={4} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='C076'>
-                <div className='C077'>
-                  <p className='T036'><span className='isUnit'>PM</span> 02:18</p>
-                  <Tooltip text='업무 일지 보기'>
-                    <div className='C088'>
-                      <p className='T037'>정태영<span className='isUnit'>주임</span></p>
-                      <p className='T038'>(jty004)</p>
-                    </div>
-                  </Tooltip>
-                </div>
-                <div className='C078'>
-                  <div className='C080'>
-                    <div className='C081 styleSheet isIcon isMini isChecked'></div>
-                  </div>
-                  <div className='C082 isMale'></div>
-                </div>
-                <Tooltip text='고객 상세 정보'>
-                  <div className='C079'>
-                    <div className="C087">
-                      <div className="C084">
-                        <div className="C033 isIcon styleSheet isExit"></div>
-                      </div>
-                      <div className="C083">
-                        <p className="T039"><span className="isBold">귀가 처리 완료</span></p>
-                        <div className="C086"><p className="T041">최민호</p><p className="T042 isBlue">남성</p><p className="T042">45<span className="isUnit">세</span></p><p className="T042 isOldbie">3<span className="isUnit">기</span></p><p className="T016 isGrey">210046587</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="C085">
-                    <p className="T016"><span className="isUnit">수납액:</span></p><p className="T016 isBold isBlue">3,200,000<span className="isUnit">원</span></p><p className="T016"><span className="isUnit">/ 미수금:</span></p><p className="T016 isBold isMint">800,000<span className="isUnit">원</span></p><p className="T016"><span className="isUnit">/ 계약금 총액:</span></p><p className="T016 isBold">4,000,000<span className="isUnit">원</span></p>
-                    </div>
-                  </div>
-                </Tooltip>
-              </div>
-              <div className='C076'>
-                <div className='C077'>
-                  <p className='T036'><span className='isUnit'>PM</span> 01:45</p>
-                  <Tooltip text='업무 일지 보기'>
-                    <div className='C088'>
-                      <p className='T037'>안경희<span className='isUnit'>팀장</span></p>
-                      <p className='T038'>(akh001)</p>
-                    </div>
-                  </Tooltip>
-                </div>
-                <div className='C078'>
-                  <div className='C080'>
-                    <div className='C081 styleSheet isIcon isMini isChecked'></div>
-                  </div>
-                  <div className='C082 isFemale'></div>
-                </div>
-                <Tooltip text='고객 상세 정보'>
-                  <div className='C079'>
-                    <div className="C087">
-                      <div className="C084">
-                        <div className="C033 isIcon styleSheet isCheckIn"></div>
-                      </div>
-                      <div className="C083">
-                        <p className="T039"><span className="isBold">접수완료</span> <span className="isGrey">- Vital 입력완료</span></p>
-                        <div className="C086"><p className="T041">한소영</p><p className="T042 isRed">여성</p><p className="T042">33<span className="isUnit">세</span></p><p className="T042">1<span className="isUnit">기</span></p><p className="T016 isGrey">210048901</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Tooltip>
-              </div>
-              <div className='C076'>
-                <div className='C077'>
-                  <p className='T036'><span className='isUnit'>PM</span> 12:28</p>
-                  <Tooltip text='업무 일지 보기'>
-                    <div className='C088'>
-                      <p className='T037'>홍성훈<span className='isUnit'>원장</span></p>
-                      <p className='T038'>(hsh000)</p>
-                    </div>
-                  </Tooltip>
-                </div>
-                <div className='C078'>
-                  <div className='C080'>
-                    <div className='C081 styleSheet isIcon isMini isChecked'></div>
-                  </div>
-                  <div className='C082 isMale'></div>
-                </div>
-                <Tooltip text='고객 상세 정보'>
-                  <div className='C079'>
-                    <div className="C087">
-                      <div className="C084">
-                        <div className="C033 isIcon styleSheet isPaperPlane"></div>
-                      </div>
-                      <div className="C083">
-                        <p className="T039"><span className="isBold">파트이동</span> </p>
-                        <div className="C086"><p className="T041">조예린</p><p className="T042 isRed">여성</p><p className="T042">25<span className="isUnit">세</span></p><p className="T042 isOldbie">2<span className="isUnit">기</span></p><p className="T016 isGrey">210051567</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="C085">
-                      <div className="C036"><div className="C033 isIcon styleSheet isClinic"></div></div>
-                      <div className="C080 isFitted"><div className="C081 styleSheet isIcon isMini isArrow"></div></div>
-                      <div className="C036"><div className="C033 isIcon styleSheet isReception"></div></div>
-                      <p className="T043"><span className="isBold">진료파트</span><span className="isGrey">에서 이관받음</span></p>
-                    </div>
-                  </div>
-                </Tooltip>
-              </div>
-              <div className='C076'>
-                <div className='C077'>
-                  <p className='T036'><span className='isUnit'>PM</span> 03:55</p>
-                  <Tooltip text='업무 일지 보기'>
-                    <div className='C088'>
-                      <p className='T037'>박미영<span className='isUnit'>과장</span></p>
-                      <p className='T038'>(pmy005)</p>
-                    </div>
-                  </Tooltip>
-                </div>
-                <div className='C078'>
-                  <div className='C080'>
-                    <div className='C081 styleSheet isIcon isMini isMegaphone'></div>
-                  </div>
-                  <div className='C082 isFemale'></div>
-                </div>
-                <div className='C079 isComment'>
-                  <div className="C087">
-                    <div className="C084">
-                      <div className="C033 isIcon styleSheet isReception"></div>
-                    </div>
-                    <div className="C083">
-                      <p className="T039"><span className="isBold">원무파트</span> <span className="isGrey">- 전체 전달사항</span></p>
-                      <ExpandableText text="내일 오전 9시 전체 파트 미팅이 예정되어 있습니다. 필참 부탁드립니다. 미팅에서는 이번 달 업무 현황과 다음 달 계획에 대해 논의할 예정입니다. 각 파트별 발표 자료는 오늘 오후 5시까지 제출해 주시기 바랍니다. 미팅 장소는 본관 3층 대회의실이며, 회의록은 미팅 후 공유될 예정입니다." maxLines={4} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='C076'>
-                <div className='C077'>
-                  <p className='T036'><span className='isUnit'>PM</span> 04:12</p>
-                  <Tooltip text='업무 일지 보기'>
-                    <div className='C088'>
-                      <p className='T037'>김유정<span className='isUnit'>대리</span></p>
-                      <p className='T038'>(kyj006)</p>
-                    </div>
-                  </Tooltip>
-                </div>
-                <div className='C078'>
-                  <div className='C080'>
-                    <div className='C081 styleSheet isIcon isMini isChecked'></div>
-                  </div>
-                  <div className='C082 isFemale'></div>
-                </div>
-                <Tooltip text='고객 상세 정보'>
-                  <div className='C079'>
-                    <div className="C087">
-                      <div className="C084">
-                        <div className="C033 isIcon styleSheet isCoin"></div>
-                      </div>
-                      <div className="C083">
-                        <p className="T039"><span className="isBold">수납완료</span></p>
-                        <div className="C086"><p className="T041">윤서아</p><p className="T042 isRed">여성</p><p className="T042">26<span className="isUnit">세</span></p><p className="T042">1<span className="isUnit">기</span></p><p className="T016 isGrey">210053210</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="C085">
-                    <p className="T016"><span className="isUnit">수납액:</span></p><p className="T016 isBold isBlue">2,500,000<span className="isUnit">원</span></p><p className="T016"><span className="isUnit">/ 미수금:</span></p><p className="T016 isBold isMint">500,000<span className="isUnit">원</span></p><p className="T016"><span className="isUnit">/ 계약금 총액:</span></p><p className="T016 isBold">3,000,000<span className="isUnit">원</span></p>
-                    </div>
-                  </div>
-                </Tooltip>
-              </div>
-              <div className='C076'>
-                <div className='C077'>
-                  <p className='T036'><span className='isUnit'>AM</span> 09:52</p>
-                  <Tooltip text='업무 일지 보기'>
-                    <div className='C088'>
-                      <p className='T037'>이서연<span className='isUnit'>주임</span></p>
-                      <p className='T038'>(lsy007)</p>
-                    </div>
-                  </Tooltip>
-                </div>
-                <div className='C078'>
-                  <div className='C080'>
-                    <div className='C081 styleSheet isIcon isMini isChecked'></div>
-                  </div>
-                  <div className='C082 isFemale'></div>
-                </div>
-                <Tooltip text='고객 상세 정보'>
-                  <div className='C079'>
-                    <div className="C087">
-                      <div className="C084">
-                        <div className="C033 isIcon styleSheet isHourglass"></div>
-                      </div>
-                      <div className="C083">
-                        <p className="T039"><span className="isBold">보류상태</span><span className="isGrey">로 전환</span></p>
-                        <div className="C086"><p className="T041">송예준</p><p className="T042 isBlue">남성</p><p className="T042">38<span className="isUnit">세</span></p><p className="T042">1<span className="isUnit">기</span></p><p className="T016 isGrey">210046789</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="C085">
-                      <div className="C036"><div className="C033 isIcon styleSheet isCounseling"></div></div>
-                      <div className="C080 isFitted"><div className="C081 styleSheet isIcon isMini isArrow"></div></div>
-                      <div className="C036"><div className="C033 isIcon styleSheet isReception"></div></div>
-                      <p className="T043"><span className="isBold">상담파트</span><span className="isGrey">에서 이관받음</span></p>
-                    </div>
-                  </div>
-                </Tooltip>
-              </div>
-            </div>
-          </div>
-        </aside>
-        <article className='C020'>
+        <Aside mainContent={() => <MainContent />}>
+          <CustomerStatusSection handleC032Click={handleC032Click} isSmallScreen={isSmallScreen} setIsSmallScreen={setIsSmallScreen} activeIndex={activeIndex} selectedTabs={selectedTabs} setSelectedTabs={setSelectedTabs} selectedPendingTabs={selectedPendingTabs} setSelectedPendingTabs={setSelectedPendingTabs} selectedSortTab={selectedSortTab} setSelectedSortTab={setSelectedSortTab} />
+        </Aside>
+      </main>
+      <Sidebar />
+    </>
+  )
+}
+
+function CustomerStatusSection({ 
+  handleC032Click, 
+  isSmallScreen, 
+  setIsSmallScreen, 
+  activeIndex, 
+  selectedTabs, 
+  setSelectedTabs, 
+  selectedPendingTabs, 
+  setSelectedPendingTabs, 
+  selectedSortTab, 
+  setSelectedSortTab 
+}: {
+  handleC032Click: (index: number, e: React.MouseEvent) => void
+  isSmallScreen: boolean
+  setIsSmallScreen: (value: boolean) => void
+  activeIndex: number | null
+  selectedTabs: number[]
+  setSelectedTabs: (value: number[]) => void
+  selectedPendingTabs: number[]
+  setSelectedPendingTabs: (value: number[]) => void
+  selectedSortTab: number
+  setSelectedSortTab: (value: number) => void
+}) {
+  const { navigateToPage } = useAside()
+
+  const handleEmployeeClickFromStatus = (employeeName: string, employeeId: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log('고객현황 직원 클릭:', employeeName, employeeId)
+    navigateToPage(`employee-${employeeId}`, (
+      <div className='C073' style={{ width: '100%', height: '100%', backgroundColor: 'var(--background-green)' }}>
+      </div>
+    ))
+  }
+
+  return (
+    <article className='C020'>
           <section className='C021'>
             <div className='C028'>
               <p className='T007'>고객 현황</p>
@@ -373,7 +440,7 @@ export default function ReceptionPage() {
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>AM</span> 10:30 예정.</p>
                         <p className='T017'>시술 신환 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039'><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('김유정', 'kyj006', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019 isRed'>31분 지연.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
@@ -411,7 +478,7 @@ export default function ReceptionPage() {
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>AM</span> 11:15 예정.</p>
                         <p className='T017'>시술 신환 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039'><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('김유정', 'kyj006', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019 isGreen'>5분 후 도착예정.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
@@ -430,7 +497,7 @@ export default function ReceptionPage() {
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>AM</span> 11:30 예정.</p>
                         <p className='T017'>시술 신환 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039'><div className='C040'></div><p className='T018'>박미영<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('박미영', 'pmy005', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>박미영<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019 isGreen'>10분 후 도착예정.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
@@ -468,7 +535,7 @@ export default function ReceptionPage() {
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>PM</span> 12:30 예정.</p>
                         <p className='T017'>시술 신환 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039'><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('김유정', 'kyj006', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019'>50분 후 도착예정.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
@@ -487,8 +554,8 @@ export default function ReceptionPage() {
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>PM</span> 1:00 예정.</p>
                         <p className='T017'>시술 신환 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039'><div className='C040'></div><p className='T018'>박미영<span className='isUnit'>상담사</span></p></div></Tooltip>
-                        <p className='T019'>1시간 30분 후 도착예정.</p>
+                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('박미영', 'pmy005', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>박미영<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <p className='T019'>1시간30분 후 도착예정.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
                       </div>
@@ -678,7 +745,7 @@ export default function ReceptionPage() {
                         <p className='T017 isGreen'>진행중</p><p className='T017'>O2 고압산소</p>
                         <p className='T016'>01:12:34.56 <span className='isUnit'>경과</span> </p>
                         <p className='T019'>-예상:<span className='isBold'>1시간 30분</span></p>
-                        <Tooltip text='업무 일정 보기'><div className='C039'><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
+                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('홍성훈', 'hsh000', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
                       </div>
                       <DraggableScrollContainer className='C041' scrollToEnd={activeIndex === 2}>
                         <div className='C045'>
@@ -702,7 +769,7 @@ export default function ReceptionPage() {
                         <p className='T016'><span className='isUnit'>AM</span> 9:30 시작.</p>
                         <p className='T017 isBlue'>시술 완료</p><p className='T017'>O2 고압산소</p>
                         <p className='T016'>01:12:34 <span className='isUnit'>경과</span> </p>
-                        <Tooltip text='업무 일정 보기'><div className='C039'><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
+                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('홍성훈', 'hsh000', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
                       </div>
                       <DraggableScrollContainer className='C041' scrollToEnd={activeIndex === 2}>
                         <div className='C045'>
@@ -752,7 +819,7 @@ export default function ReceptionPage() {
                         <p className='T017 isGreen'>진행중</p><p className='T017'>O2 고압산소</p>
                         <p className='T016'>01:12:34.56 <span className='isUnit'>경과</span> </p>
                         <p className='T019'>-예상:<span className='isBold'>1시간 30분</span></p>
-                        <Tooltip text='업무 일정 보기'><div className='C039'><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
+                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('홍성훈', 'hsh000', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
                       </div>
                       <DraggableScrollContainer className='C041' scrollToEnd={activeIndex === 2}>
                         <div className='C045'>
@@ -938,9 +1005,6 @@ export default function ReceptionPage() {
             </div>
           </section>
         </article>
-      </main>
-      <Sidebar />
-    </>
   )
 }
 
