@@ -153,13 +153,13 @@ function AsideInner({
           
           if (isSlidePageComponent) {
             // SlidePage 계열 컴포넌트면 props를 전달하여 clone
-            return React.cloneElement(page.content as React.ReactElement, {
+            return React.cloneElement(page.content as React.ReactElement<any>, {
               key: page.id,
               transform: `translateX(${offset * 100}%)`,
               zIndex: pages.length - index,
               onGoBack: goBack,
               showBackButton: index > 0
-            })
+            } as any)
           } else {
             // 일반 content면 SlidePage로 감싸기
             return (
