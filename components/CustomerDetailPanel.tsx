@@ -1,0 +1,59 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+
+interface CustomerDetailPanelProps {
+  isOpen: boolean
+  onClose: () => void
+  children?: React.ReactNode
+}
+
+/**
+ * 고객 통합 정보 모달 패널 컴포넌트
+ * ListItem 클릭 시 나타나고, 블러 영역 클릭 시 닫힘
+ */
+export default function CustomerDetailPanel({ isOpen, onClose, children }: CustomerDetailPanelProps) {
+  const [isVisible, setIsVisible] = useState(false)
+  const [isOpened, setIsOpened] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      // 컴포넌트가 나타나면 바로 렌더링
+      setIsVisible(true)
+      // 브라우저가 초기 렌더링을 완료한 후 isOpened 클래스 추가 (애니메이션을 위해)
+      // 작은 지연을 주어 브라우저가 초기 상태를 인식한 후 애니메이션 트리거
+      const timer = setTimeout(() => {
+        setIsOpened(true)
+      }, 10)
+      return () => clearTimeout(timer)
+    } else {
+      // 닫을 때: isOpened 제거 후 0.3초 뒤 컴포넌트 제거
+      setIsOpened(false)
+      const timer = setTimeout(() => {
+        setIsVisible(false)
+      }, 300)
+      return () => clearTimeout(timer)
+    }
+  }, [isOpen])
+
+  if (!isVisible) return null
+
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    // CustomerDetailContent 영역이 아닌 블러 처리된 영역 클릭 시
+    if (e.target === e.currentTarget) {
+      onClose()
+    }
+  }
+
+  return (
+    <div 
+      className={`CustomerDetailPanel ${isOpened ? 'isOpened' : ''}`}
+      onClick={handleBackdropClick}
+    >
+      <div className='CustomerDetailContent' onClick={(e) => e.stopPropagation()}>
+        {children}
+      </div>
+    </div>
+  )
+}
+

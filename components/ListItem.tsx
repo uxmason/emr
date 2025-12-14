@@ -24,6 +24,7 @@ export default function ListItem({
       <div 
         className={combinedClassName}
         onClick={onClick}
+        style={onClick ? { cursor: 'pointer' } : undefined}
       >
         {children}
       </div>
@@ -34,6 +35,7 @@ export default function ListItem({
     <div 
       className={combinedClassName}
       onClick={onClick}
+      style={onClick ? { cursor: 'pointer' } : undefined}
     >
       {leftContent && <div className='C035'>{leftContent}</div>}
       {rightContent && <div className='C037'>{rightContent}</div>}

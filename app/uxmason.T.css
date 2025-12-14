@@ -71,6 +71,9 @@
     text-align: right;
     color: var(--color-green);
 }
+.T010.isMini {
+    font-size: var(--font-12);
+}
 .T011 {
     font-size: var(--font-21);
     margin-left: var(--size-10);
@@ -437,4 +440,15 @@
 .T043 {
     margin-left: var(--size-10);
     font-size: var(--font-15);
+}
+.T044 {
+    font-size: var(--font-14);
+}
+.T045 {
+    font-size: var(--font-21);
+    text-align: center;
+}
+.T046 {
+    font-size: var(--font-14);
+    text-align: center;
 }

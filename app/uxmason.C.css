@@ -200,6 +200,8 @@
     border-radius: var(--size-25);
 }
 .C021 {
+    overflow: hidden;
+    border-radius: var(--size-25);
     box-shadow: 0 var(--size-10) var(--size-40) var(--color-black-3);
 }
 .C022 {
@@ -237,6 +239,7 @@
 }
 .C025 {
     width: var(--size-120);
+    min-width: var(--size-120);
     height: var(--size-40);
     margin-left: var(--size-10);
     border-radius: var(--size-20);
@@ -675,7 +678,7 @@
     pointer-events: none;
     z-index: 9;
     white-space: nowrap;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(--size-10);
 }
 .C062 {
     width: 100vw;
@@ -691,7 +694,7 @@
     height: var(--size-600);
     background-color: var(--color-white-50);
     border-radius: var(--size-30);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(--size-20);
     box-shadow: 0 var(--size-20) var(--size-80) var(--color-black-25);
     position: fixed;
     padding: var(--size-30);
@@ -796,7 +799,19 @@
 }
 .C073 {   
     background: linear-gradient(to bottom, var(--color-black-3), var(--color-black-0) 10%);
+    width: 100%;
     height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease-in-out;
+    background-color: var(--background-green);
+}
+.C073.isDoctor {
+    /* 원장용 추가 스타일 */
+}
+.C073.isEmployee {
+    /* 일반직원용 추가 스타일 */
 }
 .C074 {
     position: absolute;
@@ -810,6 +825,7 @@
     overflow-y: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    background:linear-gradient(to bottom, var(--color-black-3), var(--color-black-0) 10%);
 }
 .C075::-webkit-scrollbar {
     display: none;
@@ -903,4 +919,89 @@
 }
 .C088:hover {
     opacity: .5;
+}
+.C089 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.C090 {
+    width: 100%;
+    top: 0;
+    background-color: var(--background-green);
+    border-bottom: var(--size-4) solid var(--color-black-3);
+    padding: var(--size-10);
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.C091 {
+    display: flex;
+    align-items: center;
+    gap: var(--size-5);
+    width: fit-content;
+    background-color: var(--color-white);
+    box-shadow: 0 var(--size-10) var(--size-30) var(--color-black-7);
+    border-radius: var(--size-15);
+    padding: var(--size-10) var(--size-20) var(--size-10) var(--size-10);
+    cursor: pointer;
+    transition: .3s;
+}
+.C091:hover {
+    opacity: .5;
+}
+.C092 {
+    width: var(--size-40);
+    height: var(--size-40);
+}
+.C093 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.C094 {
+    position: absolute;
+    right: var(--size-10);
+    display: flex;
+    align-items: center;
+}
+.C095 {
+    display: flex;
+    align-items: center;
+    gap: var(--size-5);
+}
+.CustomerDetailPanel {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top:0;
+    z-index: 1;
+    border-radius: var(--size-30);
+    overflow: hidden;
+    transition: .3s;
+}
+.CustomerDetailPanel.isOpened {
+    backdrop-filter: blur(var(--size-5));
+}
+.CustomerDetailContent {
+    height: 100%;
+    width: 90%;
+    position: absolute;
+    top:0;
+    left:40%;
+    background-color: var(--color-white);
+    border-radius: var(--size-30);
+    padding: var(--size-10);
+    box-shadow: calc(-1 * var(--size-20)) 0 var(--size-80) var(--color-black-15);
+    transition: .3s;
+    opacity: 0;
+}
+.CustomerDetailPanel.isOpened .CustomerDetailContent {
+    left:10%;
+    opacity: 1;
 }

@@ -12,18 +12,59 @@ import TabSelector from '@/components/TabSelector'
 import ExpandableText from '@/components/ExpandableText'
 import Aside from '@/components/Aside'
 import { useAside } from '@/components/AsideContext'
+import DoctorSlidePage from '@/components/DoctorSlidePage'
+import EmployeeSlidePage from '@/components/EmployeeSlidePage'
+import CounselorSlidePage from '@/components/CounselorSlidePage'
+import CustomerDetailPanel from '@/components/CustomerDetailPanel'
 
 function MainContent() {
   const { navigateToPage } = useAside()
 
-  const handleEmployeeClick = (employeeName: string, employeeId: string, e: React.MouseEvent) => {
+  const handleEmployeeClick = (employeeName: string, employeeId: string, role: string, e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    console.log('직원 클릭:', employeeName, employeeId)
+    console.log('직원 클릭:', employeeName, employeeId, role)
     try {
-      navigateToPage(`employee-${employeeId}`, (
-        <div className='C073' style={{ width: '100%', height: '100%', backgroundColor: 'var(--background-green)' }}>
-        </div>
+      // 역할에 따라 적절한 컴포넌트 선택
+      let SlidePageComponent = EmployeeSlidePage
+      if (role.includes('원장')) {
+        SlidePageComponent = DoctorSlidePage
+      } else if (role.includes('상담사')) {
+        SlidePageComponent = CounselorSlidePage
+      }
+      
+      // 역할 기반으로 pageId 생성 (동일 역할은 같은 페이지에서 데이터만 리로드)
+      let roleCategory = 'employee'
+      if (role.includes('상담사')) {
+        roleCategory = 'counselor'
+      } else if (role.includes('원장')) {
+        roleCategory = 'doctor'
+      } else if (role.includes('과장')) {
+        roleCategory = 'manager'
+      } else if (role.includes('대리')) {
+        roleCategory = 'assistant'
+      } else if (role.includes('팀장')) {
+        roleCategory = 'team-leader'
+      } else if (role.includes('주임')) {
+        roleCategory = 'clerk'
+      }
+      
+      // 역할에 따라 title 결정
+      let pageTitle = '업무 일정 보기'
+      if (role.includes('원장')) {
+        pageTitle = '원장 일정 보기'
+      } else if (role.includes('상담사')) {
+        pageTitle = '상담 일정 보기'
+      }
+      
+      // 동일 역할 카테고리는 같은 pageId 사용 (employeeId 무시)
+      navigateToPage(roleCategory, (
+        <SlidePageComponent 
+          title={pageTitle}
+          employeeName={employeeName}
+          employeeRole={role}
+          employeeId={employeeId}
+        />
       ))
     } catch (error) {
       console.error('navigateToPage 오류:', error)
@@ -34,7 +75,8 @@ function MainContent() {
     e.preventDefault()
     e.stopPropagation()
     console.log('고객 클릭:', customerName, customerId)
-    navigateToPage(`customer-${customerId}`, (
+    // 모든 고객은 동일한 customer 카테고리로 묶어서 누적 없이 데이터만 리로드
+    navigateToPage('customer', (
       <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--background-green)' }}>
       </div>
     ))
@@ -46,7 +88,7 @@ function MainContent() {
         <div className='C077'>
           <p className='T036'><span className='isUnit'>AM</span> 10:15</p>
           <Tooltip text='업무 일지 보기'>
-            <div className='C088' onClick={(e) => handleEmployeeClick('김민수', 'kms002', e)} style={{ cursor: 'pointer' }}>
+            <div className='C088' onClick={(e) => handleEmployeeClick('김민수', 'kms002', '과장', e)} style={{ cursor: 'pointer' }}>
               <p className='T037'>김민수<span className='isUnit'>과장</span></p>
               <p className='T038'>(kms002)</p>
             </div>
@@ -83,7 +125,7 @@ function MainContent() {
         <div className='C077'>
           <p className='T036'><span className='isUnit'>AM</span> 11:32</p>
           <Tooltip text='업무 일지 보기'>
-            <div className='C088' onClick={(e) => handleEmployeeClick('이수진', 'lsj003', e)} style={{ cursor: 'pointer' }}>
+            <div className='C088' onClick={(e) => handleEmployeeClick('이수진', 'lsj003', '대리', e)} style={{ cursor: 'pointer' }}>
               <p className='T037'>이수진<span className='isUnit'>대리</span></p>
               <p className='T038'>(lsj003)</p>
             </div>
@@ -111,7 +153,7 @@ function MainContent() {
         <div className='C077'>
           <p className='T036'><span className='isUnit'>PM</span> 02:18</p>
           <Tooltip text='업무 일지 보기'>
-            <div className='C088' onClick={(e) => handleEmployeeClick('정태영', 'jty004', e)} style={{ cursor: 'pointer' }}>
+            <div className='C088' onClick={(e) => handleEmployeeClick('정태영', 'jty004', '주임', e)} style={{ cursor: 'pointer' }}>
               <p className='T037'>정태영<span className='isUnit'>주임</span></p>
               <p className='T038'>(jty004)</p>
             </div>
@@ -145,7 +187,7 @@ function MainContent() {
         <div className='C077'>
           <p className='T036'><span className='isUnit'>PM</span> 01:45</p>
           <Tooltip text='업무 일지 보기'>
-            <div className='C088' onClick={(e) => handleEmployeeClick('안경희', 'akh001', e)} style={{ cursor: 'pointer' }}>
+            <div className='C088' onClick={(e) => handleEmployeeClick('안경희', 'akh001', '팀장', e)} style={{ cursor: 'pointer' }}>
               <p className='T037'>안경희<span className='isUnit'>팀장</span></p>
               <p className='T038'>(akh001)</p>
             </div>
@@ -175,8 +217,8 @@ function MainContent() {
       <div className='C076'>
         <div className='C077'>
           <p className='T036'><span className='isUnit'>PM</span> 12:28</p>
-          <Tooltip text='업무 일지 보기'>
-            <div className='C088' onClick={(e) => handleEmployeeClick('홍성훈', 'hsh000', e)} style={{ cursor: 'pointer' }}>
+          <Tooltip text='원장 일지 보기'>
+            <div className='C088' onClick={(e) => handleEmployeeClick('홍성훈', 'hsh000', '원장', e)} style={{ cursor: 'pointer' }}>
               <p className='T037'>홍성훈<span className='isUnit'>원장</span></p>
               <p className='T038'>(hsh000)</p>
             </div>
@@ -213,7 +255,7 @@ function MainContent() {
         <div className='C077'>
           <p className='T036'><span className='isUnit'>PM</span> 03:55</p>
           <Tooltip text='업무 일지 보기'>
-            <div className='C088' onClick={(e) => handleEmployeeClick('박미영', 'pmy005', e)} style={{ cursor: 'pointer' }}>
+            <div className='C088' onClick={(e) => handleEmployeeClick('박미영', 'pmy005', '과장', e)} style={{ cursor: 'pointer' }}>
               <p className='T037'>박미영<span className='isUnit'>과장</span></p>
               <p className='T038'>(pmy005)</p>
             </div>
@@ -241,7 +283,7 @@ function MainContent() {
         <div className='C077'>
           <p className='T036'><span className='isUnit'>PM</span> 04:12</p>
           <Tooltip text='업무 일지 보기'>
-            <div className='C088' onClick={(e) => handleEmployeeClick('김유정', 'kyj006', e)} style={{ cursor: 'pointer' }}>
+            <div className='C088' onClick={(e) => handleEmployeeClick('김유정', 'kyj006', '대리', e)} style={{ cursor: 'pointer' }}>
               <p className='T037'>김유정<span className='isUnit'>대리</span></p>
               <p className='T038'>(kyj006)</p>
             </div>
@@ -275,7 +317,7 @@ function MainContent() {
         <div className='C077'>
           <p className='T036'><span className='isUnit'>AM</span> 09:52</p>
           <Tooltip text='업무 일지 보기'>
-            <div className='C088' onClick={(e) => handleEmployeeClick('이서연', 'lsy007', e)} style={{ cursor: 'pointer' }}>
+            <div className='C088' onClick={(e) => handleEmployeeClick('이서연', 'lsy007', '주임', e)} style={{ cursor: 'pointer' }}>
               <p className='T037'>이서연<span className='isUnit'>주임</span></p>
               <p className='T038'>(lsy007)</p>
             </div>
@@ -360,15 +402,66 @@ function CustomerStatusSection({
   selectedSortTab: number
   setSelectedSortTab: (value: number) => void
 }) {
-  const { navigateToPage } = useAside()
+  const { navigateToPage, resetToMain } = useAside()
+  const [isCustomerDetailOpen, setIsCustomerDetailOpen] = useState(false)
 
-  const handleEmployeeClickFromStatus = (employeeName: string, employeeId: string, e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    console.log('고객현황 직원 클릭:', employeeName, employeeId)
-    navigateToPage(`employee-${employeeId}`, (
-      <div className='C073' style={{ width: '100%', height: '100%', backgroundColor: 'var(--background-green)' }}>
+  const handleCustomerClick = (customerName: string, customerId: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    console.log('고객 클릭:', customerName, customerId)
+    // 고객 통합 정보 패널 열기
+    setIsCustomerDetailOpen(true)
+    // 모든 고객은 동일한 customer 카테고리로 묶어서 누적 없이 데이터만 리로드
+    navigateToPage('customer', (
+      <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--background-green)' }}>
       </div>
+    ))
+  }
+
+  const handleCustomerDetailClose = () => {
+    setIsCustomerDetailOpen(false)
+    // Aside도 원무파트 전체 타임라인으로 되돌리기
+    resetToMain()
+  }
+
+  const handleEmployeeClickFromStatus = (employeeName: string, employeeId: string, role: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation() // ListItem 클릭 이벤트와 충돌 방지
+    console.log('고객현황 직원 클릭:', employeeName, employeeId, role)
+    // 역할에 따라 적절한 컴포넌트 선택
+    let SlidePageComponent = EmployeeSlidePage
+    if (role.includes('원장')) {
+      SlidePageComponent = DoctorSlidePage
+    } else if (role.includes('상담사')) {
+      SlidePageComponent = CounselorSlidePage
+    }
+    
+    // [업무 일정 보기] 클릭 시 분류: 원장, 상담사, 나머지 직원
+    let roleCategory = 'employee' // 나머지 직원 (과장, 대리, 팀장, 주임 등)
+    if (role.includes('원장')) {
+      roleCategory = 'doctor'
+    } else if (role.includes('상담사')) {
+      roleCategory = 'counselor'
+    }
+    
+    // 역할에 따라 title 결정
+    let pageTitle = '업무 일정 보기'
+    if (role.includes('원장')) {
+      pageTitle = '원장 일정 보기'
+    } else if (role.includes('상담사')) {
+      pageTitle = '상담 일정 보기'
+    }
+    
+    // 동일 역할 카테고리는 같은 pageId 사용 (employeeId 무시)
+    navigateToPage(roleCategory, (
+      <SlidePageComponent 
+        title={pageTitle}
+        employeeName={employeeName}
+        employeeRole={role}
+        employeeId={employeeId}
+      />
     ))
   }
 
@@ -427,9 +520,9 @@ function CustomerStatusSection({
                     <p className='T020'><span className='isBlack'>5</span> / <span className='isRed'>2</span></p>
                   </div>
                   <ScrollableContainer>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('이서연', '210051234')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>이서연</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>28<span className='isUnit'>세</span></p>
@@ -440,15 +533,15 @@ function CustomerStatusSection({
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>AM</span> 10:30 예정.</p>
                         <p className='T017'>시술 신환 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('김유정', 'kyj006', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='상담 일지 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('김유정', 'kyj006', '상담사', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019 isRed'>31분 지연.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
                       </div>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('박민준', '210048765')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>박민준</p>
                           <p className='T014 isBlue'>남성</p>
                           <p className='T014'>35<span className='isUnit'>세</span></p>
@@ -459,15 +552,15 @@ function CustomerStatusSection({
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>AM</span> 11:00 예정.</p>
                         <p className='T017'>재진 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039'><div className='C040 isMale'></div><p className='T018'>이수진<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='상담 일지 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('이수진', 'lsj003', '상담사', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>이수진<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019 isYellow'>11분 지연.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
                       </div>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('최지우', '210052341')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>최지우</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>24<span className='isUnit'>세</span></p>
@@ -478,15 +571,15 @@ function CustomerStatusSection({
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>AM</span> 11:15 예정.</p>
                         <p className='T017'>시술 신환 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('김유정', 'kyj006', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='상담 일지 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('김유정', 'kyj006', '상담사', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019 isGreen'>5분 후 도착예정.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
                       </div>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('정하늘', '210049876')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>정하늘</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>29<span className='isUnit'>세</span></p>
@@ -497,15 +590,15 @@ function CustomerStatusSection({
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>AM</span> 11:30 예정.</p>
                         <p className='T017'>시술 신환 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('박미영', 'pmy005', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>박미영<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='상담 일지 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('박미영', 'pmy005', '상담사', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>박미영<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019 isGreen'>10분 후 도착예정.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
                       </div>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('김도현', '210045678')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>김도현</p>
                           <p className='T014 isBlue'>남성</p>
                           <p className='T014'>41<span className='isUnit'>세</span></p>
@@ -516,15 +609,15 @@ function CustomerStatusSection({
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>PM</span> 12:00 예정.</p>
                         <p className='T017'>재진 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039'><div className='C040 isMale'></div><p className='T018'>이수진<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='상담 일지 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('이수진', 'lsj003', '상담사', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>이수진<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019'>30분 후 도착예정.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
                       </div>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('황보제갈수빈', '210047938')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>황보제갈수빈</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>32<span className='isUnit'>세</span></p>
@@ -535,15 +628,15 @@ function CustomerStatusSection({
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>PM</span> 12:30 예정.</p>
                         <p className='T017'>시술 신환 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('김유정', 'kyj006', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='상담 일지 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('김유정', 'kyj006', '상담사', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>김유정<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019'>50분 후 도착예정.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
                       </div>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('윤서아', '210053210')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>윤서아</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>26<span className='isUnit'>세</span></p>
@@ -554,7 +647,7 @@ function CustomerStatusSection({
                       <div className='C037'>
                         <p className='T016'><span className='isUnit'>PM</span> 1:00 예정.</p>
                         <p className='T017'>시술 신환 상담</p>
-                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('박미영', 'pmy005', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>박미영<span className='isUnit'>상담사</span></p></div></Tooltip>
+                        <Tooltip text='상담 일지 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('박미영', 'pmy005', '상담사', e)} style={{ cursor: 'pointer' }}><div className='C040'></div><p className='T018'>박미영<span className='isUnit'>상담사</span></p></div></Tooltip>
                         <p className='T019'>1시간30분 후 도착예정.</p>
                         <p className='T023'>“국적: 캄보디아/ KVN 30% 수수료/155cm 47kg/얼굴”</p>
                         <p className='T024'>해외예약</p><p className='T024'>외국인</p><p className='T024'>통역필요</p><p className='T024'><span className='isUnit'>국적:</span>베트남</p><p className='T024'><span className='isUnit'>사용언어:</span>베트남어</p><p className='T024'><span className='isUnit'>통역:</span>후안펑</p>
@@ -585,9 +678,9 @@ function CustomerStatusSection({
                   <p className='T020'><span className='isBlack'>2</span> / <span className='isYellow'>1</span></p>
                   </div>
                   <ScrollableContainer>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('오수빈', '210049123')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>오수빈</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>31<span className='isUnit'>세</span></p>
@@ -609,9 +702,9 @@ function CustomerStatusSection({
                         </div>
                       </DraggableScrollContainer>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('강민서', '210050456')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>강민서</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>27<span className='isUnit'>세</span></p>
@@ -632,9 +725,9 @@ function CustomerStatusSection({
                         </div>
                       </DraggableScrollContainer>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('송예준', '210046789')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>송예준</p>
                           <p className='T014 isBlue'>남성</p>
                           <p className='T014'>38<span className='isUnit'>세</span></p>
@@ -681,9 +774,9 @@ function CustomerStatusSection({
                   <p className='T020'><span className='isBlack'>4</span> / <span className='isYellow'>2</span> / <span className='isGreen'>2</span></p>
                   </div>
                   <ScrollableContainer>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('한소영', '210048901')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>한소영</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>33<span className='isUnit'>세</span></p>
@@ -705,9 +798,9 @@ function CustomerStatusSection({
                         </div>
                       </DraggableScrollContainer>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('조예린', '210051567')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>조예린</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>25<span className='isUnit'>세</span></p>
@@ -730,9 +823,9 @@ function CustomerStatusSection({
                         </div>
                       </DraggableScrollContainer>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('임지훈', '210044321')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>임지훈</p>
                           <p className='T014 isBlue'>남성</p>
                           <p className='T014'>42<span className='isUnit'>세</span></p>
@@ -745,7 +838,7 @@ function CustomerStatusSection({
                         <p className='T017 isGreen'>진행중</p><p className='T017'>O2 고압산소</p>
                         <p className='T016'>01:12:34.56 <span className='isUnit'>경과</span> </p>
                         <p className='T019'>-예상:<span className='isBold'>1시간 30분</span></p>
-                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('홍성훈', 'hsh000', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
+                        <Tooltip text='원장 일지 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('홍성훈', 'hsh000', '원장', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
                       </div>
                       <DraggableScrollContainer className='C041' scrollToEnd={activeIndex === 2}>
                         <div className='C045'>
@@ -755,9 +848,9 @@ function CustomerStatusSection({
                         </div>
                       </DraggableScrollContainer>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('배수진', '210047654')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>배수진</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>30<span className='isUnit'>세</span></p>
@@ -769,7 +862,7 @@ function CustomerStatusSection({
                         <p className='T016'><span className='isUnit'>AM</span> 9:30 시작.</p>
                         <p className='T017 isBlue'>시술 완료</p><p className='T017'>O2 고압산소</p>
                         <p className='T016'>01:12:34 <span className='isUnit'>경과</span> </p>
-                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('홍성훈', 'hsh000', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
+                        <Tooltip text='원장 일지 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('홍성훈', 'hsh000', '원장', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
                       </div>
                       <DraggableScrollContainer className='C041' scrollToEnd={activeIndex === 2}>
                         <div className='C045'>
@@ -779,9 +872,9 @@ function CustomerStatusSection({
                         </div>
                       </DraggableScrollContainer>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('서민재', '210049432')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>서민재</p>
                           <p className='T014 isBlue'>남성</p>
                           <p className='T014'>36<span className='isUnit'>세</span></p>
@@ -804,9 +897,9 @@ function CustomerStatusSection({
                         </div>
                       </DraggableScrollContainer>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('노다혜', '210052098')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>노다혜</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>29<span className='isUnit'>세</span></p>
@@ -819,7 +912,7 @@ function CustomerStatusSection({
                         <p className='T017 isGreen'>진행중</p><p className='T017'>O2 고압산소</p>
                         <p className='T016'>01:12:34.56 <span className='isUnit'>경과</span> </p>
                         <p className='T019'>-예상:<span className='isBold'>1시간 30분</span></p>
-                        <Tooltip text='업무 일정 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('홍성훈', 'hsh000', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
+                        <Tooltip text='원장 일지 보기'><div className='C039' onClick={(e) => handleEmployeeClickFromStatus('홍성훈', 'hsh000', '원장', e)} style={{ cursor: 'pointer' }}><div className='C040 isMale'></div><p className='T018'>홍성훈<span className='isUnit'>원장</span></p></div></Tooltip>
                       </div>
                       <DraggableScrollContainer className='C041' scrollToEnd={activeIndex === 2}>
                         <div className='C045'>
@@ -854,9 +947,9 @@ function CustomerStatusSection({
                   <p className='T020'><span className='isBlack'>2</span> / <span className='isBlue'>5</span></p>
                   </div>
                   <ScrollableContainer>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('유하은', '210048234')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>유하은</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>34<span className='isUnit'>세</span></p>
@@ -878,9 +971,9 @@ function CustomerStatusSection({
                         </div>
                       </DraggableScrollContainer>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('안지영', '210050123')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>안지영</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>28<span className='isUnit'>세</span></p>
@@ -901,9 +994,9 @@ function CustomerStatusSection({
                         </div>
                       </DraggableScrollContainer>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('홍준서', '210045678')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>홍준서</p>
                           <p className='T014 isBlue'>남성</p>
                           <p className='T014'>39<span className='isUnit'>세</span></p>
@@ -924,9 +1017,9 @@ function CustomerStatusSection({
                         </div>
                       </DraggableScrollContainer>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('전미나', '210047567')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>전미나</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>31<span className='isUnit'>세</span></p>
@@ -949,9 +1042,9 @@ function CustomerStatusSection({
                         <p className='T017'><span className='isUnit'>수납구분:</span> 지방흡입</p>
                       </div>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('장우진', '210043890')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>장우진</p>
                           <p className='T014 isBlue'>남성</p>
                           <p className='T014'>44<span className='isUnit'>세</span></p>
@@ -974,9 +1067,9 @@ function CustomerStatusSection({
                         <p className='T017'><span className='isUnit'>수납구분:</span> 리프팅 시술</p>
                       </div>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onClick={() => handleCustomerClick('문서아', '210052345')}>
                       <Tooltip text='고객 상세 정보'>
-                        <div className='C035'>
+                        <div className='C035' style={{ cursor: 'pointer' }}>
                           <p className='T013'>문서아</p>
                           <p className='T014 isRed'>여성</p>
                           <p className='T014'>27<span className='isUnit'>세</span></p>
@@ -1003,8 +1096,10 @@ function CustomerStatusSection({
                 </div>
               </div>
             </div>
+            <CustomerDetailPanel isOpen={isCustomerDetailOpen} onClose={handleCustomerDetailClose}>
+              {/* 고객 통합 정보 컨텐츠 */}
+            </CustomerDetailPanel>
           </section>
         </article>
   )
 }
-

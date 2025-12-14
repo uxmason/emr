@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { ToggleSwitchProps } from '@/types/ui'
 
 export default function ToggleSwitch(props: ToggleSwitchProps) {
-  const { onLabel, offLabel } = props
+  const { onLabel, offLabel, textSize = 'default' } = props
   const isControlled = 'value' in props
   const hasStyle = 'width' in props && 'height' in props
   const width = hasStyle ? props.width : undefined
@@ -36,6 +36,7 @@ export default function ToggleSwitch(props: ToggleSwitchProps) {
 
   const widthStyle = width ? { width } : {}
   const heightStyle = height ? { height } : {}
+  const textClassName = textSize === 'mini' ? 'T010 isMini' : 'T010'
 
   return (
     <div
@@ -44,8 +45,8 @@ export default function ToggleSwitch(props: ToggleSwitchProps) {
       style={{ ...widthStyle, ...heightStyle }}
     >
       <div className='C027'>
-        <p className='T010'>{onLabel}</p>
-        <p className='T010'>{offLabel}</p>
+        <p className={textClassName}>{onLabel}</p>
+        <p className={textClassName}>{offLabel}</p>
       </div>
       <div className='C026'></div>
     </div>

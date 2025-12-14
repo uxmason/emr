@@ -26,6 +26,7 @@ export type TooltipProps = TooltipBaseProps | TooltipWithOffsetProps
 interface ToggleSwitchBaseProps {
   onLabel: string
   offLabel: string
+  textSize?: 'default' | 'mini'
 }
 
 // 스타일 props (모두 제공)
@@ -89,5 +90,21 @@ export interface DraggableScrollContainerProps {
   scrollToEnd?: boolean
   onDragStart?: (e: MouseEvent) => void
   onDragEnd?: () => void
+}
+
+// SlidePage 컴포넌트 props - 슬라이드 애니메이션이 있는 페이지 컨테이너
+export interface SlidePageProps {
+  children?: React.ReactNode
+  className?: string
+  transform?: string
+  zIndex?: number
+  style?: React.CSSProperties
+  onGoBack?: () => void
+  showBackButton?: boolean
+  title?: string
+  employeeName?: string
+  employeeRole?: string
+  employeeId?: string
+  showToggleSwitch?: boolean
 }
 

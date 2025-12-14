@@ -4,6 +4,7 @@ import { createContext, useContext, ReactNode } from 'react'
 
 interface AsideContextType {
   navigateToPage: (pageId: string, content: ReactNode) => void
+  resetToMain: () => void
 }
 
 const AsideContext = createContext<AsideContextType | null>(null)
@@ -19,11 +20,12 @@ export function useAside() {
 interface AsideProviderProps {
   children: ReactNode
   navigateToPage: (pageId: string, content: ReactNode) => void
+  resetToMain: () => void
 }
 
-export function AsideProvider({ children, navigateToPage }: AsideProviderProps) {
+export function AsideProvider({ children, navigateToPage, resetToMain }: AsideProviderProps) {
   return (
-    <AsideContext.Provider value={{ navigateToPage }}>
+    <AsideContext.Provider value={{ navigateToPage, resetToMain }}>
       {children}
     </AsideContext.Provider>
   )
