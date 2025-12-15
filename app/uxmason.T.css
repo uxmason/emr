@@ -452,3 +452,8 @@
     font-size: var(--font-14);
     text-align: center;
 }
+.T047 {
+    margin-right: auto;
+    font-size: var(--font-19);
+    margin-left: var(--size-10);
+}

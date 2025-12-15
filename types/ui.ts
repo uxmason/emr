@@ -105,6 +105,8 @@ export interface SlidePageProps {
   employeeName?: string
   employeeRole?: string
   employeeId?: string
+  customerName?: string
+  customerId?: string
   showToggleSwitch?: boolean
 }
 

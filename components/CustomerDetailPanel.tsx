@@ -38,22 +38,22 @@ export default function CustomerDetailPanel({ isOpen, onClose, children }: Custo
 
   if (!isVisible) return null
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    // CustomerDetailContent 영역이 아닌 블러 처리된 영역 클릭 시
-    if (e.target === e.currentTarget) {
-      onClose()
-    }
-  }
+        const handleBackdropClick = (e: React.MouseEvent) => {
+          // C097 영역이 아닌 블러 처리된 영역 클릭 시
+          if (e.target === e.currentTarget) {
+            onClose()
+          }
+        }
 
-  return (
-    <div 
-      className={`CustomerDetailPanel ${isOpened ? 'isOpened' : ''}`}
-      onClick={handleBackdropClick}
-    >
-      <div className='CustomerDetailContent' onClick={(e) => e.stopPropagation()}>
-        {children}
-      </div>
-    </div>
-  )
+        return (
+          <div 
+            className={`C096 ${isOpened ? 'isOpened' : ''}`}
+            onClick={handleBackdropClick}
+          >
+            <div className='C097' onClick={(e) => e.stopPropagation()}>
+              {children}
+            </div>
+          </div>
+        )
 }
 

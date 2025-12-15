@@ -8,6 +8,8 @@ interface SlidePageHeaderProps {
   title: string
   employeeName?: string
   employeeRole?: string
+  customerName?: string
+  customerId?: string
   showToggleSwitch?: boolean
 }
 
@@ -20,6 +22,8 @@ export default function SlidePageHeader({
   title,
   employeeName = '',
   employeeRole = '',
+  customerName = '',
+  customerId = '',
   showToggleSwitch = true
 }: SlidePageHeaderProps) {
   const [showRecord, setShowRecord] = useState(false)
@@ -35,7 +39,15 @@ export default function SlidePageHeader({
         <div className='C095'>
           {employeeName && <div className='C040'></div>}
           <p className='T046'>
-            {employeeName} {employeeRole && <span className='isUnit'>{employeeRole}</span>}
+            {customerName ? (
+              <>
+                {customerName} {customerId && <span className='isUnit'>{customerId}</span>}
+              </>
+            ) : (
+              <>
+                {employeeName} {employeeRole && <span className='isUnit'>{employeeRole}</span>}
+              </>
+            )}
           </p>
         </div>
       </div>

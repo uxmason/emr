@@ -18,6 +18,8 @@ export default function SlidePage({
   title,
   employeeName,
   employeeRole,
+  customerName,
+  customerId,
   showToggleSwitch = true
 }: SlidePageProps) {
   const inlineStyle: React.CSSProperties = {
@@ -34,6 +36,8 @@ export default function SlidePage({
           title={title || '고객 참조 사항'}
           employeeName={employeeName}
           employeeRole={employeeRole}
+          customerName={customerName}
+          customerId={customerId}
           showToggleSwitch={showToggleSwitch}
         />
       )}

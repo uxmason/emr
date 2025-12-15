@@ -48,11 +48,11 @@ export default function Aside({ mainContent, onNavigate, children }: AsideProps 
       setTimeout(() => setIsAnimating(false), 300)
     } else {
       // 새로운 분류면 기존처럼 새 페이지 추가
-      const newPage: AsidePage = { id: `${pageId}-${Date.now()}`, content }
-      setPages(prev => [...prev, newPage])
-      setCurrentIndex(prev => prev + 1)
-      onNavigate?.(pageId)
-      setTimeout(() => setIsAnimating(false), 300)
+    const newPage: AsidePage = { id: `${pageId}-${Date.now()}`, content }
+    setPages(prev => [...prev, newPage])
+    setCurrentIndex(prev => prev + 1)
+    onNavigate?.(pageId)
+    setTimeout(() => setIsAnimating(false), 300)
     }
   }
 
@@ -162,17 +162,17 @@ function AsideInner({
             } as any)
           } else {
             // 일반 content면 SlidePage로 감싸기
-            return (
+          return (
               <SlidePage
-                key={page.id}
+              key={page.id}
                 transform={`translateX(${offset * 100}%)`}
                 zIndex={pages.length - index}
                 onGoBack={goBack}
                 showBackButton={index > 0}
-              >
-                {page.content}
+            >
+              {page.content}
               </SlidePage>
-            )
+          )
           }
         })}
       </div>

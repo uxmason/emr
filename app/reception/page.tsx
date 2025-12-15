@@ -16,6 +16,7 @@ import DoctorSlidePage from '@/components/DoctorSlidePage'
 import EmployeeSlidePage from '@/components/EmployeeSlidePage'
 import CounselorSlidePage from '@/components/CounselorSlidePage'
 import CustomerDetailPanel from '@/components/CustomerDetailPanel'
+import SlidePage from '@/components/SlidePage'
 
 function MainContent() {
   const { navigateToPage } = useAside()
@@ -415,8 +416,15 @@ function CustomerStatusSection({
     setIsCustomerDetailOpen(true)
     // 모든 고객은 동일한 customer 카테고리로 묶어서 누적 없이 데이터만 리로드
     navigateToPage('customer', (
-      <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--background-green)' }}>
-      </div>
+      <SlidePage
+        title='고객 참조 사항'
+        customerName={customerName}
+        customerId={customerId}
+        showToggleSwitch={true}
+      >
+        <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--background-green)' }}>
+        </div>
+      </SlidePage>
     ))
   }
 
@@ -466,7 +474,7 @@ function CustomerStatusSection({
   }
 
   return (
-    <article className='C020'>
+        <article className='C020'>
           <section className='C021'>
             <div className='C028'>
               <p className='T007'>고객 현황</p>
@@ -1097,7 +1105,27 @@ function CustomerStatusSection({
               </div>
             </div>
             <CustomerDetailPanel isOpen={isCustomerDetailOpen} onClose={handleCustomerDetailClose}>
-              {/* 고객 통합 정보 컨텐츠 */}
+              <div className='C098'>
+                <div className='C101'>
+                  <p className='T047'>고객 정보</p>
+                  <div className='C102'><div className='C103 styleSheet isIcon isBarcode'></div></div>
+                  <div className='C102'><div className='C103 styleSheet isIcon isSetting'></div></div>
+                  <div className='C108'><div className='C012 styleSheet isIcon isArrow isLeft'></div></div>
+                </div>
+                <div className='C109'>
+                  <div className='C110'></div>
+                </div>
+              </div>
+              <div className='C099'>
+                <div className='C104'>
+                  <p className='T047'>참조 사항</p>
+                </div>
+                <div className='C105'>
+                  <div className='C106'></div>
+                  <div className='C107'></div>
+                </div>
+              </div>
+              <div className='C100'></div>
             </CustomerDetailPanel>
           </section>
         </article>
