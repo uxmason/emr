@@ -109,6 +109,7 @@
     color: var(--color-white);
     border-radius: var(--size-8);
     background-color: var(--color-black-15);
+    height: fit-content;
 }
 .T014.isRed {
     background-color: var(--color-magenta);
@@ -459,6 +460,7 @@
 }
 .T048 {
     font-weight: 800;
+    flex: 1 1 var(--size-50)
 }
 .T049 {
     font-size: var(--font-14);
@@ -466,8 +468,42 @@
 .T049.isLarge {
     font-size: var(--font-19);
 }
+.T049.isRight {
+    text-align: right;
+    margin-left: auto;
+    align-items: flex-end;
+}
 .T050 {
     font-size: var(--font-14);
-    width: var(--size-70);
+    width: var(--size-90);
     color: var(--color-black-50);
+}
+.T051 {
+    font-size: var(--font-14);
+    justify-items: flex-end;
+    margin-left: auto;
+}
+.T051.isMini {
+    font-size: var(--font-12);
+}
+.T052 {
+    font-size: var(--font-14);
+    margin-left: var(--size-20);
+}
+.T052 .isLabel {
+    background-color: var(--color-black-15);
+    margin-left: var(--size-5);
+    padding: .1em var(--size-3) 0 var(--size-3);
+}
+.T052 .isLabel.isRed {
+    background-color: var(--color-red-15);
+}
+.T052 .isLabel.isGreen {
+    background-color: var(--color-green-15);
+}
+.T052 .isLabel.isBlue {
+    background-color: var(--color-blue-15);
+}
+.T053 {
+    margin-bottom: var(--size-5);
 }
