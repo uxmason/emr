@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import CustomerInfoPanel from '@/components/CustomerInfoPanel'
 import VisitLogPanel from '@/components/VisitLogPanel'
 import QuickActionsPanel from '@/components/QuickActionsPanel'
+import ActionContentPanel from '@/components/ActionContentPanel'
 
 interface CustomerDetailPanelProps {
   isOpen: boolean
@@ -18,6 +19,9 @@ export default function CustomerDetailPanel({ isOpen, onClose }: CustomerDetailP
   const [isVisible, setIsVisible] = useState(false)
   const [isOpened, setIsOpened] = useState(false)
   
+  // Selected action state
+  const [selectedAction, setSelectedAction] = useState<string>('report')
+  
   // Section states
   const [sectionStates, setSectionStates] = useState<Record<string, boolean>>({
     basic: true,
@@ -28,6 +32,28 @@ export default function CustomerDetailPanel({ isOpen, onClose }: CustomerDetailP
     prescription: false,
     additional: false
   })
+  
+  // Action labels mapping
+  const actionLabels: Record<string, string> = {
+    report: '내원일지',
+    package: '패키지',
+    reservation: '예약',
+    counseling: '상담',
+    surgery: '수술',
+    syringe: '시술',
+    clinic: '진료',
+    drug: '약처방',
+    coin: '수납',
+    gold: '실천지수',
+    ruler: '사이즈',
+    protect: '동의서&설문',
+    clip: '기록지',
+    blood: '혈액검사',
+    speed: 'TAT',
+    pants: '가멘트',
+    camera: '사진',
+    mylocation: '상세로그'
+  }
   
   // Section toggle handler
   const handleSectionToggle = (sectionKey: string) => {
@@ -77,8 +103,18 @@ export default function CustomerDetailPanel({ isOpen, onClose }: CustomerDetailP
           onSectionToggle={handleSectionToggle}
           onClose={onClose}
         />
-        <VisitLogPanel />
-        <QuickActionsPanel />
+        {selectedAction === 'report' ? (
+          <VisitLogPanel />
+        ) : (
+          <ActionContentPanel 
+            actionId={selectedAction}
+            actionLabel={actionLabels[selectedAction] || selectedAction}
+          />
+        )}
+        <QuickActionsPanel 
+          selectedAction={selectedAction}
+          onActionChange={setSelectedAction}
+        />
       </div>
     </div>
   )

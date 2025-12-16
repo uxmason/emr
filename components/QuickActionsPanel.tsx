@@ -1,9 +1,13 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
 
-export default function QuickActionsPanel() {
-  const [selectedAction, setSelectedAction] = useState<string>('report')
+interface QuickActionsPanelProps {
+  selectedAction: string
+  onActionChange: (actionId: string) => void
+}
+
+export default function QuickActionsPanel({ selectedAction, onActionChange }: QuickActionsPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
@@ -29,7 +33,7 @@ export default function QuickActionsPanel() {
   ]
 
   const handleActionClick = (actionId: string) => {
-    setSelectedAction(actionId)
+    onActionChange(actionId)
     
     // 선택된 항목으로 스크롤
     setTimeout(() => {
