@@ -11,6 +11,22 @@ export default function VisitLogPanel() {
   const c106ScrollRef = useRef<ScrollableContainerRef>(null)
   const c107ScrollRef = useRef<ScrollableContainerRef>(null)
   
+  // CSS 변수 값을 안전하게 가져오는 헬퍼 함수
+  const getCSSVariableValue = (variableName: string, fallback: number = 0): number => {
+    try {
+      const tempElement = document.createElement('div')
+      tempElement.style.width = `var(${variableName})`
+      tempElement.style.position = 'absolute'
+      tempElement.style.visibility = 'hidden'
+      document.body.appendChild(tempElement)
+      const value = tempElement.offsetWidth || fallback
+      document.body.removeChild(tempElement)
+      return value
+    } catch {
+      return fallback
+    }
+  }
+
   // C129 click handler
   const handleC129Click = (date: string, event: React.MouseEvent) => {
     setSelectedDate(date)
@@ -30,12 +46,14 @@ export default function VisitLogPanel() {
       return
     }
     
-    // C106 스크롤
+    // C106 스크롤 - getBoundingClientRect를 사용하여 정확한 위치 계산
     setTimeout(() => {
       const scrollContainer = c106ScrollRef.current?.getElement()
       if (scrollContainer && clickedElement) {
-        const size5 = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--size-5')) || 5
-        const scrollTop = clickedElement.offsetTop - size5
+        const containerRect = scrollContainer.getBoundingClientRect()
+        const elementRect = clickedElement.getBoundingClientRect()
+        const size5 = getCSSVariableValue('--size-5', 5)
+        const scrollTop = scrollContainer.scrollTop + (elementRect.top - containerRect.top) - size5
         scrollContainer.scrollTo({ 
           top: Math.max(0, scrollTop), 
           behavior: 'smooth' 
@@ -56,7 +74,7 @@ export default function VisitLogPanel() {
             if (elementDate === date) {
               const containerRect = scrollContainer.getBoundingClientRect()
               const elementRect = element.getBoundingClientRect()
-              const size5 = parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('--size-5')) || 5
+              const size5 = getCSSVariableValue('--size-5', 5)
               const scrollTop = scrollContainer.scrollTop + (elementRect.top - containerRect.top) - size5
               scrollContainer.scrollTo({ 
                 top: Math.max(0, scrollTop), 
@@ -75,18 +93,44 @@ export default function VisitLogPanel() {
     const rafIdRef = { current: null as number | null }
     let scrollContainer: HTMLDivElement | null = null
     let handleScroll: (() => void) | null = null
+    let cachedThreshold: number | null = null
+    let lastWindowWidth: number = window.innerWidth
+
+    // CSS 변수에서 임계값 가져오기 (화면 크기에 따라 자동 조정됨)
+    const getThreshold = () => {
+      // 화면 크기가 변경되었으면 캐시 무효화
+      if (window.innerWidth !== lastWindowWidth) {
+        cachedThreshold = null
+        lastWindowWidth = window.innerWidth
+      }
+      
+      if (cachedThreshold !== null) {
+        return cachedThreshold
+      }
+      
+      // 임시 요소를 사용하여 계산된 값을 가져옴
+      const tempElement = document.createElement('div')
+      tempElement.style.width = 'var(--size-100)'
+      tempElement.style.position = 'absolute'
+      tempElement.style.visibility = 'hidden'
+      document.body.appendChild(tempElement)
+      cachedThreshold = tempElement.offsetWidth || 100
+      document.body.removeChild(tempElement)
+      return cachedThreshold
+    }
 
     const checkVisibleDate = () => {
       const currentScrollContainer = c107ScrollRef.current?.getElement()
       if (!currentScrollContainer) return
       
       const containerRect = currentScrollContainer.getBoundingClientRect()
+      const threshold = getThreshold()
       
       // C138이 상단에 보이면 향후 일정 선택
       const c138Element = currentScrollContainer.querySelector('.C138')
       if (c138Element) {
         const c138Rect = c138Element.getBoundingClientRect()
-        if (c138Rect.top <= containerRect.top + 100 && c138Rect.bottom > containerRect.top) {
+        if (c138Rect.top <= containerRect.top + threshold && c138Rect.bottom > containerRect.top) {
           setSelectedDate('')
           return
         }
@@ -102,7 +146,7 @@ export default function VisitLogPanel() {
         const distance = Math.abs(rect.top - containerRect.top)
         
         // 상단에 가장 가까운 T061 찾기
-        if (rect.top <= containerRect.top + 100 && distance < minDistance) {
+        if (rect.top <= containerRect.top + threshold && distance < minDistance) {
           minDistance = distance
           const dateText = element.textContent || ''
           // "2025.12.15 (월)" 형식에서 날짜 추출
