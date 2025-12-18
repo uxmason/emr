@@ -79,7 +79,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
               <span className="isBig isWhite">1</span>명
             </p>
           </div>
-          <ScrollableContainer></ScrollableContainer>
+          <ScrollableContainer>{null}</ScrollableContainer>
         </PopupSectionBox>
         <PopupSectionBox x={630} y={180} width={320} height={470}>
           <div className="C186">
@@ -92,7 +92,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
               <span className="isBig isWhite">1</span>명
             </p>
           </div>
-          <ScrollableContainer></ScrollableContainer>
+          <ScrollableContainer>{null}</ScrollableContainer>
         </PopupSectionBox>
         <PopupSectionBox x={970} y={180} width={320} height={470}>
           <div className="C186">
@@ -105,7 +105,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
               <span className="isBig isWhite">1</span>명
             </p>
           </div>
-          <ScrollableContainer></ScrollableContainer>
+          <ScrollableContainer>{null}</ScrollableContainer>
         </PopupSectionBox>
         <PopupSectionBox x={1310} y={180} width={320} height={470}>
           <div className="C186">
@@ -118,7 +118,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
               <span className="isBig isWhite">1</span>명
             </p>
           </div>
-          <ScrollableContainer></ScrollableContainer>
+          <ScrollableContainer>{null}</ScrollableContainer>
         </PopupSectionBox>
         <PopupSectionBox x={630} y={670} width={320} height={470}>
           <div className="C186">
@@ -131,7 +131,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
               <span className="isBig isWhite">1</span>명
             </p>
           </div>
-          <ScrollableContainer></ScrollableContainer>
+          <ScrollableContainer>{null}</ScrollableContainer>
         </PopupSectionBox>
         <PopupSectionBox x={970} y={670} width={320} height={470}>
           <div className="C186">
@@ -144,7 +144,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
               <span className="isBig isWhite">1</span>명
             </p>
           </div>
-          <ScrollableContainer></ScrollableContainer>
+          <ScrollableContainer>{null}</ScrollableContainer>
         </PopupSectionBox>
         <PopupSectionBox x={1310} y={670} width={320} height={470}>
           <div className="C186">
@@ -157,7 +157,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
               <span className="isBig isWhite">1</span>명
             </p>
           </div>
-          <ScrollableContainer></ScrollableContainer>
+          <ScrollableContainer>{null}</ScrollableContainer>
         </PopupSectionBox>
       </Popup>
     </>
