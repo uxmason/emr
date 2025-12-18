@@ -29,6 +29,8 @@ export interface PackageItemProps {
   payment?: PackageItemPayment;
   /** 추가 클래스명 */
   className?: string;
+  /** Aside 모드 여부 */
+  isAsideMode?: boolean;
 }
 
 /**
