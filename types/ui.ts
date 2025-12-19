@@ -71,6 +71,7 @@ export interface PageHeaderProps {
   isNoteSelected?: boolean;
   onAlarmClick?: () => void;
   isAlarmSelected?: boolean;
+  onReservationClick?: () => void;
 }
 
 // ScrollableContainer 컴포넌트 props

@@ -26,7 +26,6 @@ export default function NoteClickHandler({
   onHandlerReady,
 }: NoteClickHandlerProps) {
   const { navigateToPage, isAnimating } = useAside();
-  const hasRegisteredRef = useRef(false);
   const navigateToPageRef = useRef(navigateToPage);
   const onHandlerReadyRef = useRef(onHandlerReady);
   const isAnimatingRef = useRef(isAnimating);
@@ -38,29 +37,28 @@ export default function NoteClickHandler({
     isAnimatingRef.current = isAnimating;
   }, [navigateToPage, onHandlerReady, isAnimating]);
 
-  // 한 번만 핸들러 등록
+  // 핸들러 등록 (페이지 전환 시 재등록 가능하도록)
   useEffect(() => {
-    if (!hasRegisteredRef.current && onHandlerReady) {
-      const handler = () => {
-        // 애니메이션 중이면 무시
-        if (isAnimatingRef.current) {
-          return;
-        }
-        navigateToPageRef.current(
-          "my-notes",
-          <SlidePage title="내 쪽지 보기" showToggleSwitch={false} />
-        );
-      };
-      // 다음 틱에 등록하여 무한 루프 방지 및 렌더링 완료 후 실행
-      // 컴포넌트가 완전히 마운트된 후에만 등록
-      const timeoutId = setTimeout(() => {
-        if (onHandlerReadyRef.current) {
-          onHandlerReadyRef.current(handler);
-        }
-      }, 100);
-      hasRegisteredRef.current = true;
-      return () => clearTimeout(timeoutId);
-    }
+    const handler = () => {
+      // 애니메이션 중이면 무시
+      if (isAnimatingRef.current) {
+        return;
+      }
+      navigateToPageRef.current(
+        "my-notes",
+        <SlidePage title="내 쪽지 보기" showToggleSwitch={false} />
+      );
+    };
+    // 다음 틱에 등록하여 무한 루프 방지 및 렌더링 완료 후 실행
+    // 컴포넌트가 완전히 마운트된 후에만 등록
+    const timeoutId = setTimeout(() => {
+      if (onHandlerReadyRef.current) {
+        onHandlerReadyRef.current(handler);
+      }
+    }, 100);
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [onHandlerReady]); // onHandlerReady가 준비된 후에만 실행
 
   return null;

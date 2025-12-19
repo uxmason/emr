@@ -14,6 +14,7 @@ export default function PageHeader({
   isNoteSelected = false,
   onAlarmClick,
   isAlarmSelected = false,
+  onReservationClick,
 }: PageHeaderProps) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedSortTab, setSelectedSortTab] = useState(0);
@@ -47,7 +48,18 @@ export default function PageHeader({
           </div>
         </Tooltip>
         <Tooltip text="통합 예약 서비스">
-          <div className="C014">
+          <div
+            className="C014"
+            onClick={
+              onReservationClick && typeof onReservationClick === "function"
+                ? (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onReservationClick();
+                  }
+                : undefined
+            }
+          >
             <div className="C012 styleSheet isIcon isReservation"></div>
           </div>
         </Tooltip>

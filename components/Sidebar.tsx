@@ -23,7 +23,7 @@ export default function Sidebar() {
   }>({});
 
   const menuItems = [
-    { href: "/dashboard", icon: "isDashboard", label: "대시보드" },
+    { href: "/", icon: "isDashboard", label: "대시보드" },
     { href: "/reception", icon: "isReception", label: "원무" },
     { href: "/counseling", icon: "isCounseling", label: "상담" },
     { href: "/pre-care", icon: "isPreCare", label: "전처치" },
@@ -242,11 +242,19 @@ export default function Sidebar() {
             >
               <div className="C194">
                 <div className="C195 styleSheet isIcon isEarth"></div>
-                <p className="T083">외국인 등록 현황</p>
+                <p className="T083">동의서 현황</p>
               </div>
               <div className="C194">
                 <div className="C195 styleSheet isIcon isEarth"></div>
-                <p className="T083">test</p>
+                <p className="T083">고객 현황</p>
+              </div>
+              <div className="C194">
+                <div className="C195 styleSheet isIcon isEarth"></div>
+                <p className="T083">외국인 현황</p>
+              </div>
+              <div className="C194">
+                <div className="C195 styleSheet isIcon isEarth"></div>
+                <p className="T083">실천지수 현황</p>
               </div>
             </div>
             <div

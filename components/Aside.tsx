@@ -33,6 +33,7 @@ import {
   memo,
 } from "react";
 import React from "react";
+import { usePathname } from "next/navigation";
 import WeeklyCalendar from "./WeeklyCalendar";
 import { AsideProvider } from "./AsideContext";
 import SlidePage from "./SlidePage";
@@ -251,10 +252,22 @@ const AsideInner = memo(function AsideInner({
   goBack,
   resetToMain,
 }: AsideInnerProps) {
+  // 현재 경로 확인 (대시보드는 /)
+  const pathname = usePathname();
+  const isDashboard = pathname === "/";
+
   // Render mainContent inside provider to access useAside
-  const MainPageContent = () => {
+  // mainContent가 변경될 때마다 재계산되도록 useMemo 사용
+  const mainPageContent = React.useMemo(() => {
     const content =
       typeof mainContent === "function" ? mainContent() : mainContent;
+
+    // 대시보드 경로이거나 content가 null이면 대시보드용 빈 C073 반환 (SlidePage로 감싸지 않음)
+    if (isDashboard || content === null) {
+      return <div className="C073"></div>;
+    }
+
+    // 원무 페이지용 레이아웃
     return (
       <>
         <WeeklyCalendar />
@@ -270,19 +283,38 @@ const AsideInner = memo(function AsideInner({
         <div className="C075">{content}</div>
       </>
     );
-  };
+  }, [mainContent, isDashboard]);
 
-  // Initialize main page
+  // 대시보드용 C073인지 확인하는 함수
+  const isDashboardC073 = React.useMemo(() => {
+    const content =
+      typeof mainContent === "function" ? mainContent() : mainContent;
+    return isDashboard || content === null;
+  }, [mainContent, isDashboard]);
+
+  // Initialize and update main page when mainContent changes
   React.useEffect(() => {
-    if (pages.length === 0) {
-      setPages([
-        {
-          id: "main",
-          content: <MainPageContent />,
-        },
-      ]);
-    }
-  }, [mainContent, pages.length]);
+    setPages((prev) => {
+      const mainPageIndex = prev.findIndex((page) => page.id === "main");
+      if (mainPageIndex !== -1) {
+        // 메인 페이지가 이미 있으면 업데이트
+        const newPages = [...prev];
+        newPages[mainPageIndex] = {
+          ...newPages[mainPageIndex],
+          content: mainPageContent,
+        };
+        return newPages;
+      } else {
+        // 메인 페이지가 없으면 생성
+        return [
+          {
+            id: "main",
+            content: mainPageContent,
+          },
+        ];
+      }
+    });
+  }, [mainPageContent, setPages]);
 
   return (
     <aside className="C013">
@@ -311,6 +343,21 @@ const AsideInner = memo(function AsideInner({
               } as any
             );
           } else {
+            // 대시보드용 C073이면 SlidePage로 감싸지 않고 직접 렌더링
+            if (page.id === "main" && isDashboardC073) {
+              return (
+                <div
+                  key={page.id}
+                  className="C073"
+                  style={{
+                    transform: `translateX(${offset * 100}%)`,
+                    zIndex: pages.length - index,
+                  }}
+                >
+                  {page.content}
+                </div>
+              );
+            }
             // 일반 content면 SlidePage로 감싸기
             return (
               <SlidePage
