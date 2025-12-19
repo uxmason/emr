@@ -5,12 +5,7 @@
  * 타입 안전한 폼 검증을 제공합니다.
  */
 
-import {
-  useForm,
-  UseFormProps,
-  UseFormReturn,
-  FieldValues,
-} from "react-hook-form";
+import { useForm, UseFormProps } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -35,12 +30,12 @@ import { z } from "zod";
  * ```
  */
 export function useFormWithValidation<
-  TSchema extends z.ZodType<any, any, any>
+  TSchema extends z.ZodType<unknown, unknown, unknown>
 >(
   schema: TSchema,
   options?: Omit<UseFormProps<z.infer<TSchema>>, "resolver">
 ) {
-  return useForm<z.infer<TSchema>>({
+  return useForm({
     resolver: zodResolver(schema),
     mode: "onChange", // 기본값: onChange 모드
     ...options,
