@@ -23,6 +23,7 @@
 
 "use client";
 
+import { useState } from "react";
 import { useAside } from "@/components/AsideContext";
 import SlidePage from "@/components/SlidePage";
 import ReferenceMessage from "@/components/ReferenceMessage";
@@ -34,8 +35,10 @@ import TabSelector from "@/components/TabSelector";
 import EmployeeBadge from "@/components/EmployeeBadge";
 import CustomerDetailPanel from "@/components/CustomerDetailPanel";
 import ReceptionCheckInButton from "@/components/ReceptionCheckInButton";
+import Popup from "@/components/Popup";
 import { getRoleInfo } from "@/lib/utils/role";
 import type { CustomerStatusSectionProps } from "@/types/reception";
+import PopupSectionBox from "../PopupSectionBox";
 
 /**
  * CustomerStatusSection 컴포넌트
@@ -57,6 +60,8 @@ export default function CustomerStatusSection({
   setIsCustomerDetailOpen,
 }: CustomerStatusSectionProps) {
   const { navigateToPage, resetToMain } = useAside();
+  const [isCustomerRegistrationPopupOpen, setIsCustomerRegistrationPopupOpen] =
+    useState(false);
 
   const handleCustomerClick = (
     customerName: string,
@@ -235,7 +240,14 @@ export default function CustomerStatusSection({
             <div className="C019 styleSheet isIcon isCheck"></div>
             <p className="T008">설문지 & 바코드 고객 검색</p>
           </div>
-          <div className="C023">
+          <div
+            className="C023"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsCustomerRegistrationPopupOpen(true);
+            }}
+          >
             <div className="C019 styleSheet isIcon isSignUp"></div>
             <p className="T008">고객 직접 등록</p>
           </div>
@@ -1812,6 +1824,25 @@ export default function CustomerStatusSection({
         isOpen={isCustomerDetailOpen}
         isFolded={isQuickActionsHovered}
       />
+      <Popup
+        isOpen={isCustomerRegistrationPopupOpen}
+        onClose={() => setIsCustomerRegistrationPopupOpen(false)}
+      >
+        <div>
+          <PopupSectionBox x={970} y={70} width={660}>
+            <div className="C180">
+              <p className="T076">신규 고객 등록</p>
+              <div
+                className="C181 isCloseButton"
+                onClick={() => setIsCustomerRegistrationPopupOpen(false)}
+              >
+                <div className="C179 isDepth1"></div>
+                <div className="C182 styleSheet isIcon isBig isClose isWhite"></div>
+              </div>
+            </div>
+          </PopupSectionBox>
+        </div>
+      </Popup>
     </article>
   );
 }

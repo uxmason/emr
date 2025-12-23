@@ -20,7 +20,6 @@ import Aside from "@/components/Aside";
 import PersonalSchedule from "@/components/dashboard/PersonalSchedule";
 import NoteClickHandler from "@/components/reception/NoteClickHandler";
 import AlarmClickHandler from "@/components/reception/AlarmClickHandler";
-import ReservationClickHandler from "@/components/dashboard/ReservationClickHandler";
 import { useAsideStore } from "@/stores/useAsideStore";
 import { usePageHeaderHandlers } from "@/hooks/usePageHeaderHandlers";
 
@@ -32,10 +31,8 @@ export default function DashboardPage() {
   const {
     noteClickHandler,
     alarmClickHandler,
-    reservationClickHandler,
     handleNoteHandlerReady,
     handleAlarmHandlerReady,
-    handleReservationHandlerReady,
   } = usePageHeaderHandlers();
 
   return (
@@ -47,14 +44,10 @@ export default function DashboardPage() {
           isNoteSelected={currentPageId === "my-notes"}
           onAlarmClick={alarmClickHandler}
           isAlarmSelected={currentPageId === "my-alarms"}
-          onReservationClick={reservationClickHandler}
         />
         <Aside mainContent={() => <PersonalSchedule />}>
           <NoteClickHandler onHandlerReady={handleNoteHandlerReady} />
           <AlarmClickHandler onHandlerReady={handleAlarmHandlerReady} />
-          <ReservationClickHandler
-            onHandlerReady={handleReservationHandlerReady}
-          />
           <CustomerStatusSection />
         </Aside>
       </main>
