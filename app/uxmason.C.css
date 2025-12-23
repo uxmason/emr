@@ -2137,3 +2137,6 @@
     justify-content: space-between;
     padding: var(--size-20);
 }
+.C200 {
+    padding: var(--size-30);
+}

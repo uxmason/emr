@@ -1829,6 +1829,17 @@ export default function CustomerStatusSection({
         onClose={() => setIsCustomerRegistrationPopupOpen(false)}
       >
         <div>
+          <PopupSectionBox x={290} y={70} width={660} height={1060}>
+            <div className="C200">
+              <div className="C201">
+                <input
+                  className="T084"
+                  type="text"
+                  placeholder="000000-0******"
+                />
+              </div>
+            </div>
+          </PopupSectionBox>
           <PopupSectionBox x={970} y={70} width={660}>
             <div className="C180">
               <p className="T076">신규 고객 등록</p>
@@ -1840,6 +1851,12 @@ export default function CustomerStatusSection({
                 <div className="C182 styleSheet isIcon isBig isClose isWhite"></div>
               </div>
             </div>
+          </PopupSectionBox>
+          <PopupSectionBox x={970} y={190} width={660} height={820}>
+            <div className="C180"></div>
+          </PopupSectionBox>
+          <PopupSectionBox x={970} y={1030} width={660} height={100}>
+            <div className="C180"></div>
           </PopupSectionBox>
         </div>
       </Popup>

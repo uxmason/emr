@@ -760,3 +760,11 @@ p.T082 {
     width: var(--size-160);
     font-weight: 800;
 }
+.T084 {
+    color: var(--color-white);
+    font-size: var(--font-17);
+    padding: var(--size-10) var(--size-20);
+    border-radius: var(--size-15);
+    border: var(--size-2) solid var(--color-white-25);
+    width: var(--size-220);
+}
