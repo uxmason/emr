@@ -386,6 +386,8 @@
   --size-1480: calc(100vw * 1480 / var(--breakpoint));
   --size-1490: calc(100vw * 1490 / var(--breakpoint));
   --size-1500: calc(100vw * 1500 / var(--breakpoint));
+  --size-1780: calc(100vw * 1780 / var(--breakpoint));
+  --size-1800: calc(100vw * 1800 / var(--breakpoint));
   /* Size Variables 끝 */
 
 }
@@ -653,6 +655,8 @@
     --size-1480: 1480px;
     --size-1490: 1490px;
     --size-1500: 1500px;
+    --size-1780: 1780px;
+    --size-1800: 1800px;
     /* Size Variables 끝 */
   }
 }
@@ -932,6 +936,10 @@ span.isLink {
   background-position-x: calc(-1 * var(--size-280));
   background-position-y: calc(-1 * var(--size-440));
 }
+.isIcon.isFunnel {
+  background-position-x: calc(-1 * var(--size-280));
+  background-position-y: calc(-1 * var(--size-600));
+}
 .isIcon.isNote {
   background-position-x: calc(-1 * var(--size-280));
   background-position-y: calc(-1 * var(--size-680));
@@ -990,6 +998,12 @@ span.isLink {
 }
 .isIcon.isArrow.isLeft {
   transform: rotate(180deg);
+}
+.isIcon.isArrow.isBottom {
+  transform: rotate(90deg);
+}
+.isIcon.isArrow.isTop {
+  transform: rotate(270deg);
 }
 
 
