@@ -125,6 +125,7 @@
   
   --breakpoint: 1920;
   
+  --font-8: calc(100vw * 8 / var(--breakpoint));
   --font-12: calc(100vw * 12 / var(--breakpoint));
   --font-14: calc(100vw * 14 / var(--breakpoint));
   --font-15: calc(100vw * 15 / var(--breakpoint));
@@ -972,6 +973,10 @@ span.isLink {
   background-position-x: calc(-1 * var(--size-360));
   background-position-y: calc(-1 * var(--size-120));
 }
+.isIcon.isComunication {
+  background-position-x: calc(-1 * var(--size-360));
+  background-position-y: calc(-1 * var(--size-200));
+}
 .isIcon.isBentoMenu {
   background-position-x: calc(-1 * var(--size-360));
   background-position-y: calc(-1 * var(--size-280));
@@ -979,6 +984,10 @@ span.isLink {
 .isIcon.isSpeed {
   background-position-x: calc(-1 * var(--size-360));
   background-position-y: calc(-1 * var(--size-320));
+}
+.isIcon.isMap {
+  background-position-x: calc(-1 * var(--size-360));
+  background-position-y: calc(-1 * var(--size-360));
 }
 .isIcon.isMyLocation {
   background-position-x: calc(-1 * var(--size-360));
@@ -1005,7 +1014,6 @@ span.isLink {
 .isIcon.isArrow.isTop {
   transform: rotate(270deg);
 }
-
 
 .isIcon.isBig {
   background-position-x: 0;
@@ -1111,4 +1119,11 @@ span.isLink {
 }
 .isGage.isStar.isLv5 {
   background-position-y: calc(-1 * var(--size-130));
+}
+
+.isLabel {
+  background-position-x: calc(-1 * var(--size-750));
+  background-position-y: calc(-1 * var(--size-400));
+  width: var(--size-20);
+  height: var(--size-30);
 }

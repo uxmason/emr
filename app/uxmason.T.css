@@ -249,6 +249,7 @@
     text-align: center;
     font-weight: 800;
     color: var(--color-black-50);
+    margin: 0 var(--size-5);
 }
 .T028 {
     font-size: var(--font-24);
@@ -334,12 +335,13 @@
 .T033 {
     font-size: var(--font-19);
     text-align: center;
-    margin-top: var(--size-15);
+    margin-top: var(--size-20);
 }
 .T034 {
     color: var(--color-black-50);
-    width: calc(100% / 7);
+    width: var(--size-50);
     line-height: var(--size-50);
+    margin: var(--size-2);
     text-align: center;
     border-radius: var(--size-25);
     cursor: pointer;
@@ -803,4 +805,49 @@ p.T086 {
 }
 p.T087 {
     margin-right: var(--size-30);
+}
+.T088, .C215.isMine .C216 .T088 {
+    font-weight: 400;
+}
+.C216 .T088, .C215.isMine .T088 {
+    font-weight: 700;
+}
+.T089 {
+    font-size: var(--font-14);
+    margin: 0 var(--size-5);
+}
+.T090 {
+    font-size: var(--font-12);
+    margin-left: auto;
+}
+.T091 {
+    font-size: var(--font-8);
+    color: var(--color-white);
+    font-weight: 800;
+    text-align: center;
+    line-height: var(--size-25);
+}
+.T092 {
+    font-size: var(--font-17);
+    margin-left: var(--size-10);
+}
+.T093 {
+    font-weight: 800;
+    margin: var(--size-30) auto var(--size-20) var(--size-60);
+    font-size: var(--font-17);
+}
+.T094 {
+    font-weight: 800;
+    font-size: var(--font-17);
+}
+.T095 {
+    color: var(--color-black-25);
+}
+.T095 .isValue {
+    font-weight: 800;
+    color: var(--color-black);
+}
+.T095 .isMini {
+    font-size: var(--font-12);
+    font-weight: 800;
 }
