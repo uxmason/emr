@@ -99,7 +99,7 @@ const AsideInner = memo(function AsideInner({
 }: AsideInnerProps) {
   // 클라이언트 마운트 플래그 (SSR/Hydration 이슈 해결)
   const [isMounted, setIsMounted] = useState(false);
-  
+
   // 클라이언트에서만 마운트 플래그 설정 (useLayoutEffect로 동기 실행)
   React.useLayoutEffect(() => {
     if (typeof window !== "undefined") {
@@ -288,10 +288,9 @@ const AsideInner = memo(function AsideInner({
   // Initialize and update main page when mainContent changes
   React.useEffect(() => {
     // 클라이언트에서만 실행 (SSR 환경에서는 무시)
-    if (typeof window === "undefined" || !isMounted) {
+    if (typeof window === "undefined") {
       console.log(
-        "🔴 [Aside] mainPageContent useEffect - SSR 환경 또는 마운트 전, 실행 안 함",
-        { isMounted }
+        "🔴 [Aside] mainPageContent useEffect - SSR 환경, 실행 안 함"
       );
       return;
     }
@@ -407,14 +406,7 @@ const AsideInner = memo(function AsideInner({
         setLocalPages(newPages);
       }
     }
-  }, [
-    mainPageContent,
-    setPages,
-    pathname,
-    storePages.length,
-    currentIndex,
-    isMounted,
-  ]);
+  }, [mainPageContent, setPages, pathname, storePages.length, currentIndex]);
 
   // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
   // goBack처럼 pages와 currentIndex를 동시에 설정해야 작동함
