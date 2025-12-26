@@ -37,7 +37,7 @@ import type { AsideProps, AsideInnerProps } from "@/types/layout";
 
 function Aside({ mainContent, onNavigate, children }: AsideProps) {
   // Zustand 스토어에서 상태와 액션 가져오기
-  const pages = useAsideStore((state) => state.pages);
+  // pages는 AsideInner에서 직접 구독하도록 변경 (리렌더링 최적화)
   const currentIndex = useAsideStore((state) => state.currentIndex);
   const goBack = useAsideStore((state) => state.goBack);
 
@@ -69,7 +69,6 @@ function Aside({ mainContent, onNavigate, children }: AsideProps) {
     <AsideProvider>
       <AsideInner
         mainContent={mainContent}
-        pages={pages}
         currentIndex={currentIndex}
         goBack={goBack}
       />
@@ -95,10 +94,11 @@ function Aside({ mainContent, onNavigate, children }: AsideProps) {
  */
 const AsideInner = memo(function AsideInner({
   mainContent,
-  pages,
   currentIndex,
   goBack,
 }: AsideInnerProps) {
+  // pages를 직접 구독하여 즉시 업데이트 반영
+  const pages = useAsideStore((state) => state.pages);
   const setPages = useAsideStore((state) => state.setPages);
   const setIsAnimating = useAsideStore((state) => state.setIsAnimating);
   const lastPathname = useAsideStore((state) => state.lastPathname);
@@ -285,7 +285,9 @@ const AsideInner = memo(function AsideInner({
 
     const currentState = useAsideStore.getState();
     const wasEmpty = currentState.pages.length === 0;
-    const mainPageIndex = currentState.pages.findIndex((page) => page.id === "main");
+    const mainPageIndex = currentState.pages.findIndex(
+      (page) => page.id === "main"
+    );
 
     console.log("📝 [Aside] setPages 실행", {
       wasEmpty,

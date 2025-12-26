@@ -50,8 +50,6 @@ export interface AsideProps {
 export interface AsideInnerProps {
   /** 메인 콘텐츠 (함수 또는 ReactNode) */
   mainContent?: React.ReactNode | (() => React.ReactNode);
-  /** 페이지 스택 */
-  pages: AsidePage[];
   /** 현재 페이지 인덱스 */
   currentIndex: number;
   /** 뒤로 가기 핸들러 */
