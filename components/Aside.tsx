@@ -40,18 +40,7 @@ import { AsideProvider } from "./AsideContext";
 import SlidePage from "./SlidePage";
 import { useAsideStore, type AsidePage } from "@/stores/useAsideStore";
 import PartReferencePopup from "./popups/PartReferencePopup";
-
-/**
- * Aside 컴포넌트 Props
- */
-interface AsideProps {
-  /** 메인 콘텐츠 (함수 또는 ReactNode) */
-  mainContent?: ReactNode | (() => ReactNode);
-  /** 페이지 네비게이션 콜백 */
-  onNavigate?: (pageId: string) => void;
-  /** 자식 컴포넌트들 */
-  children?: ReactNode;
-}
+import type { AsideProps, AsideInnerProps } from "@/types/layout";
 
 function Aside({ mainContent, onNavigate, children }: AsideProps) {
   // Zustand 스토어에서 상태와 액션 가져오기
@@ -111,13 +100,6 @@ function Aside({ mainContent, onNavigate, children }: AsideProps) {
  * - pathname이 변경되면 pages를 빈 배열로 초기화하고, mainPageContent useEffect에서 main 페이지를 생성합니다.
  * - main 페이지 생성 후 `currentIndex`를 0으로 설정하여 메인 페이지로 이동합니다.
  */
-interface AsideInnerProps {
-  mainContent?: ReactNode | (() => ReactNode);
-  pages: AsidePage[];
-  currentIndex: number;
-  goBack: () => void;
-}
-
 const AsideInner = memo(function AsideInner({
   mainContent,
   pages,

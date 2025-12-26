@@ -3,20 +3,7 @@
 import SlidePage from "@/components/SlidePage";
 import ReferenceMessage from "@/components/ReferenceMessage";
 
-export interface CustomerReferenceSlideProps {
-  /** 고객 이름 */
-  customerName: string;
-  /** 고객 ID */
-  customerId: string;
-  /** 뒤로 가기 핸들러 (Aside에서 전달) */
-  onGoBack?: () => void;
-  /** 뒤로 가기 버튼 표시 여부 (Aside에서 전달) */
-  showBackButton?: boolean;
-  /** Transform 스타일 (Aside에서 전달) */
-  transform?: string;
-  /** Z-index (Aside에서 전달) */
-  zIndex?: number;
-}
+import type { CustomerReferenceSlideProps } from "@/types/slides";
 
 /**
  * 고객 참조사항 Slide 컴포넌트

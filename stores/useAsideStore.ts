@@ -21,6 +21,8 @@ export interface AsidePage {
   id: string;
   /** 페이지 콘텐츠 (ReactNode) */
   content: ReactNode;
+  /** 타임스탬프 (페이지 생성 시간) */
+  timestamp: number;
 }
 
 /**

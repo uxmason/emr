@@ -259,12 +259,25 @@ API Call (TanStack Query Mutation)
 
 ## 타입 시스템
 
-자세한 내용은 `TYPESYSTEM.md` 참조
+자세한 내용은 `types/README.md` 참조
+
+### 인터페이스 분리 원칙
+
+모든 컴포넌트 Props 인터페이스는 `types/` 폴더에 정의되어 있습니다:
+
+- **팝업 컴포넌트**: `types/popups.ts`에 모든 팝업 Props 인터페이스 정의 (18개)
+- **슬라이드 컴포넌트**: `types/slides.ts`에 모든 슬라이드 Props 인터페이스 정의 (6개)
+- **레이아웃 컴포넌트**: `types/layout.ts`에 레이아웃 관련 Props 인터페이스 정의
+- **공통 UI 컴포넌트**: `types/ui.ts`에 공통 UI 컴포넌트 Props 인터페이스 정의
+
+이를 통해 타입의 재사용성과 유지보수성을 향상시킵니다.
 
 ### 주요 타입 파일
-- `types/ui.ts`: 공통 UI 컴포넌트 타입
+- `types/ui.ts`: 공통 UI 컴포넌트 타입 (Popup, PopupSectionBox, TabSelector, SlidePage 등)
+- `types/popups.ts`: 모든 팝업 컴포넌트 Props 인터페이스 (18개)
+- `types/slides.ts`: 모든 슬라이드 컴포넌트 Props 인터페이스 (6개)
+- `types/layout.ts`: 레이아웃 컴포넌트 타입 (Aside, AsideInner, SimplePageLayout)
 - `types/reception.ts`: 원무 페이지 타입
-- `types/layout.ts`: 레이아웃 컴포넌트 타입
 - `types/api.ts`: API 응답 타입
 - `types/database.ts`: 데이터베이스 타입 (Prisma)
 

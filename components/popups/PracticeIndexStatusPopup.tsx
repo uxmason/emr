@@ -4,10 +4,7 @@ import Popup from "@/components/Popup";
 import PopupSectionBox from "@/components/PopupSectionBox";
 import PopupHeader from "@/components/popups/PopupHeader";
 
-export interface PracticeIndexStatusPopupProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import type { PracticeIndexStatusPopupProps } from "@/types/popups";
 
 export default function PracticeIndexStatusPopup({
   isOpen,

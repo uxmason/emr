@@ -4,10 +4,7 @@ import Popup from "@/components/Popup";
 import PopupSectionBox from "@/components/PopupSectionBox";
 import PopupHeader from "@/components/popups/PopupHeader";
 
-export interface ForeignerStatusPopupProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import type { ForeignerStatusPopupProps } from "@/types/popups";
 
 export default function ForeignerStatusPopup({
   isOpen,
