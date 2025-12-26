@@ -97,6 +97,14 @@ const AsideInner = memo(function AsideInner({
   currentIndex,
   goBack,
 }: AsideInnerProps) {
+  // ✅ 마운트 상태 관리 (Hydration Mismatch 방지)
+  const [isMounted, setIsMounted] = useState(false);
+
+  // ✅ 클라이언트 사이드 마운트 완료 후 true로 변경
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // pages를 직접 구독하여 즉시 업데이트 반영
   const storePages = useAsideStore((state) => state.pages);
   const setPages = useAsideStore((state) => state.setPages);
@@ -109,9 +117,8 @@ const AsideInner = memo(function AsideInner({
   // 로컬 상태로 pages 관리 (Zustand 구독 타이밍 이슈 해결)
   const [localPages, setLocalPages] = useState<typeof storePages>([]);
 
-  // Zustand store의 pages와 동기화 (클라이언트에서만)
-  React.useLayoutEffect(() => {
-    if (typeof window === "undefined") return;
+  // Zustand store의 pages와 동기화 (useEffect로 변경)
+  React.useEffect(() => {
     if (storePages.length > 0) {
       setLocalPages(storePages);
     }
@@ -129,11 +136,8 @@ const AsideInner = memo(function AsideInner({
   // pathname 변경 시 Aside를 메인으로 초기화
   // useLayoutEffect를 사용하여 mainPageContent useEffect보다 먼저 실행되도록 함
   useLayoutEffect(() => {
-    // 클라이언트에서만 실행 (SSR 환경에서는 무시)
-    if (typeof window === "undefined") {
-      console.log("🔴 [Aside] pathname useLayoutEffect - SSR 환경, 실행 안 함");
-      return;
-    }
+    // 마운트 전에는 실행하지 않음
+    if (!isMounted) return;
 
     console.log("🟡 [Aside] pathname useLayoutEffect 실행", {
       pathname,
@@ -276,10 +280,10 @@ const AsideInner = memo(function AsideInner({
 
   // Initialize and update main page when mainContent changes
   React.useEffect(() => {
-    // 클라이언트에서만 실행 (SSR 환경에서는 무시)
-    if (typeof window === "undefined") {
+    // 마운트 전에는 실행하지 않음
+    if (!isMounted) {
       console.log(
-        "🔴 [Aside] mainPageContent useEffect - SSR 환경, 실행 안 함"
+        "🔴 [Aside] mainPageContent useEffect - 마운트 전, 실행 안 함"
       );
       return;
     }
@@ -395,13 +399,20 @@ const AsideInner = memo(function AsideInner({
         setLocalPages(newPages);
       }
     }
-  }, [mainPageContent, setPages, pathname, storePages.length, currentIndex]);
+  }, [
+    mainPageContent,
+    setPages,
+    pathname,
+    storePages.length,
+    currentIndex,
+    isMounted,
+  ]);
 
   // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
   // goBack처럼 pages와 currentIndex를 동시에 설정해야 작동함
   React.useEffect(() => {
-    // 클라이언트에서만 실행 (SSR 환경에서는 무시)
-    if (typeof window === "undefined") return;
+    // 마운트 전에는 실행하지 않음
+    if (!isMounted) return;
 
     if (pathnameChangedRef.current) {
       // pages가 main 페이지만 있는지 확인
@@ -416,7 +427,7 @@ const AsideInner = memo(function AsideInner({
         });
       }
     }
-  }, [pages]);
+  }, [pages, isMounted]);
 
   // 렌더링 상태 로깅
   React.useEffect(() => {
@@ -442,8 +453,9 @@ const AsideInner = memo(function AsideInner({
   // 초기 마운트 시 pages가 비어있고 mainPageContent가 있으면 fallback 렌더링
   const shouldShowFallback = pages.length === 0 && !!mainPageContent;
 
-  // SSR에서는 빈 상태로 렌더링 (Hydration mismatch 방지)
-  if (typeof window === "undefined") {
+  // ✅ isMounted가 false일 때(서버 사이드 or 첫 렌더링)는 fallback UI 반환
+  // 이렇게 하면 Hydration 단계까지는 서버 HTML과 똑같은 구조를 유지합니다.
+  if (!isMounted) {
     return (
       <aside className="C013">
         <div className="C089" />
