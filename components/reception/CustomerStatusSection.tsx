@@ -1993,9 +1993,7 @@ export default function CustomerStatusSection({
                 </div>
               </div>
             </div>
-            <div className="C1007">
-              <div className="C1009"></div>
-            </div>
+            <div className="C1009"></div>
             <div className="C1007">
               <div className="C1000">
                 <p className="T1000">
@@ -2026,6 +2024,10 @@ export default function CustomerStatusSection({
                 <p className="T1000">
                   거부사유: 
                 </p>
+                <div className="C1008">
+                  <p className="T1003">종류 선택</p>
+                  <div className="C1019 isIcon styleSheet isMini isChevron isWhite"></div>
+                </div>
                 <input
                   className="T1002"
                   type="text"
@@ -2038,9 +2040,17 @@ export default function CustomerStatusSection({
                 <p className="T1000">
                   할인구분: 
                 </p>
+                <div className="C1008">
+                  <p className="T1003">종류 선택</p>
+                  <div className="C1019 isIcon styleSheet isMini isChevron isWhite"></div>
+                </div>
                 <p className="T1000">
                   직업: 
                 </p>
+                <div className="C1008">
+                  <p className="T1003">종류 선택</p>
+                  <div className="C1019 isIcon styleSheet isMini isChevron isWhite"></div>
+                </div>
               </div>
             </div>
             <div className="C1007">
@@ -2063,10 +2073,11 @@ export default function CustomerStatusSection({
               </div>
             </div>
             <div className="C1007">
-              <div className="C1000">
+              <div className="C1000 isTopFitted">
                 <p className="T1000">
                   상태: 
                 </p>
+                <div className="C1018">
                 <div className="C1014">
                   <div className="C1015">
                     <div className="C1013"></div>
@@ -2103,6 +2114,8 @@ export default function CustomerStatusSection({
                   </div>
                   <p className="T1003">이동</p>
                 </div>
+                </div>
+                
               </div>
             </div>
             </div>
