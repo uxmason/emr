@@ -106,12 +106,7 @@ const AsideInner = memo(function AsideInner({
   // PageHeader 핸들러 리셋을 위한 스토어
   const resetHandlers = usePageHeaderStore((state) => state.resetHandlers);
 
-  // 클라이언트 마운트 상태 (SSR/Hydration 문제 방지)
-  // lazy initialization을 사용하여 클라이언트에서만 true로 초기화
-  const isMounted = typeof window !== "undefined";
-
   // 현재 경로 확인 (대시보드는 /)
-  // 클라이언트에서만 pathname 사용 (SSR에서는 null 반환 가능)
   const pathname = usePathname();
 
   // pathname 변경 플래그 (mainPageContent useEffect에서 사용)
@@ -119,10 +114,9 @@ const AsideInner = memo(function AsideInner({
 
   // pathname 변경 시 Aside를 메인으로 초기화
   // useLayoutEffect를 사용하여 mainPageContent useEffect보다 먼저 실행되도록 함
-  // 클라이언트에서만 실행되도록 보장 (SSR/Hydration 문제 방지)
   useLayoutEffect(() => {
-    // 클라이언트 마운트 후에만 실행
-    if (!isMounted || typeof window === "undefined") return;
+    // 클라이언트에서만 실행 (SSR 환경에서는 무시)
+    if (typeof window === "undefined") return;
 
     // pathname이 유효하지 않으면 무시
     if (!pathname) return;
@@ -150,7 +144,6 @@ const AsideInner = memo(function AsideInner({
       pathnameChangedRef.current = false;
     }
   }, [
-    isMounted,
     pathname,
     lastPathname,
     setPages,
@@ -242,9 +235,9 @@ const AsideInner = memo(function AsideInner({
 
   // Initialize and update main page when mainContent changes
   React.useEffect(() => {
-    // 클라이언트 마운트 후에만 실행
-    if (!isMounted || typeof window === "undefined") return;
-    
+    // 클라이언트에서만 실행 (SSR 환경에서는 무시)
+    if (typeof window === "undefined") return;
+
     // mainPageContent가 없으면 생성하지 않음
     if (!mainPageContent) return;
 
@@ -312,13 +305,13 @@ const AsideInner = memo(function AsideInner({
 
       return newPages;
     });
-  }, [isMounted, mainPageContent, setPages]);
+  }, [mainPageContent, setPages]);
 
   // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
   // goBack처럼 pages와 currentIndex를 동시에 설정해야 작동함
   React.useEffect(() => {
-    // 클라이언트 마운트 후에만 실행
-    if (!isMounted || typeof window === "undefined") return;
+    // 클라이언트에서만 실행 (SSR 환경에서는 무시)
+    if (typeof window === "undefined") return;
 
     if (pathnameChangedRef.current) {
       // pages가 main 페이지만 있는지 확인
@@ -333,7 +326,7 @@ const AsideInner = memo(function AsideInner({
         });
       }
     }
-  }, [isMounted, pages]);
+  }, [pages]);
 
   return (
     <aside className="C013">
