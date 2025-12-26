@@ -3183,24 +3183,25 @@ export default function CustomerStatusSection({
                       </div>
                     </div>
                     <div className="C2018">
-                      {surveyTableData.map((row, index) => (
-                        <div
-                          key={index}
-                          className="C2012"
-                          onClick={() => {
-                            navigateToPage(
-                              "new-survey",
-                              <SlidePage
-                                title="신환 설문지 등록"
-                                customerName={row.customerName}
-                                customerId={row.chartNumber}
-                                showToggleSwitch={false}
-                              >
-                                {/* 신환 설문지 등록 폼 - 여기에 퍼블리싱 */}
-                              </SlidePage>
-                            );
-                          }}
-                        >
+                      {surveyTableData.map((row, index) => {
+                        const surveyPageContent = (
+                          <SlidePage
+                            title="신환 설문지 등록"
+                            customerName={row.customerName}
+                            customerId={row.chartNumber}
+                            showToggleSwitch={false}
+                          >
+                            {/* 신환 설문지 등록 폼 - 여기에 퍼블리싱 */}
+                          </SlidePage>
+                        );
+                        return (
+                          <div
+                            key={index}
+                            className="C2012"
+                            onClick={() => {
+                              navigateToPage("new-survey", surveyPageContent);
+                            }}
+                          >
                           <div className="T2011 isFixed150">{row.customerName}</div>
                           <div className="T2011 isFixed150">
                             {row.residentNumber}
@@ -3225,17 +3226,7 @@ export default function CustomerStatusSection({
                             className="C2020"
                             onClick={(e) => {
                               e.stopPropagation();
-                              navigateToPage(
-                                "new-survey",
-                                <SlidePage
-                                  title="신환 설문지 등록"
-                                  customerName={row.customerName}
-                                  customerId={row.chartNumber}
-                                  showToggleSwitch={false}
-                                >
-                                  {/* 신환 설문지 등록 폼 - 여기에 퍼블리싱 */}
-                                </SlidePage>
-                              );
+                              navigateToPage("new-survey", surveyPageContent);
                             }}
                           >
                             <div className="C2021">
@@ -3244,7 +3235,8 @@ export default function CustomerStatusSection({
                             <span className="T2020">등록하기</span>
                           </button>
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
