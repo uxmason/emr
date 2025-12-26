@@ -103,7 +103,18 @@ export const useAsideStore = create<AsideStore>((set, get) => ({
 
   navigateToPage: (pageId, content) => {
     const state = get();
-    if (state.isAnimating) return;
+    console.log("🚀 [useAsideStore] navigateToPage 호출", {
+      pageId,
+      hasContent: !!content,
+      currentPagesLength: state.pages.length,
+      currentIndex: state.currentIndex,
+      isAnimating: state.isAnimating,
+    });
+
+    if (state.isAnimating) {
+      console.log("⏸️ [useAsideStore] 애니메이션 중, 네비게이션 무시");
+      return;
+    }
 
     set({ isAnimating: true });
 
@@ -115,6 +126,10 @@ export const useAsideStore = create<AsideStore>((set, get) => ({
 
     if (existingPageIndex !== -1) {
       // 동일 분류의 페이지가 이미 열려있으면 해당 페이지로 이동
+      console.log("🔄 [useAsideStore] 기존 페이지로 이동", {
+        existingPageIndex,
+        pageId: state.pages[existingPageIndex].id,
+      });
       const newPages = state.pages.slice(0, existingPageIndex + 1);
       newPages[existingPageIndex] = {
         id: newPages[existingPageIndex].id,
@@ -128,6 +143,7 @@ export const useAsideStore = create<AsideStore>((set, get) => ({
       });
       setTimeout(() => {
         set({ isAnimating: false });
+        console.log("✅ [useAsideStore] 애니메이션 종료 (기존 페이지 이동)");
       }, 300);
     } else {
       // 새로운 페이지 추가
@@ -139,6 +155,11 @@ export const useAsideStore = create<AsideStore>((set, get) => ({
       };
       const newPages = [...state.pages, newPage];
       const newIndex = newPages.length - 1;
+      console.log("➕ [useAsideStore] 새 페이지 추가", {
+        newPageId: newPage.id,
+        newIndex,
+        totalPages: newPages.length,
+      });
       set({
         pages: newPages,
         currentIndex: newIndex,
@@ -146,6 +167,7 @@ export const useAsideStore = create<AsideStore>((set, get) => ({
       });
       setTimeout(() => {
         set({ isAnimating: false });
+        console.log("✅ [useAsideStore] 애니메이션 종료 (새 페이지 추가)");
       }, 300);
     }
   },

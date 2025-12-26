@@ -28,7 +28,7 @@ import WeeklyCalendar from "./WeeklyCalendar";
 import { usePageHeaderStore } from "@/stores/usePageHeaderStore";
 import { AsideProvider } from "./AsideContext";
 import SlidePage from "./SlidePage";
-import { useAsideStore, type AsidePage } from "@/stores/useAsideStore";
+import { useAsideStore } from "@/stores/useAsideStore";
 import PartReferencePopup from "./popups/PartReferencePopup";
 import type { AsideProps, AsideInnerProps } from "@/types/layout";
 
@@ -96,15 +96,8 @@ const AsideInner = memo(function AsideInner({
   const setLastPathname = useAsideStore((state) => state.setLastPathname);
   const resetHandlers = usePageHeaderStore((state) => state.resetHandlers);
 
-  const [localPages, setLocalPages] = useState<typeof storePages>([]);
-
-  React.useEffect(() => {
-    if (storePages.length > 0) {
-      setLocalPages(storePages);
-    }
-  }, [storePages]);
-
-  const pages = localPages.length > 0 ? localPages : storePages;
+  // 렌더링에는 storePages를 직접 사용
+  const pages = storePages;
   const pathname = usePathname();
   const pathnameChangedRef = useRef(false);
 
@@ -210,7 +203,13 @@ const AsideInner = memo(function AsideInner({
   }, [mainContent, isDashboard]);
 
   React.useEffect(() => {
-    if (!isMounted || !mainPageContent) return;
+    if (!isMounted || !mainPageContent) {
+      console.log("🔴 [Aside] mainPageContent useEffect - 조건 불만족", {
+        isMounted,
+        hasMainPageContent: !!mainPageContent,
+      });
+      return;
+    }
 
     const currentState = useAsideStore.getState();
     const wasEmpty = currentState.pages.length === 0;
@@ -218,63 +217,84 @@ const AsideInner = memo(function AsideInner({
       (page) => page.id === "main"
     );
 
-    let newPages: AsidePage[];
+    console.log("🟢 [Aside] mainPageContent useEffect 실행", {
+      wasEmpty,
+      mainPageIndex,
+      pagesLength: currentState.pages.length,
+      currentIndex: currentState.currentIndex,
+      pathname,
+    });
+
+    // main 페이지가 이미 있고, content가 변경되지 않았다면 업데이트하지 않음
     if (mainPageIndex !== -1) {
-      newPages = [...currentState.pages];
+      const existingMainPage = currentState.pages[mainPageIndex];
+      // main 페이지의 content가 동일하면 업데이트하지 않음
+      if (existingMainPage.content === mainPageContent) {
+        console.log("⏭️ [Aside] main 페이지 content 동일, 업데이트 스킵");
+        return;
+      }
+
+      // main 페이지 content만 업데이트
+      const newPages = [...currentState.pages];
       newPages[mainPageIndex] = {
         ...newPages[mainPageIndex],
         content: mainPageContent,
       };
+      console.log("✅ [Aside] main 페이지 content 업데이트");
       setPages(newPages);
-      setLocalPages(newPages);
-    } else {
-      newPages = [
-        {
-          id: "main",
-          content: mainPageContent,
-          timestamp: Date.now(),
-        },
-        ...currentState.pages,
-      ];
+      return;
+    }
 
-      if (wasEmpty) {
-        if (pathnameChangedRef.current) {
-          pathnameChangedRef.current = false;
-          const mainPage = newPages.find((page) => page.id === "main");
-          if (mainPage) {
+    // main 페이지가 없을 때만 생성
+    const newPages = [
+      {
+        id: "main",
+        content: mainPageContent,
+        timestamp: Date.now(),
+      },
+      ...currentState.pages,
+    ];
+
+    if (wasEmpty) {
+      if (pathnameChangedRef.current) {
+        console.log("🔄 [Aside] pathname 변경으로 인한 main 페이지 생성");
+        pathnameChangedRef.current = false;
+        const mainPage = newPages.find((page) => page.id === "main");
+        if (mainPage) {
+          setTimeout(() => {
+            useAsideStore.setState({
+              pages: [mainPage],
+              currentIndex: 0,
+              currentPageId: null,
+            });
             setTimeout(() => {
-              useAsideStore.setState({
-                pages: [mainPage],
-                currentIndex: 0,
-                currentPageId: null,
-              });
-              setLocalPages([mainPage]);
-              setTimeout(() => {
-                useAsideStore.setState({ isAnimating: false });
-              }, 300);
-            }, 0);
-          }
-        } else {
-          useAsideStore.setState({
-            pages: newPages,
-            currentIndex: 0,
-            currentPageId: null,
-            isAnimating: false,
-          });
-          setLocalPages(newPages);
+              useAsideStore.setState({ isAnimating: false });
+            }, 300);
+          }, 0);
         }
       } else {
-        setPages(newPages);
-        setLocalPages(newPages);
+        console.log("🚀 [Aside] 초기 마운트 시 main 페이지 생성");
+        useAsideStore.setState({
+          pages: newPages,
+          currentIndex: 0,
+          currentPageId: null,
+          isAnimating: false,
+        });
       }
+    } else {
+      // main 페이지가 없지만 다른 페이지들이 있는 경우 (이론적으로 발생하지 않아야 함)
+      console.log("⚠️ [Aside] main 페이지 없음, 다른 페이지들 존재", {
+        pagesLength: currentState.pages.length,
+      });
+      setPages(newPages);
     }
   }, [
     mainPageContent,
     setPages,
     pathname,
-    storePages.length,
-    currentIndex,
     isMounted,
+    // storePages.length와 currentIndex를 의존성에서 제거
+    // 이들이 변경될 때마다 main 페이지를 재생성하는 것을 방지
   ]);
 
   // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
@@ -301,6 +321,28 @@ const AsideInner = memo(function AsideInner({
   // 초기 마운트 시 pages가 비어있고 mainPageContent가 있으면 fallback 렌더링
   const shouldShowFallback = pages.length === 0 && !!mainPageContent;
 
+  // 렌더링 상태 로깅
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      console.log("🎨 [Aside] 렌더링 상태", {
+        pagesLength: pages.length,
+        currentIndex,
+        hasMainPageContent: !!mainPageContent,
+        pathname,
+        shouldShowFallback,
+        pages: pages.map((p) => ({
+          id: p.id,
+          hasContent: !!p.content,
+          contentType: p.content
+            ? React.isValidElement(p.content)
+              ? (p.content as React.ReactElement).type
+              : typeof p.content
+            : null,
+        })),
+      });
+    }
+  }, [pages, currentIndex, mainPageContent, pathname, shouldShowFallback]);
+
   // ✅ isMounted가 false일 때(서버 사이드 or 첫 렌더링)는 fallback UI 반환
   // 이렇게 하면 Hydration 단계까지는 서버 HTML과 똑같은 구조를 유지합니다.
   if (!isMounted) {
@@ -323,6 +365,12 @@ const AsideInner = memo(function AsideInner({
           </div>
         ) : pages.length > 0 ? (
           pages.map((page, index) => {
+            console.log("📄 [Aside] 페이지 렌더링", {
+              pageId: page.id,
+              index,
+              offset: index - currentIndex,
+              isCurrent: index === currentIndex,
+            });
             const offset = index - currentIndex;
             const contentType =
               page.content && React.isValidElement(page.content)
