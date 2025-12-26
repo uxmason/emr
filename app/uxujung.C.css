@@ -6,16 +6,21 @@
     gap: var(--size-10);
 }
 
-
 .C2001 {
     display: flex;
     align-items: center;
-    margin-left: var(--size-50);
     padding: var(--size-10) var(--size-15) var(--size-10) var(--size-10);
     border-radius: var(--size-15);
     background : linear-gradient(to right, var(--color-green), var(--color-blue));
+    transition: .3s;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
-
+.C2001.isUnChecked {
+    background: var(--color-white-15);
+}
 
 .C2002 {
     display: flex;
@@ -28,12 +33,13 @@
     margin-right: var(--size-15);
     box-shadow: 0 var(--size-4) var(--size-8) var(--color-black-25);
 }
-
+.C2001.isUnChecked .C2002 {
+    background-color: var(--color-white-15);
+}
 
 .C2003 {
-width: var(--size-20);
-height: var(--size-20);
-/* background-color: #AAC559; */
+    width: var(--size-20);
+    height: var(--size-20);
 }
 
 .C2004 {
@@ -119,7 +125,7 @@ height: var(--size-20);
     border-bottom: var(--size-1) solid var(--color-black-15);
     width: 100%;
     position: relative;
-    transition: 0.3s;
+    transition: .3s;
     box-sizing: border-box;
 }
 
@@ -169,8 +175,6 @@ height: var(--size-20);
     display: flex;
 }
 
-
-
 .C2013 {
     display: flex;
     align-items: center;
@@ -193,7 +197,7 @@ height: var(--size-20);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s;
+    transition: .3s;
 }
 
 .C2014:hover:not(:disabled) {
@@ -217,7 +221,7 @@ height: var(--size-20);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s;
+    transition: .3s;
 }
 
 .C2015:hover {

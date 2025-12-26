@@ -36,6 +36,7 @@ import EmployeeBadge from "@/components/EmployeeBadge";
 import CustomerDetailPanel from "@/components/CustomerDetailPanel";
 import ReceptionCheckInButton from "@/components/ReceptionCheckInButton";
 import Popup from "@/components/Popup";
+import LabeledCheckbox from "@/components/LabeledCheckbox";
 import { getRoleInfo } from "@/lib/utils/role";
 import type { CustomerStatusSectionProps } from "@/types/reception";
 import PopupSectionBox from "../PopupSectionBox";
@@ -70,6 +71,9 @@ export default function CustomerStatusSection({
   const [isSurveyBarcodeSearchPopupOpen, setIsSurveyBarcodeSearchPopupOpen] =
     useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [customerSearchTab, setCustomerSearchTab] = useState(0); // 0: 바코드 예약 고객, 1: 설문지 고객, 2: 상담 가등록 고객
+  const [excludeRegisteredChecked, setExcludeRegisteredChecked] =
+    useState(true);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // 테이블 데이터 타입
@@ -2855,17 +2859,16 @@ export default function CustomerStatusSection({
                   ]}
                   width="var(--size-340)"
                   multiple={false}
-                  value={selectedSortTab}
+                  value={customerSearchTab}
                   onChange={(selected) =>
-                    setSelectedSortTab(selected as number)
+                    setCustomerSearchTab(selected as number)
                   }
                 />
-                <div className="C2001">
-                  <div className="C2002">
-                    <div className="C2003 styleSheet isIcon isMini isChecked"></div>
-                  </div>
-                  <p className="T2001">등록 완료된 고객 제외</p>
-                </div>
+                <LabeledCheckbox
+                  checked={excludeRegisteredChecked}
+                  onChange={setExcludeRegisteredChecked}
+                  text="등록 완료된 고객 제외"
+                />
               </div>
               <div
                 className="C181 isCloseButton"
@@ -2876,163 +2879,204 @@ export default function CustomerStatusSection({
               </div>
             </div>
           </PopupSectionBox>
-          <PopupSectionBox x={360} y={160} width={1200} height={170}>
-            <div className="C2004">
-              <div className="C2005">
-                <p className="T2004">이름:</p>
-                <input className="T2005" placeholder="16자 이하" type="text" />
-              </div>
-              <div className="C2005">
-                <p className="T2004">주민번호:</p>
-                <input className="T2005" placeholder="14자 이내" type="text" />
-              </div>
-              <div className="C2005">
-                <p className="T2004">휴대번호:</p>
-                <input className="T2005" placeholder="17자 이내" type="text" />
-              </div>
-              <div className="C2005">
-                <p className="T2004">차트번호:</p>
-                <input className="T2006" placeholder="9자 이내" type="text" />
-              </div>
-            </div>
-
-            <div className="C2006">
-              <div className="C2005">
-                <p className="T2004">예약번호:</p>
-                <input className="T2006" placeholder="7자 이내" type="text" />
-              </div>
-
-              <div className="C2005">
-                <div className="C2007">
-                  <p className="T2004">날짜 검색:</p>
+          {/* 검색 폼 섹션 - 탭에 따라 변경 */}
+          {customerSearchTab === 0 && (
+            <PopupSectionBox x={360} y={160} width={1200} height={170}>
+              <div className="C2004">
+                <div className="C2005">
+                  <p className="T2004">이름:</p>
                   <input
                     className="T2005"
-                    placeholder="날짜 선택"
+                    placeholder="16자 이하"
                     type="text"
                   />
+                </div>
+                <div className="C2005">
+                  <p className="T2004">주민번호:</p>
+                  <input
+                    className="T2005"
+                    placeholder="14자 이내"
+                    type="text"
+                  />
+                </div>
+                <div className="C2005">
+                  <p className="T2004">휴대번호:</p>
+                  <input
+                    className="T2005"
+                    placeholder="17자 이내"
+                    type="text"
+                  />
+                </div>
+                <div className="C2005">
+                  <p className="T2004">차트번호:</p>
+                  <input className="T2006" placeholder="9자 이내" type="text" />
+                </div>
+              </div>
+
+              <div className="C2006">
+                <div className="C2005">
+                  <p className="T2004">예약번호:</p>
+                  <input className="T2006" placeholder="7자 이내" type="text" />
+                </div>
+
+                <div className="C2005">
                   <div className="C2007">
-                    <p className="T2004">~</p>
+                    <p className="T2004">날짜 검색:</p>
                     <input
                       className="T2005"
                       placeholder="날짜 선택"
                       type="text"
                     />
+                    <div className="C2007">
+                      <p className="T2004">~</p>
+                      <input
+                        className="T2005"
+                        placeholder="날짜 선택"
+                        type="text"
+                      />
+                    </div>
+                    <button className="C2008">검색</button>
                   </div>
-                  <button className="C2008">검색</button>
                 </div>
               </div>
-            </div>
-          </PopupSectionBox>
+            </PopupSectionBox>
+          )}
 
-          <PopupSectionBox x={360} y={350} width={1200} height={810}>
-            <div className="C2009">
-              <div className="C2016">
-                <div className="C2010">
-                  <div className="C2017">
-                    <div className="C2011">
-                      <div className="T2010">고객이름</div>
-                      <div className="T2010 is15p">주민번호</div>
-                      <div className="T2010 is15p">휴대번호</div>
-                      <div className="T2010 is15p">등록지점</div>
-                      <div className="T2010 is15p">바코드 번호</div>
-                      <div className="T2010">등록일자</div>
-                      <div className="T2010">웹 ID</div>
-                      <div className="T2010">등록여부</div>
+          {customerSearchTab === 1 && (
+            <PopupSectionBox x={360} y={160} width={1200} height={170}>
+              <div className="C2004">
+                {/* 설문지 고객 검색 폼 - 여기에 퍼블리싱 */}
+              </div>
+            </PopupSectionBox>
+          )}
+
+          {customerSearchTab === 2 && (
+            <PopupSectionBox x={360} y={160} width={1200} height={170}>
+              <div className="C2004">
+                {/* 상담 가등록 고객 검색 폼 - 여기에 퍼블리싱 */}
+              </div>
+            </PopupSectionBox>
+          )}
+
+          {/* 테이블 섹션 - 탭에 따라 변경 */}
+          {customerSearchTab === 0 && (
+            <PopupSectionBox x={360} y={350} width={1200} height={810}>
+              <div className="C2009">
+                <div className="C2016">
+                  <div className="C2010">
+                    <div className="C2017">
+                      <div className="C2011">
+                        <div className="T2010">고객이름</div>
+                        <div className="T2010 is15p">주민번호</div>
+                        <div className="T2010 is15p">휴대번호</div>
+                        <div className="T2010 is15p">등록지점</div>
+                        <div className="T2010 is15p">바코드 번호</div>
+                        <div className="T2010">등록일자</div>
+                        <div className="T2010">웹 ID</div>
+                        <div className="T2010">등록여부</div>
+                      </div>
+                    </div>
+                    <div className="C2018">
+                      {sampleTableData.map((row, index) => (
+                        <div key={index} className="C2012">
+                          <div className="T2011">{row.customerName}</div>
+                          <div className="T2011 is15p">
+                            {row.residentNumber}
+                          </div>
+                          <div className="T2011 is15p">{row.phoneNumber}</div>
+                          <div className="T2011 is15p">
+                            {row.registrationBranch}
+                          </div>
+                          <div className="T2011 is15p">{row.barcodeNumber}</div>
+                          <div className="T2011">{row.registrationDate}</div>
+                          <div className="T2011">{row.webId}</div>
+                          <div
+                            className={`T2012 ${
+                              row.registrationStatus === "가입완료"
+                                ? "isRegistered"
+                                : "isDisconnected"
+                            }`}
+                          >
+                            {row.registrationStatus}
+                          </div>
+                          <button className="C2020">
+                            <div className="C2021">
+                              <div className="C2019 styleSheet isIcon isArrow isMini"></div>
+                            </div>
+                            <span className="T2020">등록하기</span>
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="C2018">
-                    {sampleTableData.map((row, index) => (
-                      <div key={index} className="C2012">
-                        <div className="T2011">{row.customerName}</div>
-                        <div className="T2011 is15p">{row.residentNumber}</div>
-                        <div className="T2011 is15p">{row.phoneNumber}</div>
-                        <div className="T2011 is15p">
-                          {row.registrationBranch}
-                        </div>
-                        <div className="T2011 is15p">{row.barcodeNumber}</div>
-                        <div className="T2011">{row.registrationDate}</div>
-                        <div className="T2011">{row.webId}</div>
-                        <div
-                          className={`T2012 ${
-                            row.registrationStatus === "가입완료"
-                              ? "isRegistered"
-                              : "isDisconnected"
-                          }`}
-                        >
-                          {row.registrationStatus}
-                        </div>
-                        <button className="C2020">
-                          <div className="C2021">
-                            <div className="C2019 styleSheet isIcon isArrow isMini"></div>
-                          </div>
-                          <span className="T2020">등록하기</span>
-                        </button>
-                      </div>
-                    ))}
-                  </div>
+                </div>
+                <div className="C2013">
+                  <button
+                    className="C2014"
+                    onClick={() => setCurrentPage(1)}
+                    disabled={currentPage === 1}
+                  >
+                    <div className="C2019 styleSheet isIcon isMini isControl isLeftDouble"></div>
+                  </button>
+                  <button
+                    className="C2014"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(1, prev - 1))
+                    }
+                    disabled={currentPage === 1}
+                  >
+                    <div className="C2019 styleSheet isIcon isMini isControl isLeft"></div>
+                  </button>
+                  {Array.from(
+                    { length: Math.min(10, totalPages) },
+                    (_, i) => i + 1
+                  ).map((page) => (
+                    <button
+                      key={page}
+                      className={`C2015 ${
+                        currentPage === page ? "isActive" : ""
+                      }`}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    className="C2014"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                    }
+                    disabled={currentPage === totalPages}
+                  >
+                    <div className="C2019 styleSheet isIcon isMini isControl isRight"></div>
+                  </button>
+                  <button
+                    className="C2014"
+                    onClick={() => setCurrentPage(totalPages)}
+                    disabled={currentPage === totalPages}
+                  >
+                    <div className="C2019 styleSheet isIcon isMini isControl isRightDouble"></div>
+                  </button>
                 </div>
               </div>
-              <div className="C2013">
-                <button
-                  className="C2014"
-                  onClick={() => setCurrentPage(1)}
-                  disabled={currentPage === 1}
-                >
-                 <div
-                    className="C2019 styleSheet isIcon isMini isControl isLeftDouble"
-                  ></div>
-                </button>
-                <button
-                  className="C2014"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(1, prev - 1))
-                  }
-                  disabled={currentPage === 1}
-                >
-                  <div
-                    className="C2019 styleSheet isIcon isMini isControl isLeft"
-                  ></div>
+            </PopupSectionBox>
+          )}
 
-                </button>
-                {Array.from(
-                  { length: Math.min(10, totalPages) },
-                  (_, i) => i + 1
-                ).map((page) => (
-                  <button
-                    key={page}
-                    className={`C2015 ${
-                      currentPage === page ? "isActive" : ""
-                    }`}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    {page}
-                  </button>
-                ))}
-                <button
-                  className="C2014"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-                  }
-                  disabled={currentPage === totalPages}
-                >
-                  <div
-                    className="C2019 styleSheet isIcon isMini isControl isRight"
-                  ></div>
-                  
-                </button>
-                <button
-                  className="C2014"
-                  onClick={() => setCurrentPage(totalPages)}
-                  disabled={currentPage === totalPages}
-                >
-                  <div
-                    className="C2019 styleSheet isIcon isMini isControl isRightDouble"
-                   
-                  ></div>
-                </button>
+          {customerSearchTab === 1 && (
+            <PopupSectionBox x={360} y={350} width={1200} height={810}>
+              <div className="C2009">
+                {/* 설문지 고객 테이블 - 여기에 퍼블리싱 */}
               </div>
-            </div>
-          </PopupSectionBox>
+            </PopupSectionBox>
+          )}
+
+          {customerSearchTab === 2 && (
+            <PopupSectionBox x={360} y={350} width={1200} height={810}>
+              <div className="C2009">
+                {/* 상담 가등록 고객 테이블 - 여기에 퍼블리싱 */}
+              </div>
+            </PopupSectionBox>
+          )}
         </>
       </Popup>
     </article>

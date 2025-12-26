@@ -12,6 +12,10 @@
     font-size: var(--font-14);
     color: var(--color-black);
     margin: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .T2004 {
