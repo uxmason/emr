@@ -194,21 +194,22 @@ export default function CustomerStatusSection({
   const [customerSearchTab, setCustomerSearchTab] = useState(0); // 0: 바코드 예약 고객, 1: 설문지 고객, 2: 상담 가등록 고객
   const [excludeRegisteredChecked, setExcludeRegisteredChecked] =
     useState(true);
-  
+
   // 각 체크박스별 독립적인 상태
   const [useAliasChecked, setUseAliasChecked] = useState(false);
   const [customerRejectedChecked, setCustomerRejectedChecked] = useState(false);
   const [smsRejectedChecked, setSmsRejectedChecked] = useState(false);
   const [smsReceivedChecked, setSmsReceivedChecked] = useState(false);
   const [verifiedCustomerChecked, setVerifiedCustomerChecked] = useState(false);
-  const [unverifiedCustomerChecked, setUnverifiedCustomerChecked] = useState(false);
+  const [unverifiedCustomerChecked, setUnverifiedCustomerChecked] =
+    useState(false);
   const [registeredChecked, setRegisteredChecked] = useState(false);
   const [preRegisteredChecked, setPreRegisteredChecked] = useState(false);
   const [pendingChecked, setPendingChecked] = useState(false);
   const [deletedChecked, setDeletedChecked] = useState(false);
   const [refundedChecked, setRefundedChecked] = useState(false);
   const [movedChecked, setMovedChecked] = useState(false);
-  
+
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // 테이블 데이터 타입
@@ -1991,52 +1992,51 @@ export default function CustomerStatusSection({
                 <div className="C1000">
                   <p className="T1000">주민번호:</p>
                   <div className="C1017">
-                  <ValidatedInput
-                    className="T1002"
-                    type="text"
-                    placeholder="000000-0******"
-                    minLength={14}
-                    required
-                    minLengthErrorMessage="입력값이 모자랍니다"
-                  />
+                    <ValidatedInput
+                      className="T1002"
+                      type="text"
+                      placeholder="000000-0******"
+                      minLength={14}
+                      required
+                      minLengthErrorMessage="입력값이 모자랍니다"
+                    />
                   </div>
-                  
+
                   <button className="C1005">중복검사</button>
                   <div className="C1011">
-                  <LabeledCheckbox
+                    <LabeledCheckbox
                       checked={useAliasChecked}
                       onChange={setUseAliasChecked}
                       text="가명 사용"
                     />
                   </div>
-                  
                 </div>
               </div>
               <div className="C1007">
                 <div className="C1000">
                   <p className="T1000">성명:</p>
                   <div className="C1017">
-                  <ValidatedInput
-                    className="T1002"
-                    type="text"
-                    placeholder="최대 16자까지"
-                    minLength={1}
-                    maxLength={16}
-                    required
-                    minLengthErrorMessage="입력값이 모자랍니다"
-                  />
+                    <ValidatedInput
+                      className="T1002"
+                      type="text"
+                      placeholder="최대 16자까지"
+                      minLength={1}
+                      maxLength={16}
+                      required
+                      minLengthErrorMessage="입력값이 모자랍니다"
+                    />
                   </div>
                   <p className="T1000">가명:</p>
                   <div className="C1017">
-                  <ValidatedInput
-                    className="T1002"
-                    type="text"
-                    placeholder="최대 16자까지"
-                    minLength={1}
-                    maxLength={16}
-                    required
-                    minLengthErrorMessage="입력값이 모자랍니다"
-                  />
+                    <ValidatedInput
+                      className="T1002"
+                      type="text"
+                      placeholder="최대 16자까지"
+                      minLength={1}
+                      maxLength={16}
+                      required
+                      minLengthErrorMessage="입력값이 모자랍니다"
+                    />
                   </div>
                 </div>
               </div>
@@ -2044,15 +2044,15 @@ export default function CustomerStatusSection({
                 <div className="C1000">
                   <p className="T1000">전화번호:</p>
                   <div className="C1017">
-                  <ValidatedInput
-                    className="T1002"
-                    type="text"
-                    placeholder="000-0000-0000"
-                    minLength={13}
-                    maxLength={13}
-                    required
-                    minLengthErrorMessage="입력값이 모자랍니다"
-                  />
+                    <ValidatedInput
+                      className="T1002"
+                      type="text"
+                      placeholder="000-0000-0000"
+                      minLength={13}
+                      maxLength={13}
+                      required
+                      minLengthErrorMessage="입력값이 모자랍니다"
+                    />
                   </div>
                   <button className="C1005">인증요청</button>
 
@@ -2064,58 +2064,57 @@ export default function CustomerStatusSection({
                 <div className="C1000">
                   <p className="T1000">자택번호:</p>
                   <div className="C1017">
-                  <ValidatedInput
-                    className="T1002"
-                    type="text"
-                    placeholder="000-0000-0000"
-                    minLength={13}
-                    maxLength={13}
-                    required
-                    minLengthErrorMessage="입력값이 모자랍니다"
-                  />
+                    <ValidatedInput
+                      className="T1002"
+                      type="text"
+                      placeholder="000-0000-0000"
+                      minLength={13}
+                      maxLength={13}
+                      required
+                      minLengthErrorMessage="입력값이 모자랍니다"
+                    />
                   </div>
                   <p className="T1000">이메일:</p>
                   <div className="C1017">
-                  <ValidatedInput
-                    className="T1002"
-                    type="text"
-                    placeholder="최대32자까지"
-                    minLength={1}
-                    maxLength={32}
-                    required
-                    validateEmail={true}
-                    minLengthErrorMessage="입력값이 모자랍니다"
-                    emailErrorMessage="입력 양식이 잘못되었습니다."
-                  />
+                    <ValidatedInput
+                      className="T1002"
+                      type="text"
+                      placeholder="최대32자까지"
+                      minLength={1}
+                      maxLength={32}
+                      required
+                      validateEmail={true}
+                      minLengthErrorMessage="입력값이 모자랍니다"
+                      emailErrorMessage="입력 양식이 잘못되었습니다."
+                    />
                   </div>
-                  
                 </div>
               </div>
             </div>
             <div className="C1009"></div>
 
-              <div className="C1007">
-                <div className="C1000">
-                  <p className="T1000">SMS수신:</p>
-                    <div className="C1018">
-                    <LabeledCheckbox
-                      checked={customerRejectedChecked}
-                      onChange={setCustomerRejectedChecked}
-                      text="고객 거부"
-                    />
-                    <LabeledCheckbox
-                        checked={smsRejectedChecked}
-                      onChange={setSmsRejectedChecked}
-                      text="수신 금지"
-                    />
-                    <LabeledCheckbox
-                      checked={smsReceivedChecked}
-                      onChange={setSmsReceivedChecked}
-                      text="수신 받음"
-                    />
-                  </div>
+            <div className="C1007">
+              <div className="C1000">
+                <p className="T1000">SMS수신:</p>
+                <div className="C1018">
+                  <LabeledCheckbox
+                    checked={customerRejectedChecked}
+                    onChange={setCustomerRejectedChecked}
+                    text="고객 거부"
+                  />
+                  <LabeledCheckbox
+                    checked={smsRejectedChecked}
+                    onChange={setSmsRejectedChecked}
+                    text="수신 금지"
+                  />
+                  <LabeledCheckbox
+                    checked={smsReceivedChecked}
+                    onChange={setSmsReceivedChecked}
+                    text="수신 받음"
+                  />
                 </div>
               </div>
+            </div>
 
             <div className="C1007">
               <div className="C1000">
@@ -2132,7 +2131,7 @@ export default function CustomerStatusSection({
                     placeholder="최대64자까지"
                     maxLength={64}
                   />
-                  </div>
+                </div>
               </div>
             </div>
             <div className="C1007">
@@ -2224,22 +2223,21 @@ export default function CustomerStatusSection({
           </PopupSectionBox>
           <PopupSectionBox x={970} y={190} width={660} height={820}>
             <div className="C1003">
-            <div className="C1007">
+              <div className="C1007">
                 <div className="C1000">
                   <p className="T1000">특기사항:</p>
                   <div className="C1018">
-                  <LabeledCheckbox
+                    <LabeledCheckbox
                       checked={useAliasChecked}
                       onChange={setUseAliasChecked}
                       text="원내 호출 거부"
                     />
-                  <LabeledCheckbox
+                    <LabeledCheckbox
                       checked={useAliasChecked}
                       onChange={setUseAliasChecked}
                       text="서포터"
                     />
                   </div>
-                  
                 </div>
               </div>
               <div className="C1009"></div>
@@ -2247,36 +2245,30 @@ export default function CustomerStatusSection({
                 <div className="C1000">
                   <p className="T1000">분류:</p>
                   <div className="C1018">
-                  <LabeledCheckbox
+                    <LabeledCheckbox
                       checked={useAliasChecked}
                       onChange={setUseAliasChecked}
                       text="외국인"
                     />
-                  <LabeledCheckbox
+                    <LabeledCheckbox
                       checked={useAliasChecked}
                       onChange={setUseAliasChecked}
                       text="내국인"
                     />
                   </div>
-                  
                 </div>
               </div>
               <div className="C1007">
-              <div className="C1000">
-                <p className="T1000">
-                  국적: 
-                </p>
-                <div className="C1008">
-                  종류 선택
-                  <div className="C1019 isIcon styleSheet isMini isChevron isWhite"></div>
+                <div className="C1000">
+                  <p className="T1000">국적:</p>
+                  <div className="C1008">
+                    종류 선택
+                    <div className="C1019 isIcon styleSheet isMini isChevron isWhite"></div>
+                  </div>
+                  <p className="T1000">영문명:</p>
                 </div>
-                <p className="T1000">
-                  영문명: 
-                </p>
-                
               </div>
-            </div>
-            <div className="C1007">
+              <div className="C1007">
                 <div className="C1000">
                   <p className="T1000">여권번호:</p>
                   <input
@@ -2296,39 +2288,40 @@ export default function CustomerStatusSection({
                 <div className="C1000">
                   <p className="T1000">거소증:</p>
                   <div className="C1018">
-                  <LabeledCheckbox
+                    <LabeledCheckbox
                       checked={useAliasChecked}
                       onChange={setUseAliasChecked}
                       text="있음"
                     />
-                  <LabeledCheckbox
+                    <LabeledCheckbox
                       checked={useAliasChecked}
                       onChange={setUseAliasChecked}
                       text="없음"
                     />
                   </div>
-                  
+
                   <p className="T1000">체류자격:</p>
                   <div className="C1008">
-                  코드 선택
-                  <div className="C1019 isIcon styleSheet isMini isChevron isWhite"></div>
-                </div>
+                    코드 선택
+                    <div className="C1019 isIcon styleSheet isMini isChevron isWhite"></div>
+                  </div>
                 </div>
               </div>
               <div className="C1012">
                 <div className="C1013"></div>
                 <div className="C1014">
-                  
                   <div className="C1015">
                     <p className="T1000">입국일:</p>
-                    <div className="C1016"><p className="T1004">2025.12.23</p></div>
+                    <div className="C1016">
+                      <p className="T1004">2025.12.23</p>
+                    </div>
                   </div>
-                
-                  
+
                   <div className="C1015">
                     <p className="T1000">출국일:</p>
-                    <div className="C1016"><p className="T1004">2025.12.23</p></div>
-                    
+                    <div className="C1016">
+                      <p className="T1004">2025.12.23</p>
+                    </div>
                   </div>
                 </div>
               </div>
