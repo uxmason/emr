@@ -379,3 +379,4 @@ const onSubmit = (data: PatientFormData) => {
 - `types/README.md`: 타입 정의 가이드
 - `components/NAMING_CONVENTIONS.md`: 네이밍 규칙
 - `docs/DATABASE_STRATEGY.md`: 데이터베이스 전략
+- `docs/AI_OPTIMIZATION.md`: AI 최적화 가이드 (Production 빌드 호환성, useEffect 최적화 등)

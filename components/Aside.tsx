@@ -30,7 +30,12 @@ import { AsideProvider } from "./AsideContext";
 import SlidePage from "./SlidePage";
 import { useAsideStore } from "@/stores/useAsideStore";
 import PartReferencePopup from "./popups/PartReferencePopup";
-import type { AsideProps, AsideInnerProps } from "@/types/layout";
+import type {
+  AsideProps,
+  AsideInnerProps,
+  AsideSlidePageProps,
+} from "@/types/layout";
+import { PRE_WRAPPED_SLIDE_PAGE_IDS } from "@/types/layout";
 
 function Aside({ mainContent, onNavigate, children }: AsideProps) {
   const currentIndex = useAsideStore((state) => state.currentIndex);
@@ -127,15 +132,18 @@ const AsideInner = memo(function AsideInner({
     setLastPathname,
     isMounted,
   ]);
-  const isDashboard = pathname === "/";
-  const isCounseling = pathname === "/counseling";
-  const isReception = pathname === "/reception";
-  const isPreCare = pathname === "/pre-care";
-  const isClinic = pathname === "/clinic";
-  const isSurgery = pathname === "/surgery";
-  const isProcedure = pathname === "/procedure";
-  const isPostCare = pathname === "/post-care";
-  const isStatistics = pathname === "/statistics";
+  // 페이지 경로별 플래그
+  const pagePathFlags = {
+    isDashboard: pathname === "/",
+    isCounseling: pathname === "/counseling",
+    isReception: pathname === "/reception",
+    isPreCare: pathname === "/pre-care",
+    isClinic: pathname === "/clinic",
+    isSurgery: pathname === "/surgery",
+    isProcedure: pathname === "/procedure",
+    isPostCare: pathname === "/post-care",
+    isStatistics: pathname === "/statistics",
+  };
 
   // C070 클릭 시 팝업 상태
   const [isPartReferencePopupOpen, setIsPartReferencePopupOpen] =
@@ -145,7 +153,7 @@ const AsideInner = memo(function AsideInner({
     const content =
       typeof mainContent === "function" ? mainContent() : mainContent;
 
-    if (isDashboard) {
+    if (pagePathFlags.isDashboard) {
       return <div className="C073">{content}</div>;
     }
 
@@ -153,7 +161,7 @@ const AsideInner = memo(function AsideInner({
       return <div className="C073"></div>;
     }
 
-    if (isCounseling) {
+    if (pagePathFlags.isCounseling) {
       return (
         <>
           <WeeklyCalendar />
@@ -194,26 +202,19 @@ const AsideInner = memo(function AsideInner({
         <div className="C075">{content}</div>
       </>
     );
-  }, [mainContent, isDashboard, isCounseling]);
+  }, [mainContent, pagePathFlags.isDashboard, pagePathFlags.isCounseling]);
 
   const isDashboardC073 = React.useMemo(() => {
     const content =
       typeof mainContent === "function" ? mainContent() : mainContent;
-    return isDashboard || content === null;
-  }, [mainContent, isDashboard]);
+    return pagePathFlags.isDashboard || content === null;
+  }, [mainContent, pagePathFlags.isDashboard]);
 
   // pathname 변경 추적을 위한 ref
   const prevPathnameRef = useRef<string | null>(null);
-  const mainPageInitializedRef = useRef(false);
 
   React.useEffect(() => {
-    if (!isMounted || !mainPageContent) {
-      console.log("🔴 [Aside] mainPageContent useEffect - 조건 불만족", {
-        isMounted,
-        hasMainPageContent: !!mainPageContent,
-      });
-      return;
-    }
+    if (!isMounted || !mainPageContent) return;
 
     const currentState = useAsideStore.getState();
     const wasEmpty = currentState.pages.length === 0;
@@ -226,27 +227,10 @@ const AsideInner = memo(function AsideInner({
     prevPathnameRef.current = pathname;
 
     // main 페이지가 없거나, pathname이 변경된 경우에만 실행
-    // mainContent 변경은 무시 (이미 렌더링된 main 페이지는 유지)
     const shouldUpdate = mainPageIndex === -1 || pathnameChanged;
 
     // main 페이지가 이미 있고, pathname도 변경되지 않았다면 스킵
-    if (!shouldUpdate && mainPageIndex !== -1) {
-      console.log("⏭️ [Aside] main 페이지 존재하고 pathname 변경 없음, 스킵", {
-        mainPageIndex,
-        pathnameChanged,
-        mainPageInitialized: mainPageInitializedRef.current,
-      });
-      return;
-    }
-
-    console.log("🟢 [Aside] mainPageContent useEffect 실행", {
-      wasEmpty,
-      mainPageIndex,
-      pagesLength: currentState.pages.length,
-      currentIndex: currentState.currentIndex,
-      pathname,
-      pathnameChanged,
-    });
+    if (!shouldUpdate && mainPageIndex !== -1) return;
 
     // main 페이지가 이미 있는 경우
     if (mainPageIndex !== -1) {
@@ -257,9 +241,7 @@ const AsideInner = memo(function AsideInner({
           ...newPages[mainPageIndex],
           content: mainPageContent,
         };
-        console.log("✅ [Aside] main 페이지 content 업데이트 (pathname 변경)");
         setPages(newPages);
-        mainPageInitializedRef.current = true;
       }
       return;
     }
@@ -276,7 +258,6 @@ const AsideInner = memo(function AsideInner({
 
     if (wasEmpty) {
       if (pathnameChangedRef.current) {
-        console.log("🔄 [Aside] pathname 변경으로 인한 main 페이지 생성");
         pathnameChangedRef.current = false;
         const mainPage = newPages.find((page) => page.id === "main");
         if (mainPage) {
@@ -292,31 +273,17 @@ const AsideInner = memo(function AsideInner({
           }, 0);
         }
       } else {
-        console.log("🚀 [Aside] 초기 마운트 시 main 페이지 생성");
         useAsideStore.setState({
           pages: newPages,
           currentIndex: 0,
           currentPageId: null,
           isAnimating: false,
         });
-        mainPageInitializedRef.current = true;
       }
     } else {
-      // main 페이지가 없지만 다른 페이지들이 있는 경우 (이론적으로 발생하지 않아야 함)
-      console.log("⚠️ [Aside] main 페이지 없음, 다른 페이지들 존재", {
-        pagesLength: currentState.pages.length,
-      });
       setPages(newPages);
     }
-  }, [
-    mainContent, // mainContent 변경을 직접 추적
-    mainPageContent, // mainPageContent도 의존성에 포함 (렌더링 보장)
-    setPages,
-    pathname,
-    isMounted,
-    // mainContent와 pathname의 실제 변경을 ref로 추적하므로
-    // 의존성 배열에 포함하되, ref를 통해 중복 실행 방지
-  ]);
+  }, [mainContent, mainPageContent, setPages, pathname, isMounted]);
 
   // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
   // goBack처럼 pages와 currentIndex를 동시에 설정해야 작동함
@@ -339,30 +306,91 @@ const AsideInner = memo(function AsideInner({
     }
   }, [pages, isMounted]);
 
+  /**
+   * 페이지 렌더링 함수
+   * 페이지 타입에 따라 적절한 컴포넌트로 렌더링
+   */
+  const renderPage = React.useCallback(
+    (page: (typeof pages)[0], index: number) => {
+      const offset = index - currentIndex;
+      const contentType =
+        page.content && React.isValidElement(page.content)
+          ? (page.content as React.ReactElement<unknown>).type
+          : null;
+      const contentDisplayName =
+        contentType &&
+        typeof contentType === "object" &&
+        "displayName" in contentType
+          ? (contentType as { displayName?: string }).displayName
+          : contentType && typeof contentType === "function"
+          ? contentType.name
+          : null;
+
+      // pageId 기반으로 이미 SlidePage로 감싸진 컴포넌트 확인
+      const isPreWrappedSlidePage = PRE_WRAPPED_SLIDE_PAGE_IDS.some((id) =>
+        page.id.startsWith(id)
+      );
+
+      const isSlidePageComponent =
+        React.isValidElement(page.content) &&
+        (contentType === SlidePage ||
+          isPreWrappedSlidePage ||
+          (typeof contentType === "function" &&
+            (contentDisplayName === "DoctorSlidePage" ||
+              contentDisplayName === "EmployeeSlidePage" ||
+              contentDisplayName === "CounselorSlidePage" ||
+              contentDisplayName === "CustomerReferenceSlide" ||
+              contentDisplayName === "MyNotesSlide" ||
+              contentDisplayName === "MyAlarmsSlide")));
+
+      if (isSlidePageComponent) {
+        const slidePageProps: AsideSlidePageProps = {
+          transform: `translateX(${offset * 100}%)`,
+          zIndex: pages.length - index,
+          onGoBack: goBack,
+          showBackButton: index > 0,
+        };
+        return React.cloneElement(
+          page.content as React.ReactElement<AsideSlidePageProps>,
+          {
+            key: page.id,
+            ...slidePageProps,
+          }
+        );
+      }
+
+      if (page.id === "main" && isDashboardC073) {
+        return (
+          <div
+            key={page.id}
+            className="C073"
+            style={{
+              transform: `translateX(${offset * 100}%)`,
+              zIndex: pages.length - index,
+            }}
+          >
+            {page.content}
+          </div>
+        );
+      }
+
+      return (
+        <SlidePage
+          key={page.id}
+          transform={`translateX(${offset * 100}%)`}
+          zIndex={pages.length - index}
+          onGoBack={goBack}
+          showBackButton={index > 0}
+        >
+          {page.content}
+        </SlidePage>
+      );
+    },
+    [currentIndex, pages.length, goBack, isDashboardC073]
+  );
+
   // 초기 마운트 시 pages가 비어있고 mainPageContent가 있으면 fallback 렌더링
   const shouldShowFallback = pages.length === 0 && !!mainPageContent;
-
-  // 렌더링 상태 로깅
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      console.log("🎨 [Aside] 렌더링 상태", {
-        pagesLength: pages.length,
-        currentIndex,
-        hasMainPageContent: !!mainPageContent,
-        pathname,
-        shouldShowFallback,
-        pages: pages.map((p) => ({
-          id: p.id,
-          hasContent: !!p.content,
-          contentType: p.content
-            ? React.isValidElement(p.content)
-              ? (p.content as React.ReactElement).type
-              : typeof p.content
-            : null,
-        })),
-      });
-    }
-  }, [pages, currentIndex, mainPageContent, pathname, shouldShowFallback]);
 
   // ✅ isMounted가 false일 때(서버 사이드 or 첫 렌더링)는 fallback UI 반환
   // 이렇게 하면 Hydration 단계까지는 서버 HTML과 똑같은 구조를 유지합니다.
@@ -385,130 +413,18 @@ const AsideInner = memo(function AsideInner({
             {mainPageContent}
           </div>
         ) : pages.length > 0 ? (
-          pages.map((page, index) => {
-            console.log("📄 [Aside] 페이지 렌더링", {
-              pageId: page.id,
-              index,
-              offset: index - currentIndex,
-              isCurrent: index === currentIndex,
-            });
-            const offset = index - currentIndex;
-            const contentType =
-              page.content && React.isValidElement(page.content)
-                ? (page.content as React.ReactElement<unknown>).type
-                : null;
-            const contentDisplayName =
-              contentType &&
-              typeof contentType === "object" &&
-              "displayName" in contentType
-                ? (contentType as { displayName?: string }).displayName
-                : contentType && typeof contentType === "function"
-                ? contentType.name
-                : null;
-
-            // pageId 기반으로 이미 SlidePage로 감싸진 컴포넌트 확인
-            // Production 빌드에서 minification으로 컴포넌트 이름이 변경되므로
-            // pageId를 기반으로 감지하는 것이 더 안정적
-            const isPreWrappedSlidePage =
-              page.id.startsWith("my-alarms") ||
-              page.id.startsWith("my-notes") ||
-              page.id.startsWith("customer") ||
-              page.id.startsWith("doctor") ||
-              page.id.startsWith("counselor") ||
-              page.id.startsWith("employee") ||
-              page.id.startsWith("manager") ||
-              page.id.startsWith("assistant") ||
-              page.id.startsWith("team-leader") ||
-              page.id.startsWith("clerk");
-
-            const isSlidePageComponent =
-              React.isValidElement(page.content) &&
-              (contentType === SlidePage ||
-                isPreWrappedSlidePage ||
-                (typeof contentType === "function" &&
-                  (contentDisplayName === "DoctorSlidePage" ||
-                    contentDisplayName === "EmployeeSlidePage" ||
-                    contentDisplayName === "CounselorSlidePage" ||
-                    contentDisplayName === "CustomerReferenceSlide" ||
-                    contentDisplayName === "MyNotesSlide" ||
-                    contentDisplayName === "MyAlarmsSlide")));
-
-            console.log("🔍 [Aside] 페이지 컴포넌트 체크", {
-              pageId: page.id,
-              contentType:
-                typeof contentType === "function"
-                  ? contentType.name ||
-                    (contentType as { displayName?: string }).displayName ||
-                    "function"
-                  : typeof contentType,
-              contentDisplayName,
-              isSlidePageComponent,
-              isValidElement: React.isValidElement(page.content),
-            });
-
-            if (isSlidePageComponent) {
-              const clonedElement = React.cloneElement(
-                page.content as React.ReactElement<{
-                  transform?: string;
-                  zIndex?: number;
-                  onGoBack?: () => void;
-                  showBackButton?: boolean;
-                }>,
-                {
-                  key: page.id,
-                  transform: `translateX(${offset * 100}%)`,
-                  zIndex: pages.length - index,
-                  onGoBack: goBack,
-                  showBackButton: index > 0,
-                }
-              );
-              console.log("✅ [Aside] SlidePage 컴포넌트 cloneElement", {
-                pageId: page.id,
-                transform: `translateX(${offset * 100}%)`,
-                zIndex: pages.length - index,
-                showBackButton: index > 0,
-              });
-              return clonedElement;
-            }
-
-            if (page.id === "main" && isDashboardC073) {
-              return (
-                <div
-                  key={page.id}
-                  className="C073"
-                  style={{
-                    transform: `translateX(${offset * 100}%)`,
-                    zIndex: pages.length - index,
-                  }}
-                >
-                  {page.content}
-                </div>
-              );
-            }
-
-            return (
-              <SlidePage
-                key={page.id}
-                transform={`translateX(${offset * 100}%)`}
-                zIndex={pages.length - index}
-                onGoBack={goBack}
-                showBackButton={index > 0}
-              >
-                {page.content}
-              </SlidePage>
-            );
-          })
+          pages.map(renderPage)
         ) : null}
       </div>
 
-      {(isReception ||
-        isCounseling ||
-        isPreCare ||
-        isClinic ||
-        isSurgery ||
-        isProcedure ||
-        isPostCare ||
-        isStatistics) && (
+      {(pagePathFlags.isReception ||
+        pagePathFlags.isCounseling ||
+        pagePathFlags.isPreCare ||
+        pagePathFlags.isClinic ||
+        pagePathFlags.isSurgery ||
+        pagePathFlags.isProcedure ||
+        pagePathFlags.isPostCare ||
+        pagePathFlags.isStatistics) && (
         <PartReferencePopup
           isOpen={isPartReferencePopupOpen}
           onClose={() => setIsPartReferencePopupOpen(false)}
