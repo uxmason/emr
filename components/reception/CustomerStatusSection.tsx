@@ -1971,16 +1971,16 @@ export default function CustomerStatusSection({
                   />
                 </div>
               </div>
-              <div className="C1007">
-                <div className="C1000">
-                  <p className="T1000">주소:</p>
-                  <div className="C1004">
-                    <input
-                      className="T1001"
-                      type="text"
-                      placeholder="주소를 입력하세요"
-                    />
-                    <button className="C1005">주소검색</button>
+            </div>
+            <div className="C1009"></div>
+            <div className="C1007">
+              <div className="C1000">
+                <p className="T1000">
+                  SMS수신: 
+                </p>
+                <div className="C1014">
+                  <div className="C1015">
+                    <div className="C1013"></div>
                   </div>
                 </div>
               </div>
@@ -1996,45 +1996,112 @@ export default function CustomerStatusSection({
                     </div>
                     <p className="T1003">고객 거부</p>
                   </div>
-                  <div className="C1014">
-                    <div className="C1015">
-                      <div className="C1013"></div>
-                    </div>
-                    <p className="T1003">수신 금지</p>
-                  </div>
-                  <div className="C1011">
-                    <div className="C1012">
-                      <div className="C1013 styleSheet isIcon isMini isChecked"></div>
-                    </div>
-                    <p className="T1003">수신 받음</p>
+                  <p className="T1003">수신 금지</p>
+                </div>
+                <div className="C1016">
+                  <div className="C1012">
+                    <div className="C1013 styleSheet isIcon isMini isChecked"></div>
                   </div>
                 </div>
               </div>
-              <div className="C1007">
-                <div className="C1000">
-                  <p className="T1000">거부사유:</p>
-                  <input
-                    className="T1002"
-                    type="text"
-                    placeholder="최대32자까지"
-                  />
+            </div>
+            <div className="C1007">
+              <div className="C1000">
+                <p className="T1000">
+                  거부사유: 
+                </p>
+                <div className="C1008">
+                  <p className="T1003">종류 선택</p>
+                  <div className="C1019 isIcon styleSheet isMini isChevron isWhite"></div>
+                </div>
+                <input
+                  className="T1002"
+                  type="text"
+                  placeholder="최대32자까지"
+                />
+              </div>
+            </div>
+            <div className="C1007">
+              <div className="C1000">
+                <p className="T1000">
+                  할인구분: 
+                </p>
+                <div className="C1008">
+                  <p className="T1003">종류 선택</p>
+                  <div className="C1019 isIcon styleSheet isMini isChevron isWhite"></div>
+                </div>
+                <p className="T1000">
+                  직업: 
+                </p>
+                <div className="C1008">
+                  <p className="T1003">종류 선택</p>
+                  <div className="C1019 isIcon styleSheet isMini isChevron isWhite"></div>
                 </div>
               </div>
-              <div className="C1007">
-                <div className="C1000">
-                  <p className="T1000">할인구분:</p>
-                  <p className="T1000">직업:</p>
+            </div>
+            <div className="C1007">
+              <div className="C1000">
+                <p className="T1000">
+                  본인인증: 
+                </p>
+                <div className="C1016">
+                  <div className="C1012">
+                    <div className="C1013 styleSheet isIcon isMini isChecked"></div>
+                  </div>
+                  <p className="T1003">인증 고객</p>
+                </div>
+                <div className="C1014">
+                  <div className="C1015">
+                    <div className="C1013"></div>
+                  </div>
+                  <p className="T1003">미인증 고객</p>
                 </div>
               </div>
-              <div className="C1007">
-                <div className="C1000">
-                  <p className="T1000">본인인증:</p>
+            </div>
+            <div className="C1007">
+              <div className="C1000 isTopFitted">
+                <p className="T1000">
+                  상태: 
+                </p>
+                <div className="C1018">
+                <div className="C1014">
+                  <div className="C1015">
+                    <div className="C1013"></div>
+                  </div>
+                  <p className="T1003">등록</p>
                 </div>
-              </div>
-              <div className="C1007">
-                <div className="C1000">
-                  <p className="T1000">상태:</p>
+                <div className="C1014">
+                  <div className="C1015">
+                    <div className="C1013"></div>
+                  </div>
+                  <p className="T1003">가등록</p>
                 </div>
+                <div className="C1014">
+                  <div className="C1015">
+                    <div className="C1013"></div>
+                  </div>
+                  <p className="T1003">보류</p>
+                </div>
+                <div className="C1014">
+                  <div className="C1015">
+                    <div className="C1013"></div>
+                  </div>
+                  <p className="T1003">삭제</p>
+                </div>
+                <div className="C1014">
+                  <div className="C1015">
+                    <div className="C1013"></div>
+                  </div>
+                  <p className="T1003">환불</p>
+                </div>
+                <div className="C1014">
+                  <div className="C1015">
+                    <div className="C1013"></div>
+                  </div>
+                  <p className="T1003">이동</p>
+                </div>
+                </div>
+                
               </div>
             </div>
           </PopupSectionBox>
