@@ -98,7 +98,7 @@ const AsideInner = memo(function AsideInner({
   goBack,
 }: AsideInnerProps) {
   // pages를 직접 구독하여 즉시 업데이트 반영
-  const pages = useAsideStore((state) => state.pages);
+  const storePages = useAsideStore((state) => state.pages);
   const setPages = useAsideStore((state) => state.setPages);
   const setIsAnimating = useAsideStore((state) => state.setIsAnimating);
   const lastPathname = useAsideStore((state) => state.lastPathname);
@@ -106,8 +106,18 @@ const AsideInner = memo(function AsideInner({
   // PageHeader 핸들러 리셋을 위한 스토어
   const resetHandlers = usePageHeaderStore((state) => state.resetHandlers);
 
-  // 초기 마운트 플래그 (fallback 렌더링 보장)
-  const [isInitialMount, setIsInitialMount] = useState(true);
+  // 로컬 상태로 pages 관리 (Zustand 구독 타이밍 이슈 해결)
+  const [localPages, setLocalPages] = useState<typeof storePages>([]);
+
+  // Zustand store의 pages와 동기화 (즉시 반영)
+  React.useEffect(() => {
+    if (storePages.length > 0) {
+      setLocalPages(storePages);
+    }
+  }, [storePages]);
+
+  // 렌더링에는 로컬 상태 우선 사용, 없으면 store 상태 사용
+  const pages = localPages.length > 0 ? localPages : storePages;
 
   // 현재 경로 확인 (대시보드는 /)
   const pathname = usePathname();
@@ -276,20 +286,14 @@ const AsideInner = memo(function AsideInner({
     console.log("🟢 [Aside] mainPageContent useEffect 시작", {
       hasMainPageContent: !!mainPageContent,
       pathname,
-      pagesLength: pages.length,
+      pagesLength: storePages.length,
       currentIndex,
-      isInitialMount,
     });
 
     // mainPageContent가 없으면 생성하지 않음
     if (!mainPageContent) {
       console.log("⚠️ [Aside] mainPageContent가 없어서 생성 안 함");
       return;
-    }
-
-    // 초기 마운트 플래그 해제
-    if (isInitialMount) {
-      setIsInitialMount(false);
     }
 
     const currentState = useAsideStore.getState();
@@ -317,6 +321,8 @@ const AsideInner = memo(function AsideInner({
         newPagesLength: newPages.length,
       });
       setPages(newPages);
+      // 로컬 상태도 즉시 업데이트
+      setLocalPages(newPages);
     } else {
       // 메인 페이지가 없으면 생성
       newPages = [
@@ -373,6 +379,8 @@ const AsideInner = memo(function AsideInner({
             currentPageId: null,
             isAnimating: false,
           });
+          // 로컬 상태도 즉시 업데이트
+          setLocalPages(newPages);
           console.log("✅ [Aside] 초기 마운트 완료 (동기)", {
             currentIndex: 0,
             pagesLength: newPages.length,
@@ -380,16 +388,11 @@ const AsideInner = memo(function AsideInner({
         }
       } else {
         setPages(newPages);
+        // 로컬 상태도 즉시 업데이트
+        setLocalPages(newPages);
       }
     }
-  }, [
-    mainPageContent,
-    setPages,
-    pathname,
-    pages.length,
-    currentIndex,
-    isInitialMount,
-  ]);
+  }, [mainPageContent, setPages, pathname, storePages.length, currentIndex]);
 
   // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
   // goBack처럼 pages와 currentIndex를 동시에 설정해야 작동함
@@ -417,17 +420,24 @@ const AsideInner = memo(function AsideInner({
     if (typeof window !== "undefined") {
       console.log("🎨 [Aside] 렌더링 상태", {
         pagesLength: pages.length,
+        storePagesLength: storePages.length,
+        localPagesLength: localPages.length,
         currentIndex,
         hasMainPageContent: !!mainPageContent,
         pathname,
       });
     }
-  }, [pages.length, currentIndex, mainPageContent, pathname]);
+  }, [
+    pages.length,
+    storePages.length,
+    localPages.length,
+    currentIndex,
+    mainPageContent,
+    pathname,
+  ]);
 
   // 초기 마운트 시 pages가 비어있고 mainPageContent가 있으면 fallback 렌더링
-  // 또는 초기 마운트 플래그가 true일 때도 fallback 렌더링
-  const shouldShowFallback =
-    (pages.length === 0 || isInitialMount) && !!mainPageContent;
+  const shouldShowFallback = pages.length === 0 && !!mainPageContent;
 
   return (
     <aside className="C013">
