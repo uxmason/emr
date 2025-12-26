@@ -201,7 +201,7 @@ const AsideInner = memo(function AsideInner({
         <div className="C075">{content}</div>
       </>
     );
-  }, [mainContent, isDashboard, isCounseling, isReception]);
+  }, [mainContent, isDashboard, isCounseling]);
 
   const isDashboardC073 = React.useMemo(() => {
     const content =
