@@ -24,10 +24,18 @@
 
 "use client";
 
-import { ReactNode, useEffect, memo, useState } from "react";
+import {
+  ReactNode,
+  useEffect,
+  useLayoutEffect,
+  memo,
+  useState,
+  useRef,
+} from "react";
 import React from "react";
 import { usePathname } from "next/navigation";
 import WeeklyCalendar from "./WeeklyCalendar";
+import { usePageHeaderStore } from "@/stores/usePageHeaderStore";
 import { AsideProvider } from "./AsideContext";
 import SlidePage from "./SlidePage";
 import { useAsideStore, type AsidePage } from "@/stores/useAsideStore";
@@ -49,9 +57,6 @@ function Aside({ mainContent, onNavigate, children }: AsideProps) {
   // Zustand 스토어에서 상태와 액션 가져오기
   const pages = useAsideStore((state) => state.pages);
   const currentIndex = useAsideStore((state) => state.currentIndex);
-  const isAnimating = useAsideStore((state) => state.isAnimating);
-  const navigateToPage = useAsideStore((state) => state.navigateToPage);
-  const resetToMain = useAsideStore((state) => state.resetToMain);
   const goBack = useAsideStore((state) => state.goBack);
 
   // onNavigate 콜백을 Zustand 스토어의 currentPageId와 동기화 (선택적)
@@ -84,9 +89,7 @@ function Aside({ mainContent, onNavigate, children }: AsideProps) {
         mainContent={mainContent}
         pages={pages}
         currentIndex={currentIndex}
-        isAnimating={isAnimating}
         goBack={goBack}
-        resetToMain={resetToMain}
       />
       {children}
     </AsideProvider>
@@ -98,30 +101,74 @@ function Aside({ mainContent, onNavigate, children }: AsideProps) {
  *
  * @description Aside의 내부 렌더링을 담당하는 컴포넌트입니다.
  * 메인 페이지를 초기화하고 페이지 스택을 렌더링합니다.
+ * pathname 변경을 감지하여 Aside를 메인 페이지로 초기화합니다.
  *
  * @component
  * @internal
+ *
+ * @remarks
+ * - `useLayoutEffect`를 사용하여 pathname 변경을 먼저 감지합니다.
+ * - pathname이 변경되면 pages를 빈 배열로 초기화하고, mainPageContent useEffect에서 main 페이지를 생성합니다.
+ * - main 페이지 생성 후 `currentIndex`를 0으로 설정하여 메인 페이지로 이동합니다.
  */
 interface AsideInnerProps {
   mainContent?: ReactNode | (() => ReactNode);
   pages: AsidePage[];
   currentIndex: number;
-  isAnimating: boolean;
   goBack: () => void;
-  resetToMain: () => void;
 }
 
 const AsideInner = memo(function AsideInner({
   mainContent,
   pages,
   currentIndex,
-  isAnimating,
   goBack,
-  resetToMain,
 }: AsideInnerProps) {
   const setPages = useAsideStore((state) => state.setPages);
+  const setIsAnimating = useAsideStore((state) => state.setIsAnimating);
+  const lastPathname = useAsideStore((state) => state.lastPathname);
+  const setLastPathname = useAsideStore((state) => state.setLastPathname);
+  // PageHeader 핸들러 리셋을 위한 스토어
+  const resetHandlers = usePageHeaderStore((state) => state.resetHandlers);
   // 현재 경로 확인 (대시보드는 /)
   const pathname = usePathname();
+
+  // pathname 변경 플래그 (mainPageContent useEffect에서 사용)
+  const pathnameChangedRef = useRef(false);
+
+  // pathname 변경 시 Aside를 메인으로 초기화
+  // useLayoutEffect를 사용하여 mainPageContent useEffect보다 먼저 실행되도록 함
+  useLayoutEffect(() => {
+    // 첫 마운트 시에는 pathname만 저장
+    if (lastPathname === null) {
+      setLastPathname(pathname);
+      return;
+    }
+
+    // pathname이 변경되었을 때만 리셋
+    if (lastPathname !== pathname) {
+      setLastPathname(pathname);
+      pathnameChangedRef.current = true;
+
+      // goBack처럼 애니메이션 시작
+      setIsAnimating(true);
+
+      // 즉시 pages를 빈 배열로 초기화 (main 페이지는 mainPageContent useEffect에서 생성됨)
+      setPages([]);
+
+      // PageHeader 핸들러도 리셋 (이전 페이지의 핸들러가 남아있지 않도록)
+      resetHandlers();
+    } else {
+      pathnameChangedRef.current = false;
+    }
+  }, [
+    pathname,
+    lastPathname,
+    setPages,
+    setIsAnimating,
+    resetHandlers,
+    setLastPathname,
+  ]);
   const isDashboard = pathname === "/";
   const isCounseling = pathname === "/counseling";
   const isReception = pathname === "/reception";
@@ -207,26 +254,76 @@ const AsideInner = memo(function AsideInner({
   // Initialize and update main page when mainContent changes
   React.useEffect(() => {
     setPages((prev) => {
+      const wasEmpty = prev.length === 0;
       const mainPageIndex = prev.findIndex((page) => page.id === "main");
+
+      let newPages: AsidePage[];
       if (mainPageIndex !== -1) {
         // 메인 페이지가 이미 있으면 업데이트
-        const newPages = [...prev];
+        newPages = [...prev];
         newPages[mainPageIndex] = {
           ...newPages[mainPageIndex],
           content: mainPageContent,
         };
-        return newPages;
       } else {
         // 메인 페이지가 없으면 생성
-        return [
+        newPages = [
           {
             id: "main",
             content: mainPageContent,
           },
+          ...prev,
         ];
       }
+
+      // pathname 변경으로 pages가 비어있다가 main 페이지가 생성된 경우
+      // goBack처럼 pages와 currentIndex를 동시에 설정
+      if (wasEmpty && pathnameChangedRef.current) {
+        pathnameChangedRef.current = false;
+
+        // goBack처럼 pages와 currentIndex를 한 번에 설정
+        // main 페이지가 생성된 직후 즉시 설정 (goBack 패턴과 동일)
+        const mainPage = newPages.find((page) => page.id === "main");
+        if (mainPage) {
+          // 다음 틱에 실행하여 setPages 완료 후 currentIndex 설정
+          setTimeout(() => {
+            useAsideStore.setState({
+              pages: [mainPage],
+              currentIndex: 0,
+              currentPageId: null,
+            });
+
+            // goBack처럼 setTimeout을 사용하여 애니메이션 종료
+            setTimeout(() => {
+              useAsideStore.setState({
+                isAnimating: false,
+              });
+            }, 300);
+          }, 0);
+        }
+      }
+
+      return newPages;
     });
   }, [mainPageContent, setPages]);
+
+  // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
+  // goBack처럼 pages와 currentIndex를 동시에 설정해야 작동함
+  React.useEffect(() => {
+    if (pathnameChangedRef.current) {
+      // pages가 main 페이지만 있는지 확인
+      const hasOnlyMainPage = pages.length === 1 && pages[0]?.id === "main";
+      if (hasOnlyMainPage) {
+        pathnameChangedRef.current = false; // 플래그 리셋
+        // main 페이지가 생성된 직후 무조건 currentIndex를 0으로 설정
+        // currentIndex가 이미 0이어도 다시 설정하여 렌더링을 보장
+        useAsideStore.setState({
+          currentIndex: 0,
+          currentPageId: null,
+        });
+      }
+    }
+  }, [pages]);
 
   return (
     <aside className="C013">
@@ -248,14 +345,19 @@ const AsideInner = memo(function AsideInner({
           if (isSlidePageComponent) {
             // SlidePage 계열 컴포넌트면 props를 전달하여 clone
             return React.cloneElement(
-              page.content as React.ReactElement<any>,
+              page.content as React.ReactElement<{
+                transform?: string;
+                zIndex?: number;
+                onGoBack?: () => void;
+                showBackButton?: boolean;
+              }>,
               {
                 key: page.id,
                 transform: `translateX(${offset * 100}%)`,
                 zIndex: pages.length - index,
                 onGoBack: goBack,
                 showBackButton: index > 0,
-              } as any
+              }
             );
           } else {
             // 대시보드용 C073이면 SlidePage로 감싸지 않고 직접 렌더링

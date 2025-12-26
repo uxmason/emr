@@ -51,6 +51,9 @@ export default function MyNotesSlide({
         </div>
       </div>
       <ScrollableContainer className="C156">
+        {/* ============================================
+            내 쪽지 보기 Slide 내용 - 여기에 퍼블리싱
+            ============================================ */}
         <>
           <div className="C215">
             <div className="C213">

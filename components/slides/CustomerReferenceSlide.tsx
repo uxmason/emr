@@ -58,6 +58,9 @@ export default function CustomerReferenceSlide({
         </div>
       </div>
       <div className="C156">
+        {/* ============================================
+            고객 참조사항 Slide 내용 - 여기에 퍼블리싱
+            ============================================ */}
         <ReferenceMessage
           from={{
             department: "원무",

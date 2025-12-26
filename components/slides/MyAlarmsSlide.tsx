@@ -36,6 +36,9 @@ export default function MyAlarmsSlide({
       zIndex={zIndex}
     >
       <ScrollableContainer className="C156">
+        {/* ============================================
+            내 알림 보기 Slide 내용 - 여기에 퍼블리싱
+            ============================================ */}
         <>
           <div className="C220">
             <div className="C087">

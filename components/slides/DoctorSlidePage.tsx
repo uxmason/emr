@@ -33,6 +33,10 @@ export default function DoctorSlidePage({
       employeeRole={employeeRole}
       showToggleSwitch={false}
     >
+      {/* ============================================
+          원장 일정 보기 Slide 내용 - 여기에 퍼블리싱
+          (WeeklyCalendar와 DoctorScheduleContent는 자동 표시됨)
+          ============================================ */}
       {children}
     </SlidePage>
   );
