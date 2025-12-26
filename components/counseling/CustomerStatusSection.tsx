@@ -1789,6 +1789,7 @@ export default function CustomerStatusSection({
       <ReceptionCheckInButton
         isOpen={isCustomerDetailOpen}
         isFolded={isQuickActionsHovered}
+        allowedButtonIds={["movePart", "status"]}
       />
       <Popup
         isOpen={isCustomerRegistrationPopupOpen}

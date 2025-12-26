@@ -4,6 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Tooltip from "@/components/Tooltip";
+import AgreementStatusPopup from "@/components/popups/AgreementStatusPopup";
+import CustomerStatusPopup from "@/components/popups/CustomerStatusPopup";
+import ForeignerStatusPopup from "@/components/popups/ForeignerStatusPopup";
+import PracticeIndexStatusPopup from "@/components/popups/PracticeIndexStatusPopup";
+import AgencyStatusPopup from "@/components/popups/AgencyStatusPopup";
+import RecordingFilePopup from "@/components/popups/RecordingFilePopup";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -21,6 +27,7 @@ export default function Sidebar() {
   const [c193Tops, setC193Tops] = useState<{
     [key: string]: number;
   }>({});
+  const [openPopup, setOpenPopup] = useState<string | null>(null);
 
   const menuItems = [
     { href: "/", icon: "isDashboard", label: "대시보드" },
@@ -240,22 +247,98 @@ export default function Sidebar() {
                   : undefined
               }
             >
-              <div className="C194">
-                <div className="C195 styleSheet isIcon isEarth"></div>
-                <p className="T083">동의서 현황</p>
-              </div>
-              <div className="C194">
-                <div className="C195 styleSheet isIcon isEarth"></div>
-                <p className="T083">고객 현황</p>
-              </div>
-              <div className="C194">
-                <div className="C195 styleSheet isIcon isEarth"></div>
-                <p className="T083">외국인 현황</p>
-              </div>
-              <div className="C194">
-                <div className="C195 styleSheet isIcon isEarth"></div>
-                <p className="T083">실천지수 현황</p>
-              </div>
+              {iconClass === "isReception" && (
+                <>
+                  <div
+                    className="C194"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setOpenPopup("agreement");
+                    }}
+                  >
+                    <div className="C195 styleSheet isIcon isAgreement"></div>
+                    <p className="T083">동의서 현황</p>
+                  </div>
+                  <div
+                    className="C194"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setOpenPopup("customer");
+                    }}
+                  >
+                    <div className="C195 styleSheet isIcon isPeople"></div>
+                    <p className="T083">고객 현황</p>
+                  </div>
+                  <div
+                    className="C194"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setOpenPopup("foreigner");
+                    }}
+                  >
+                    <div className="C195 styleSheet isIcon isEarth"></div>
+                    <p className="T083">외국인 현황</p>
+                  </div>
+                  <div
+                    className="C194"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setOpenPopup("practice");
+                    }}
+                  >
+                    <div className="C195 styleSheet isIcon isGold"></div>
+                    <p className="T083">실천지수 현황</p>
+                  </div>
+                </>
+              )}
+              {iconClass === "isCounseling" && (
+                <>
+                  <div
+                    className="C194"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setOpenPopup("agency");
+                    }}
+                  >
+                    <div className="C195 styleSheet isIcon isBuilding"></div>
+                    <p className="T083">대행사 현황</p>
+                  </div>
+                  <div
+                    className="C194"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setOpenPopup("recording");
+                    }}
+                  >
+                    <div className="C195 styleSheet isIcon isMicrophone"></div>
+                    <p className="T083">녹취파일 관리</p>
+                  </div>
+                </>
+              )}
+              {iconClass === "isPreCare" && (
+                <>{/* 전처치 페이지용 C194 요소들 - 여기에 퍼블리싱 */}</>
+              )}
+              {iconClass === "isProcedure" && (
+                <>{/* 진료 페이지용 C194 요소들 - 여기에 퍼블리싱 */}</>
+              )}
+              {iconClass === "isSurgery" && (
+                <>{/* 수술 페이지용 C194 요소들 - 여기에 퍼블리싱 */}</>
+              )}
+              {iconClass === "isClinic" && (
+                <>{/* 시술 페이지용 C194 요소들 - 여기에 퍼블리싱 */}</>
+              )}
+              {iconClass === "isPostCare" && (
+                <>{/* 후관리 페이지용 C194 요소들 - 여기에 퍼블리싱 */}</>
+              )}
+              {iconClass === "isStatistics" && (
+                <>{/* 통계 페이지용 C194 요소들 - 여기에 퍼블리싱 */}</>
+              )}
             </div>
             <div
               className="C191"
@@ -270,6 +353,31 @@ export default function Sidebar() {
           </div>
         );
       })}
+
+      <AgreementStatusPopup
+        isOpen={openPopup === "agreement"}
+        onClose={() => setOpenPopup(null)}
+      />
+      <CustomerStatusPopup
+        isOpen={openPopup === "customer"}
+        onClose={() => setOpenPopup(null)}
+      />
+      <ForeignerStatusPopup
+        isOpen={openPopup === "foreigner"}
+        onClose={() => setOpenPopup(null)}
+      />
+      <PracticeIndexStatusPopup
+        isOpen={openPopup === "practice"}
+        onClose={() => setOpenPopup(null)}
+      />
+      <AgencyStatusPopup
+        isOpen={openPopup === "agency"}
+        onClose={() => setOpenPopup(null)}
+      />
+      <RecordingFilePopup
+        isOpen={openPopup === "recording"}
+        onClose={() => setOpenPopup(null)}
+      />
     </nav>
   );
 }
