@@ -202,6 +202,10 @@ const AsideInner = memo(function AsideInner({
     return isDashboard || content === null;
   }, [mainContent, isDashboard]);
 
+  // pathname 변경 추적을 위한 ref
+  const prevPathnameRef = useRef<string | null>(null);
+  const mainPageInitializedRef = useRef(false);
+
   React.useEffect(() => {
     if (!isMounted || !mainPageContent) {
       console.log("🔴 [Aside] mainPageContent useEffect - 조건 불만족", {
@@ -217,31 +221,46 @@ const AsideInner = memo(function AsideInner({
       (page) => page.id === "main"
     );
 
+    // pathname이 변경되었는지 확인
+    const pathnameChanged = prevPathnameRef.current !== pathname;
+    prevPathnameRef.current = pathname;
+
+    // main 페이지가 없거나, pathname이 변경된 경우에만 실행
+    // mainContent 변경은 무시 (이미 렌더링된 main 페이지는 유지)
+    const shouldUpdate = mainPageIndex === -1 || pathnameChanged;
+
+    // main 페이지가 이미 있고, pathname도 변경되지 않았다면 스킵
+    if (!shouldUpdate && mainPageIndex !== -1) {
+      console.log("⏭️ [Aside] main 페이지 존재하고 pathname 변경 없음, 스킵", {
+        mainPageIndex,
+        pathnameChanged,
+        mainPageInitialized: mainPageInitializedRef.current,
+      });
+      return;
+    }
+
     console.log("🟢 [Aside] mainPageContent useEffect 실행", {
       wasEmpty,
       mainPageIndex,
       pagesLength: currentState.pages.length,
       currentIndex: currentState.currentIndex,
       pathname,
+      pathnameChanged,
     });
 
-    // main 페이지가 이미 있고, content가 변경되지 않았다면 업데이트하지 않음
+    // main 페이지가 이미 있는 경우
     if (mainPageIndex !== -1) {
-      const existingMainPage = currentState.pages[mainPageIndex];
-      // main 페이지의 content가 동일하면 업데이트하지 않음
-      if (existingMainPage.content === mainPageContent) {
-        console.log("⏭️ [Aside] main 페이지 content 동일, 업데이트 스킵");
-        return;
+      // pathname이 변경된 경우에만 업데이트
+      if (pathnameChanged) {
+        const newPages = [...currentState.pages];
+        newPages[mainPageIndex] = {
+          ...newPages[mainPageIndex],
+          content: mainPageContent,
+        };
+        console.log("✅ [Aside] main 페이지 content 업데이트 (pathname 변경)");
+        setPages(newPages);
+        mainPageInitializedRef.current = true;
       }
-
-      // main 페이지 content만 업데이트
-      const newPages = [...currentState.pages];
-      newPages[mainPageIndex] = {
-        ...newPages[mainPageIndex],
-        content: mainPageContent,
-      };
-      console.log("✅ [Aside] main 페이지 content 업데이트");
-      setPages(newPages);
       return;
     }
 
@@ -280,6 +299,7 @@ const AsideInner = memo(function AsideInner({
           currentPageId: null,
           isAnimating: false,
         });
+        mainPageInitializedRef.current = true;
       }
     } else {
       // main 페이지가 없지만 다른 페이지들이 있는 경우 (이론적으로 발생하지 않아야 함)
@@ -289,12 +309,13 @@ const AsideInner = memo(function AsideInner({
       setPages(newPages);
     }
   }, [
-    mainPageContent,
+    mainContent, // mainContent 변경을 직접 추적
+    mainPageContent, // mainPageContent도 의존성에 포함 (렌더링 보장)
     setPages,
     pathname,
     isMounted,
-    // storePages.length와 currentIndex를 의존성에서 제거
-    // 이들이 변경될 때마다 main 페이지를 재생성하는 것을 방지
+    // mainContent와 pathname의 실제 변경을 ref로 추적하므로
+    // 의존성 배열에 포함하되, ref를 통해 중복 실행 방지
   ]);
 
   // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
