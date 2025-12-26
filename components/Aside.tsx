@@ -97,16 +97,6 @@ const AsideInner = memo(function AsideInner({
   currentIndex,
   goBack,
 }: AsideInnerProps) {
-  // 클라이언트 마운트 플래그 (SSR/Hydration 이슈 해결)
-  const [isMounted, setIsMounted] = useState(false);
-
-  // 클라이언트에서만 마운트 플래그 설정 (useLayoutEffect로 동기 실행)
-  React.useLayoutEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsMounted(true);
-    }
-  }, []);
-
   // pages를 직접 구독하여 즉시 업데이트 반영
   const storePages = useAsideStore((state) => state.pages);
   const setPages = useAsideStore((state) => state.setPages);
@@ -117,19 +107,18 @@ const AsideInner = memo(function AsideInner({
   const resetHandlers = usePageHeaderStore((state) => state.resetHandlers);
 
   // 로컬 상태로 pages 관리 (Zustand 구독 타이밍 이슈 해결)
-  // 클라이언트 마운트 후에만 초기화
   const [localPages, setLocalPages] = useState<typeof storePages>([]);
 
-  // 클라이언트 마운트 후 Zustand store의 pages와 동기화
+  // Zustand store의 pages와 동기화 (클라이언트에서만)
   React.useLayoutEffect(() => {
-    if (!isMounted) return;
+    if (typeof window === "undefined") return;
     if (storePages.length > 0) {
       setLocalPages(storePages);
     }
-  }, [storePages, isMounted]);
+  }, [storePages]);
 
   // 렌더링에는 로컬 상태 우선 사용, 없으면 store 상태 사용
-  const pages = isMounted && localPages.length > 0 ? localPages : storePages;
+  const pages = localPages.length > 0 ? localPages : storePages;
 
   // 현재 경로 확인 (대시보드는 /)
   const pathname = usePathname();
@@ -451,12 +440,10 @@ const AsideInner = memo(function AsideInner({
   ]);
 
   // 초기 마운트 시 pages가 비어있고 mainPageContent가 있으면 fallback 렌더링
-  // 클라이언트 마운트 전에는 렌더링하지 않음
-  const shouldShowFallback =
-    isMounted && pages.length === 0 && !!mainPageContent;
+  const shouldShowFallback = pages.length === 0 && !!mainPageContent;
 
   // SSR에서는 빈 상태로 렌더링 (Hydration mismatch 방지)
-  if (!isMounted) {
+  if (typeof window === "undefined") {
     return (
       <aside className="C013">
         <div className="C089" />
