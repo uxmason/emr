@@ -322,7 +322,7 @@ const AsideInner = memo(function AsideInner({
 
       // 초기 마운트 시 또는 pathname 변경으로 pages가 비어있을 때
       // main 페이지를 생성하고 currentIndex를 0으로 설정
-      if (wasEmpty) {
+      if (wasEmpty && newPages.length > 0) {
         // pathname 변경으로 인한 경우
         if (pathnameChangedRef.current) {
           console.log("🔄 [Aside] pathname 변경으로 인한 초기화");
@@ -353,14 +353,18 @@ const AsideInner = memo(function AsideInner({
             }, 0);
           }
         } else {
-          // 초기 마운트 시에는 즉시 currentIndex를 0으로 설정
+          // 초기 마운트 시에는 pages와 currentIndex를 한 번에 설정
           console.log("🚀 [Aside] 초기 마운트 시 상태 설정");
+          // setPages와 동시에 currentIndex도 설정하여 렌더링 보장
+          // 다음 틱에 실행하여 setPages 완료 후 currentIndex 설정
           setTimeout(() => {
-            useAsideStore.setState({
+            useAsideStore.setState((state) => ({
+              ...state,
+              pages: newPages,
               currentIndex: 0,
               currentPageId: null,
               isAnimating: false,
-            });
+            }));
             console.log("✅ [Aside] 초기 마운트 완료", {
               currentIndex: 0,
               pagesLength: newPages.length,
