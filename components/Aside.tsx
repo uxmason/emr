@@ -420,9 +420,11 @@ const AsideInner = memo(function AsideInner({
             console.log("🔍 [Aside] 페이지 컴포넌트 체크", {
               pageId: page.id,
               contentType:
-                contentType?.name ||
-                contentType?.displayName ||
-                typeof contentType,
+                typeof contentType === "function"
+                  ? contentType.name ||
+                    (contentType as { displayName?: string }).displayName ||
+                    "function"
+                  : typeof contentType,
               contentDisplayName,
               isSlidePageComponent,
               isValidElement: React.isValidElement(page.content),
