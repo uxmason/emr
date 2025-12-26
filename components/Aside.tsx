@@ -283,46 +283,46 @@ const AsideInner = memo(function AsideInner({
       return;
     }
 
-    setPages((prev) => {
-      const wasEmpty = prev.length === 0;
-      const mainPageIndex = prev.findIndex((page) => page.id === "main");
+    const currentState = useAsideStore.getState();
+    const wasEmpty = currentState.pages.length === 0;
+    const mainPageIndex = currentState.pages.findIndex((page) => page.id === "main");
 
-      console.log("📝 [Aside] setPages 실행", {
-        wasEmpty,
-        mainPageIndex,
-        prevLength: prev.length,
-        pathnameChanged: pathnameChangedRef.current,
+    console.log("📝 [Aside] setPages 실행", {
+      wasEmpty,
+      mainPageIndex,
+      prevLength: currentState.pages.length,
+      pathnameChanged: pathnameChangedRef.current,
+    });
+
+    let newPages: AsidePage[];
+    if (mainPageIndex !== -1) {
+      // 메인 페이지가 이미 있으면 업데이트
+      newPages = [...currentState.pages];
+      newPages[mainPageIndex] = {
+        ...newPages[mainPageIndex],
+        content: mainPageContent,
+      };
+      console.log("✅ [Aside] 메인 페이지 업데이트", {
+        newPagesLength: newPages.length,
       });
-
-      let newPages: AsidePage[];
-      if (mainPageIndex !== -1) {
-        // 메인 페이지가 이미 있으면 업데이트
-        newPages = [...prev];
-        newPages[mainPageIndex] = {
-          ...newPages[mainPageIndex],
+      setPages(newPages);
+    } else {
+      // 메인 페이지가 없으면 생성
+      newPages = [
+        {
+          id: "main",
           content: mainPageContent,
-        };
-        console.log("✅ [Aside] 메인 페이지 업데이트", {
-          newPagesLength: newPages.length,
-        });
-      } else {
-        // 메인 페이지가 없으면 생성
-        newPages = [
-          {
-            id: "main",
-            content: mainPageContent,
-            timestamp: Date.now(),
-          },
-          ...prev,
-        ];
-        console.log("🆕 [Aside] 메인 페이지 생성", {
-          newPagesLength: newPages.length,
-        });
-      }
+          timestamp: Date.now(),
+        },
+        ...currentState.pages,
+      ];
+      console.log("🆕 [Aside] 메인 페이지 생성", {
+        newPagesLength: newPages.length,
+      });
 
       // 초기 마운트 시 또는 pathname 변경으로 pages가 비어있을 때
       // main 페이지를 생성하고 currentIndex를 0으로 설정
-      if (wasEmpty && newPages.length > 0) {
+      if (wasEmpty) {
         // pathname 변경으로 인한 경우
         if (pathnameChangedRef.current) {
           console.log("🔄 [Aside] pathname 변경으로 인한 초기화");
@@ -356,25 +356,21 @@ const AsideInner = memo(function AsideInner({
           // 초기 마운트 시에는 pages와 currentIndex를 한 번에 설정
           console.log("🚀 [Aside] 초기 마운트 시 상태 설정");
           // setPages와 동시에 currentIndex도 설정하여 렌더링 보장
-          // 다음 틱에 실행하여 setPages 완료 후 currentIndex 설정
-          setTimeout(() => {
-            useAsideStore.setState((state) => ({
-              ...state,
-              pages: newPages,
-              currentIndex: 0,
-              currentPageId: null,
-              isAnimating: false,
-            }));
-            console.log("✅ [Aside] 초기 마운트 완료", {
-              currentIndex: 0,
-              pagesLength: newPages.length,
-            });
-          }, 0);
+          useAsideStore.setState({
+            pages: newPages,
+            currentIndex: 0,
+            currentPageId: null,
+            isAnimating: false,
+          });
+          console.log("✅ [Aside] 초기 마운트 완료 (동기)", {
+            currentIndex: 0,
+            pagesLength: newPages.length,
+          });
         }
+      } else {
+        setPages(newPages);
       }
-
-      return newPages;
-    });
+    }
   }, [mainPageContent, setPages, pathname, pages.length, currentIndex]);
 
   // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
