@@ -99,10 +99,12 @@ const AsideInner = memo(function AsideInner({
 }: AsideInnerProps) {
   // 클라이언트 마운트 플래그 (SSR/Hydration 이슈 해결)
   const [isMounted, setIsMounted] = useState(false);
-
-  // 클라이언트에서만 마운트 플래그 설정
-  React.useEffect(() => {
-    setIsMounted(true);
+  
+  // 클라이언트에서만 마운트 플래그 설정 (useLayoutEffect로 동기 실행)
+  React.useLayoutEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMounted(true);
+    }
   }, []);
 
   // pages를 직접 구독하여 즉시 업데이트 반영
@@ -405,7 +407,14 @@ const AsideInner = memo(function AsideInner({
         setLocalPages(newPages);
       }
     }
-  }, [mainPageContent, setPages, pathname, storePages.length, currentIndex, isMounted]);
+  }, [
+    mainPageContent,
+    setPages,
+    pathname,
+    storePages.length,
+    currentIndex,
+    isMounted,
+  ]);
 
   // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
   // goBack처럼 pages와 currentIndex를 동시에 설정해야 작동함
