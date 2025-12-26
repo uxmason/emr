@@ -244,6 +244,9 @@ const AsideInner = memo(function AsideInner({
   React.useEffect(() => {
     // 클라이언트 마운트 후에만 실행
     if (!isMounted || typeof window === "undefined") return;
+    
+    // mainPageContent가 없으면 생성하지 않음
+    if (!mainPageContent) return;
 
     setPages((prev) => {
       const wasEmpty = prev.length === 0;
@@ -269,29 +272,40 @@ const AsideInner = memo(function AsideInner({
         ];
       }
 
-      // pathname 변경으로 pages가 비어있다가 main 페이지가 생성된 경우
-      // goBack처럼 pages와 currentIndex를 동시에 설정
-      if (wasEmpty && pathnameChangedRef.current) {
-        pathnameChangedRef.current = false;
+      // 초기 마운트 시 또는 pathname 변경으로 pages가 비어있을 때
+      // main 페이지를 생성하고 currentIndex를 0으로 설정
+      if (wasEmpty) {
+        // pathname 변경으로 인한 경우
+        if (pathnameChangedRef.current) {
+          pathnameChangedRef.current = false;
 
-        // goBack처럼 pages와 currentIndex를 한 번에 설정
-        // main 페이지가 생성된 직후 즉시 설정 (goBack 패턴과 동일)
-        const mainPage = newPages.find((page) => page.id === "main");
-        if (mainPage) {
-          // 다음 틱에 실행하여 setPages 완료 후 currentIndex 설정
-          setTimeout(() => {
-            useAsideStore.setState({
-              pages: [mainPage],
-              currentIndex: 0,
-              currentPageId: null,
-            });
-
-            // goBack처럼 setTimeout을 사용하여 애니메이션 종료
+          // goBack처럼 pages와 currentIndex를 한 번에 설정
+          const mainPage = newPages.find((page) => page.id === "main");
+          if (mainPage) {
+            // 다음 틱에 실행하여 setPages 완료 후 currentIndex 설정
             setTimeout(() => {
               useAsideStore.setState({
-                isAnimating: false,
+                pages: [mainPage],
+                currentIndex: 0,
+                currentPageId: null,
               });
-            }, 300);
+
+              // goBack처럼 setTimeout을 사용하여 애니메이션 종료
+              setTimeout(() => {
+                useAsideStore.setState({
+                  isAnimating: false,
+                });
+              }, 300);
+            }, 0);
+          }
+        } else {
+          // 초기 마운트 시에는 즉시 currentIndex를 0으로 설정
+          setTimeout(() => {
+            useAsideStore.setState({
+              currentIndex: 0,
+              currentPageId: null,
+              isAnimating: false,
+            });
           }, 0);
         }
       }
