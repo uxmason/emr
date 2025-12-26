@@ -405,7 +405,7 @@ const AsideInner = memo(function AsideInner({
         setLocalPages(newPages);
       }
     }
-  }, [mainPageContent, setPages, pathname, storePages.length, currentIndex]);
+  }, [mainPageContent, setPages, pathname, storePages.length, currentIndex, isMounted]);
 
   // pathname 변경 후 pages가 main 페이지만 있을 때 currentIndex를 0으로 설정
   // goBack처럼 pages와 currentIndex를 동시에 설정해야 작동함
